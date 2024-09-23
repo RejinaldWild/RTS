@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,13 +7,13 @@ public class UnitMovement : MonoBehaviour
     private NavMeshAgent _agent;
     public LayerMask Ground;
 
-    void Start()
+    private void Start()
     {
         _camera = Camera.main;
         _agent = GetComponent<NavMeshAgent>();
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(1))
         {

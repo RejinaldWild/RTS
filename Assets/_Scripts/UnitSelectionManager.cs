@@ -1,22 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class UnitSelectionManager : MonoBehaviour
 {
     public static UnitSelectionManager Instance { get; set; }
     public List<GameObject> allUnits = new List<GameObject>();
     public List<GameObject> selectedUnits = new List<GameObject>();
-
     public LayerMask clickable;
     public LayerMask ground;
-
     public GameObject groundMarker;
-
+    
     private Camera _camera;
     
-    void Awake()
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -28,12 +24,12 @@ public class UnitSelectionManager : MonoBehaviour
         }
     }
 
-    void Start()
+    private void Start()
     {
         _camera = Camera.main;
     }
     
-    void Update()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -74,41 +70,45 @@ public class UnitSelectionManager : MonoBehaviour
         }
     }
 
-    private void MultiSelect(GameObject unit)
+    public void DragSelect(GameObject unit)
     {
         if (selectedUnits.Contains(unit) == false)
         {
-            selectedUnits.Add((unit));
-            TriggerSectionIndicator(unit, true);
-            EnableUnitMovement(unit, true);
-        }
-        else
-        {
-            selectedUnits.Remove(unit);
-            TriggerSectionIndicator(unit, false);
-            EnableUnitMovement(unit, false);
+            selectedUnits.Add(unit);
+            SelectUnit(unit, true);
         }
     }
-
-    private void DeselectAll()
+    
+    public void DeselectAll()
     {
         foreach (var unit in selectedUnits)
         {
-            TriggerSectionIndicator(unit, false);
-            EnableUnitMovement(unit, false);
+            SelectUnit(unit, false);
         }
         
         groundMarker.SetActive(false);
         selectedUnits.Clear();
     }
+    
+    private void MultiSelect(GameObject unit)
+    {
+        if (selectedUnits.Contains(unit) == false)
+        {
+            selectedUnits.Add((unit));
+            SelectUnit(unit, true);
+        }
+        else
+        {
+            selectedUnits.Remove(unit);
+            SelectUnit(unit, false);
+        }
+    }
 
     private void SelectByClicking(GameObject unit)
     {
         DeselectAll();
-        
         selectedUnits.Add(unit);
-        TriggerSectionIndicator(unit, true);
-        EnableUnitMovement(unit, true);
+        SelectUnit(unit, true);
     }
 
     private void EnableUnitMovement(GameObject unit, bool isMove)
@@ -120,4 +120,11 @@ public class UnitSelectionManager : MonoBehaviour
     {
         unit.transform.GetChild(0).gameObject.SetActive(isVisible);
     }
+
+    private void SelectUnit(GameObject unit, bool IsSelected)
+    {
+        TriggerSectionIndicator(unit, IsSelected);
+        EnableUnitMovement(unit, IsSelected);
+    }
+
 }
