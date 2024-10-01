@@ -1,16 +1,22 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class UnitSelectionManager : MonoBehaviour
 {
     public static UnitSelectionManager Instance { get; set; }
+    
+    public event Action OnSelectedUnits;
+    public event Action OnDeselectedUnits;
+    
     public List<GameObject> allUnits = new List<GameObject>();
     public List<GameObject> selectedUnits = new List<GameObject>();
     public LayerMask clickable;
     public LayerMask ground;
-    public GameObject groundMarker;
+    public UnityEngine.GameObject groundMarker;
     
     private Camera _camera;
+    private FormationController _formationController;
     
     private void Awake()
     {
@@ -84,10 +90,17 @@ public class UnitSelectionManager : MonoBehaviour
         foreach (var unit in selectedUnits)
         {
             SelectUnit(unit, false);
+            OnDeselectedUnits?.Invoke();
         }
-        
         groundMarker.SetActive(false);
         selectedUnits.Clear();
+    }
+    
+    private void SelectUnit(GameObject unit, bool isSelected)
+    {
+        TriggerSectionIndicator(unit, isSelected);
+        EnableUnitMovement(unit, isSelected);
+        OnSelectedUnits?.Invoke();
     }
     
     private void MultiSelect(GameObject unit)
@@ -120,11 +133,4 @@ public class UnitSelectionManager : MonoBehaviour
     {
         unit.transform.GetChild(0).gameObject.SetActive(isVisible);
     }
-
-    private void SelectUnit(GameObject unit, bool IsSelected)
-    {
-        TriggerSectionIndicator(unit, IsSelected);
-        EnableUnitMovement(unit, IsSelected);
-    }
-
 }
