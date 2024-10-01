@@ -1,12 +1,16 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class UnitMovement : MonoBehaviour
 {
+    public event Action<Vector3> OnUnitChangedPosition;
+    
+    public LayerMask Ground;
+    
     private Camera _camera;
     private NavMeshAgent _agent;
-    public LayerMask Ground;
-
+    
     private void Start()
     {
         _camera = Camera.main;
@@ -22,8 +26,10 @@ public class UnitMovement : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, Ground))
             {
+                OnUnitChangedPosition?.Invoke(hit.point);
                 _agent.SetDestination(hit.point);
             }
+            
         }
     }
 }

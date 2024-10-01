@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class UnitSelectionBox : MonoBehaviour
 {
- 
     [SerializeField] private RectTransform boxVisual;
  
     private Camera myCam;
@@ -32,7 +31,7 @@ public class UnitSelectionBox : MonoBehaviour
         // When Dragging
         if (Input.GetMouseButton(0))
         {
-            if (boxVisual.rect.x > 0 || boxVisual.rect.y > 0)
+            if (boxVisual.rect.width > 0 || boxVisual.rect.height > 0)
             {
                 UnitSelectionManager.Instance.DeselectAll();
                 SelectUnits();
@@ -47,7 +46,6 @@ public class UnitSelectionBox : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             SelectUnits();
- 
             startPosition = Vector2.zero;
             endPosition = Vector2.zero;
             DrawVisual();
