@@ -41,7 +41,7 @@ public class FormationController : MonoBehaviour
         Vector3[] positions = _generator.GetPosition(_agents.Count);
         for (int i = 0; i < positions.Length; i++)
         {
-            _agents[i].SetDestination(center + (positions[i] * 5));
+            _agents[i].SetDestination(center + (positions[i] * 2));
         }
     }
 
