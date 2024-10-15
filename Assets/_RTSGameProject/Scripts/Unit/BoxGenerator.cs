@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxGenerator : MonoBehaviour
+public class BoxGenerator : MonoBehaviour, IFormationPositionGenerator
 {
     public Vector3[] GetPosition(int count)
     {

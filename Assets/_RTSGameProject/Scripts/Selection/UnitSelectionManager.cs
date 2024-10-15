@@ -6,14 +6,14 @@ public class UnitSelectionManager : MonoBehaviour
 {
     public static UnitSelectionManager Instance { get; set; }
     
-    public event Action OnSelectedUnits;
-    public event Action OnDeselectedUnits;
+    public event Action<Unit> OnSelectedUnits;
+    public event Action<Unit> OnDeselectedUnits;
     
-    public List<GameObject> allUnits = new List<GameObject>();
-    public List<GameObject> selectedUnits = new List<GameObject>();
+    public List<Unit> allUnits = new List<Unit>();
+    public List<Unit> selectedUnits = new List<Unit>();
     public LayerMask clickable;
     public LayerMask ground;
-    public UnityEngine.GameObject groundMarker;
+    public GameObject groundMarker;
     
     private Camera _camera;
     private FormationController _formationController;
@@ -33,8 +33,12 @@ public class UnitSelectionManager : MonoBehaviour
     private void Start()
     {
         _camera = Camera.main;
+        foreach (var unit in allUnits)
+        {
+            unit.OnUnitAwaked += AddUnit;
+        }
     }
-    
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -46,11 +50,13 @@ public class UnitSelectionManager : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    MultiSelect(hit.collider.gameObject);
+                    hit.collider.TryGetComponent(out Unit unit);
+                    MultiSelect(unit);
                 }
                 else
                 {
-                    SelectByClicking(hit.collider.gameObject);
+                    hit.collider.TryGetComponent(out Unit unit);
+                    SelectByClicking(unit);
                 }
             }
             else
@@ -76,7 +82,15 @@ public class UnitSelectionManager : MonoBehaviour
         }
     }
 
-    public void DragSelect(GameObject unit)
+    private void OnDestroy()
+    {
+        foreach (var unit in allUnits)
+        {
+            unit.OnUnitAwaked -= AddUnit;
+        }
+    }
+    
+    public void DragSelect(Unit unit)
     {
         if (selectedUnits.Contains(unit) == false)
         {
@@ -90,20 +104,32 @@ public class UnitSelectionManager : MonoBehaviour
         foreach (var unit in selectedUnits)
         {
             SelectUnit(unit, false);
-            OnDeselectedUnits?.Invoke();
+            OnDeselectedUnits?.Invoke(unit);
         }
         groundMarker.SetActive(false);
         selectedUnits.Clear();
     }
     
-    private void SelectUnit(GameObject unit, bool isSelected)
+    private void AddUnit(Unit unit)
+    {
+        allUnits.Add(unit);
+    }
+    
+    private void SelectUnit(Unit unit, bool isSelected)
     {
         TriggerSectionIndicator(unit, isSelected);
         EnableUnitMovement(unit, isSelected);
-        OnSelectedUnits?.Invoke();
+        if (isSelected)
+        {
+            OnSelectedUnits?.Invoke(unit);
+        }
+        else
+        {
+            OnDeselectedUnits?.Invoke(unit);
+        }
     }
     
-    private void MultiSelect(GameObject unit)
+    private void MultiSelect(Unit unit)
     {
         if (selectedUnits.Contains(unit) == false)
         {
@@ -117,19 +143,19 @@ public class UnitSelectionManager : MonoBehaviour
         }
     }
 
-    private void SelectByClicking(GameObject unit)
+    private void SelectByClicking(Unit unit)
     {
         DeselectAll();
         selectedUnits.Add(unit);
         SelectUnit(unit, true);
     }
 
-    private void EnableUnitMovement(GameObject unit, bool isMove)
+    private void EnableUnitMovement(Unit unit, bool isMove)
     {
         unit.GetComponent<UnitMovement>().enabled = isMove;
     }
 
-    private void TriggerSectionIndicator(GameObject unit, bool isVisible)
+    private void TriggerSectionIndicator(Unit unit, bool isVisible)
     {
         unit.transform.GetChild(0).gameObject.SetActive(isVisible);
     }

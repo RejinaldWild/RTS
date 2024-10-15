@@ -100,49 +100,49 @@ public class CameraController : MonoBehaviour
             }
         }
         
-        if (moveWithEdgeScrolling)
-        {
-            if (Input.mousePosition.x > Screen.width - edgeSize)
-            {
-                newPosition += (transform.right * movementSpeed);
-                ChangeCursor(CursorArrow.RIGHT);
-                isCursorSet = true;
-            }
-            
-            else if (Input.mousePosition.x < edgeSize)
-            {
-                newPosition += (transform.right * -movementSpeed);
-                ChangeCursor(CursorArrow.LEFT);
-                isCursorSet = true;
-            }
-            
-            else if (Input.mousePosition.y > Screen.height - edgeSize)
-            {
-                newPosition += (transform.forward * movementSpeed);
-                ChangeCursor(CursorArrow.UP);
-                isCursorSet = true;
-            }
-            
-            else if (Input.mousePosition.y < edgeSize)
-            {
-                newPosition += (transform.forward * -movementSpeed);
-                ChangeCursor(CursorArrow.DOWN);
-                isCursorSet = true;
-            }
-            else
-            {
-                if (isCursorSet)
-                {
-                    ChangeCursor(CursorArrow.DEFAULT);
-                    isCursorSet = false;
-                }
-            }
-        }
+        // if (moveWithEdgeScrolling)
+        // {
+        //     if (Input.mousePosition.x > Screen.width - edgeSize)
+        //     {
+        //         newPosition += (transform.right * movementSpeed);
+        //         ChangeCursor(CursorArrow.RIGHT);
+        //         isCursorSet = true;
+        //     }
+        //     
+        //     else if (Input.mousePosition.x < edgeSize)
+        //     {
+        //         newPosition += (transform.right * -movementSpeed);
+        //         ChangeCursor(CursorArrow.LEFT);
+        //         isCursorSet = true;
+        //     }
+        //     
+        //     else if (Input.mousePosition.y > Screen.height - edgeSize)
+        //     {
+        //         newPosition += (transform.forward * movementSpeed);
+        //         ChangeCursor(CursorArrow.UP);
+        //         isCursorSet = true;
+        //     }
+        //     
+        //     else if (Input.mousePosition.y < edgeSize)
+        //     {
+        //         newPosition += (transform.forward * -movementSpeed);
+        //         ChangeCursor(CursorArrow.DOWN);
+        //         isCursorSet = true;
+        //     }
+        //     else
+        //     {
+        //         if (isCursorSet)
+        //         {
+        //             ChangeCursor(CursorArrow.DEFAULT);
+        //             isCursorSet = false;
+        //         }
+        //     }
+        // }
 
         transform.position = newPosition;
         //Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementSensitivity);
  
-        Cursor.lockState = CursorLockMode.Confined;
+        //Cursor.lockState = CursorLockMode.Confined;
     }
  
     private void ChangeCursor(CursorArrow newCursor)

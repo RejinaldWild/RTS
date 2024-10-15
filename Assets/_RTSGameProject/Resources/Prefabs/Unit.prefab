@@ -32,8 +32,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 36.77, y: 1.11, z: 33.07}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2948838940134320752}
   m_Father: {fileID: 0}
@@ -107,10 +107,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
-  m_Height: 2
+  m_Radius: 1
+  m_Height: 2.7
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.017974079, z: 0}
 --- !u!195 &709487745954094920
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -160,7 +160,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39587a4af5b0e4949adb8e901fa91823, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HasFormation: 0
 --- !u!1 &6529277964117800540
 GameObject:
   m_ObjectHideFlags: 0
