@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -63,7 +62,7 @@ public class UnitMovement : MonoBehaviour
         if ((point - Agent.transform.position).magnitude > 1f)
         {
             // TakeSpeed from ScriptableObject
-            Agent.SetDestination(hit.point + (unit.position * 2));
+            Agent.SetDestination(hit.point + (unit.Position * 2));
         }
         else
         {

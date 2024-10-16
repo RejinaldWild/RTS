@@ -4,34 +4,22 @@ using UnityEngine.AI;
 
 public class Unit : MonoBehaviour
 {
-    public event Action<Unit> OnUnitAwaked; 
-    
-    public UnitMovement UnitMovement { get; private set; }
+    public event Action<Unit> OnUnitAwaked;
 
+    public Vector3 Position { get; set; }
     public NavMeshAgent Agent { get; private set; }
-
-    public FormationController formationController;
-
-    public Vector3 position;
-    public void Instantiate()
-    {
-        OnUnitAwaked?.Invoke(this);
-        Agent = GetComponent<NavMeshAgent>();
-        UnitMovement = GetComponent<UnitMovement>();
-        position = transform.position;
-    }
+    public UnitMovement UnitMovement { get; private set; }
     
     private void Start()
     {
         Instantiate();
     }
-
-    private void Update()
+    
+    public void Instantiate()
     {
-    }
-
-    private void OnDestroy()
-    {
-        
+        OnUnitAwaked?.Invoke(this);
+        Agent = GetComponent<NavMeshAgent>();
+        UnitMovement = GetComponent<UnitMovement>();
+        Position = transform.position;
     }
 }

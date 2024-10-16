@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IFormationPositionGenerator
 {
-    Vector3[] GetPosition(int count);
+    public Vector3[] GetPosition(int count);
 }

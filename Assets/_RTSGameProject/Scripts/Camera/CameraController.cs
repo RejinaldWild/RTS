@@ -6,7 +6,6 @@ public class CameraController : MonoBehaviour
     [Header("General")] 
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private Transform followTransform;
-    public float panSpeed = 20f;
     private Vector3 newPosition;
     private Vector3 dragStartPosition;
     private Vector3 dragCurrentPosition;
@@ -21,17 +20,17 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float normalSpeed = 0.01f;
  
     [Header("Edge Scrolling Movement")]
-    [SerializeField] private float edgeSize = 50f;
     public Texture2D cursorArrowUp;
     public Texture2D cursorArrowDown;
     public Texture2D cursorArrowLeft;
     public Texture2D cursorArrowRight;
+    [SerializeField] private float edgeSize = 50f;
     
     private float movementSpeed;
     private bool isCursorSet = false;
- 
-    CursorArrow currentCursor = CursorArrow.DEFAULT;
-    enum CursorArrow
+    private CursorArrow currentCursor = CursorArrow.DEFAULT;
+    
+    private enum CursorArrow
     {
         UP,
         DOWN,
