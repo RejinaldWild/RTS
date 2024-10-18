@@ -1,202 +1,205 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CameraController : MonoBehaviour
+namespace RTS.Scripts
 {
-    [Header("General")] 
-    [SerializeField] private Transform cameraTransform;
-    [SerializeField] private Transform followTransform;
-    private Vector3 newPosition;
-    private Vector3 dragStartPosition;
-    private Vector3 dragCurrentPosition;
+    public class CameraController : MonoBehaviour
+    {
+        [Header("General")] 
+        [SerializeField] private Transform _cameraTransform;
+        private Transform _followTransform;
+        private Vector3 _newPosition;
+        private Vector3 _dragStartPosition;
+        private Vector3 _dragCurrentPosition;
  
-    [Header("Optional Functionality")]
-    [SerializeField] private bool moveWithKeyboad;
-    [SerializeField] private bool moveWithEdgeScrolling;
-    [SerializeField] private bool moveWithMouseDrag;
+        [Header("Optional Functionality")]
+        [SerializeField] private bool _moveWithKeyboad;
+        [SerializeField] private bool _moveWithEdgeScrolling;
+        [SerializeField] private bool _moveWithMouseDrag;
  
-    [Header("Keyboard Movement")]
-    [SerializeField] private float fastSpeed = 0.05f;
-    [SerializeField] private float normalSpeed = 0.01f;
+        [Header("Keyboard Movement")]
+        [SerializeField] private float _fastSpeed = 0.05f;
+        [SerializeField] private float _normalSpeed = 0.01f;
  
-    [Header("Edge Scrolling Movement")]
-    public Texture2D cursorArrowUp;
-    public Texture2D cursorArrowDown;
-    public Texture2D cursorArrowLeft;
-    public Texture2D cursorArrowRight;
-    [SerializeField] private float edgeSize = 50f;
+        [Header("Edge Scrolling Movement")]
+        public Texture2D CursorArrowUp;
+        public Texture2D CursorArrowDown;
+        public Texture2D CursorArrowLeft;
+        public Texture2D CursorArrowRight;
+        [SerializeField] private float _edgeSize = 50f;
     
-    private float movementSpeed;
-    private bool isCursorSet = false;
-    private CursorArrow currentCursor = CursorArrow.DEFAULT;
+        private float _movementSpeed;
+        private bool _isCursorSet = false;
+        private CursorArrow _currentCursor = CursorArrow.DEFAULT;
     
-    private enum CursorArrow
-    {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT,
-        DEFAULT
-    }
- 
-    private void Start()
-    {
-        newPosition = transform.position;
-        movementSpeed = normalSpeed;
-    }
- 
-    private void Update()
-    {
-        if (followTransform != null)
+        private enum CursorArrow
         {
-            transform.position = followTransform.position;
-        }
-        else
-        {
-            HandleCameraMovement();
+            UP,
+            DOWN,
+            LEFT,
+            RIGHT,
+            DEFAULT
         }
  
-        if (Input.GetKeyDown(KeyCode.Escape))
+        private void Start()
         {
-            followTransform = null;
-        }
-    }
- 
-    private void HandleCameraMovement()
-    {
-        if (moveWithMouseDrag)
-        {
-            HandleMouseDragInput();
+            _newPosition = transform.position;
+            _movementSpeed = _normalSpeed;
         }
  
-        if (moveWithKeyboad)
+        private void Update()
         {
-            if (Input.GetKey(KeyCode.LeftAlt))
+            if (_followTransform != null)
             {
-                movementSpeed = fastSpeed;
+                transform.position = _followTransform.position;
             }
             else
             {
-                movementSpeed = normalSpeed;
+                HandleCameraMovement();
             }
  
-            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                newPosition += (transform.forward * movementSpeed);
-            }
-            if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
-            {
-                newPosition += (transform.forward * -movementSpeed);
-            }
-
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
-            {
-                newPosition += (transform.right * movementSpeed);
-            }
-            if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
-            {
-                newPosition += (transform.right * -movementSpeed);
+                _followTransform = null;
             }
         }
+ 
+        private void HandleCameraMovement()
+        {
+            if (_moveWithMouseDrag)
+            {
+                HandleMouseDragInput();
+            }
+ 
+            if (_moveWithKeyboad)
+            {
+                if (Input.GetKey(KeyCode.LeftAlt))
+                {
+                    _movementSpeed = _fastSpeed;
+                }
+                else
+                {
+                    _movementSpeed = _normalSpeed;
+                }
+ 
+                if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+                {
+                    _newPosition += (transform.forward * _movementSpeed);
+                }
+                if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+                {
+                    _newPosition += (transform.forward * -_movementSpeed);
+                }
+
+                if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+                {
+                    _newPosition += (transform.right * _movementSpeed);
+                }
+                if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+                {
+                    _newPosition += (transform.right * -_movementSpeed);
+                }
+            }
         
-        // if (moveWithEdgeScrolling)
-        // {
-        //     if (Input.mousePosition.x > Screen.width - edgeSize)
-        //     {
-        //         newPosition += (transform.right * movementSpeed);
-        //         ChangeCursor(CursorArrow.RIGHT);
-        //         isCursorSet = true;
-        //     }
-        //     
-        //     else if (Input.mousePosition.x < edgeSize)
-        //     {
-        //         newPosition += (transform.right * -movementSpeed);
-        //         ChangeCursor(CursorArrow.LEFT);
-        //         isCursorSet = true;
-        //     }
-        //     
-        //     else if (Input.mousePosition.y > Screen.height - edgeSize)
-        //     {
-        //         newPosition += (transform.forward * movementSpeed);
-        //         ChangeCursor(CursorArrow.UP);
-        //         isCursorSet = true;
-        //     }
-        //     
-        //     else if (Input.mousePosition.y < edgeSize)
-        //     {
-        //         newPosition += (transform.forward * -movementSpeed);
-        //         ChangeCursor(CursorArrow.DOWN);
-        //         isCursorSet = true;
-        //     }
-        //     else
-        //     {
-        //         if (isCursorSet)
-        //         {
-        //             ChangeCursor(CursorArrow.DEFAULT);
-        //             isCursorSet = false;
-        //         }
-        //     }
-        // }
+            if (_moveWithEdgeScrolling)
+            {
+                if (Input.mousePosition.x > Screen.width - _edgeSize)
+                {
+                    _newPosition += (transform.right * _movementSpeed);
+                    ChangeCursor(CursorArrow.RIGHT);
+                    _isCursorSet = true;
+                }
+            
+                else if (Input.mousePosition.x < _edgeSize)
+                {
+                    _newPosition += (transform.right * -_movementSpeed);
+                    ChangeCursor(CursorArrow.LEFT);
+                    _isCursorSet = true;
+                }
+            
+                else if (Input.mousePosition.y > Screen.height - _edgeSize)
+                {
+                    _newPosition += (transform.forward * _movementSpeed);
+                    ChangeCursor(CursorArrow.UP);
+                    _isCursorSet = true;
+                }
+            
+                else if (Input.mousePosition.y < _edgeSize)
+                {
+                    _newPosition += (transform.forward * -_movementSpeed);
+                    ChangeCursor(CursorArrow.DOWN);
+                    _isCursorSet = true;
+                }
+                else
+                {
+                    if (_isCursorSet)
+                    {
+                        ChangeCursor(CursorArrow.DEFAULT);
+                        _isCursorSet = false;
+                    }
+                }
+            }
 
-        transform.position = newPosition;
-        //Vector3.Lerp(transform.position, newPosition, Time.deltaTime * movementSensitivity);
+            transform.position = _newPosition;
+            //Vector3.Lerp(transform.position, _newPosition, Time.deltaTime * _movementSpeed);
  
-        //Cursor.lockState = CursorLockMode.Confined;
-    }
- 
-    private void ChangeCursor(CursorArrow newCursor)
-    {
-        if (currentCursor != newCursor)
-        {
-            switch (newCursor)
-            {
-                case CursorArrow.UP:
-                    Cursor.SetCursor(cursorArrowUp, Vector2.zero, CursorMode.Auto);
-                    break;
-                case CursorArrow.DOWN:
-                    Cursor.SetCursor(cursorArrowDown, new Vector2(cursorArrowDown.width, cursorArrowDown.height), CursorMode.Auto);
-                    break;
-                case CursorArrow.LEFT:
-                    Cursor.SetCursor(cursorArrowLeft, Vector2.zero, CursorMode.Auto);
-                    break;
-                case CursorArrow.RIGHT:
-                    Cursor.SetCursor(cursorArrowRight, new Vector2(cursorArrowRight.width, cursorArrowRight.height), CursorMode.Auto);
-                    break;
-                case CursorArrow.DEFAULT:
-                    Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-                    break;
-            }
- 
-            currentCursor = newCursor;
+            //Cursor.lockState = CursorLockMode.Confined;
         }
-    }
+ 
+        private void ChangeCursor(CursorArrow newCursor)
+        {
+            if (_currentCursor != newCursor)
+            {
+                switch (newCursor)
+                {
+                    case CursorArrow.UP:
+                        Cursor.SetCursor(CursorArrowUp, Vector2.zero, CursorMode.Auto);
+                        break;
+                    case CursorArrow.DOWN:
+                        Cursor.SetCursor(CursorArrowDown, new Vector2(CursorArrowDown.width, CursorArrowDown.height), CursorMode.Auto);
+                        break;
+                    case CursorArrow.LEFT:
+                        Cursor.SetCursor(CursorArrowLeft, Vector2.zero, CursorMode.Auto);
+                        break;
+                    case CursorArrow.RIGHT:
+                        Cursor.SetCursor(CursorArrowRight, new Vector2(CursorArrowRight.width, CursorArrowRight.height), CursorMode.Auto);
+                        break;
+                    case CursorArrow.DEFAULT:
+                        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                        break;
+                }
+ 
+                _currentCursor = newCursor;
+            }
+        }
     
-    private void HandleMouseDragInput()
-    {
-        if (Input.GetMouseButtonDown(2) && EventSystem.current.IsPointerOverGameObject() == false)
+        private void HandleMouseDragInput()
         {
-            Plane plane = new Plane(Vector3.up, Vector3.zero);
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
- 
-            float entry;
- 
-            if (plane.Raycast(ray, out entry))
+            if (Input.GetMouseButtonDown(2) && EventSystem.current.IsPointerOverGameObject() == false)
             {
-                dragStartPosition = ray.GetPoint(entry);
+                Plane plane = new Plane(Vector3.up, Vector3.zero);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+ 
+                float entry;
+ 
+                if (plane.Raycast(ray, out entry))
+                {
+                    _dragStartPosition = ray.GetPoint(entry);
+                }
             }
-        }
-        if (Input.GetMouseButton(2) && EventSystem.current.IsPointerOverGameObject() == false)
-        {
-            Plane plane = new Plane(Vector3.up, Vector3.zero);
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
- 
-            float entry;
- 
-            if (plane.Raycast(ray, out entry))
+            if (Input.GetMouseButton(2) && EventSystem.current.IsPointerOverGameObject() == false)
             {
-                dragCurrentPosition = ray.GetPoint(entry);
+                Plane plane = new Plane(Vector3.up, Vector3.zero);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
  
-                newPosition = transform.position + dragStartPosition - dragCurrentPosition;
+                float entry;
+ 
+                if (plane.Raycast(ray, out entry))
+                {
+                    _dragCurrentPosition = ray.GetPoint(entry);
+ 
+                    _newPosition = transform.position + _dragStartPosition - _dragCurrentPosition;
+                }
             }
         }
     }

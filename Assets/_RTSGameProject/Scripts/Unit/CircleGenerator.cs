@@ -1,18 +1,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CircleGenerator : MonoBehaviour, IFormationPositionGenerator
+namespace RTS.Scripts
 {
-    public Vector3[] GetPosition(int count)
+    public class CircleGenerator : MonoBehaviour, IFormationPositionGenerator
     {
-        float step = (Mathf.Deg2Rad *360f) / count;
-        List<Vector3> result = new List<Vector3>();
-        
-        for (int i = 0; i < count; i++)
+        public Vector3[] GetPosition(int count)
         {
-            result.Add(new Vector3(Mathf.Sin(i * step),0,Mathf.Cos(i * step)));
-        }
+            float step = (Mathf.Deg2Rad *360f) / count;
+            List<Vector3> result = new List<Vector3>();
+        
+            for (int i = 0; i < count; i++)
+            {
+                result.Add(new Vector3(Mathf.Sin(i * step),0,Mathf.Cos(i * step)));
+            }
 
-        return result.ToArray();
+            return result.ToArray();
+        }
     }
 }

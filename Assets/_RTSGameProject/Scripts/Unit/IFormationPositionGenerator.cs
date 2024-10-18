@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public interface IFormationPositionGenerator
+namespace RTS.Scripts
 {
-    public Vector3[] GetPosition(int count);
+    public interface IFormationPositionGenerator
+    {
+        public Vector3[] GetPosition(int count);
+    }
 }

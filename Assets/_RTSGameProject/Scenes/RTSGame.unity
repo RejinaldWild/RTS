@@ -214,6 +214,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
       propertyPath: formationController
       value: 
       objectReference: {fileID: 808193014}
@@ -310,6 +315,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -513,6 +523,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -817,6 +832,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -1184,6 +1204,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
       propertyPath: formationController
       value: 
       objectReference: {fileID: 808193014}
@@ -1292,6 +1317,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -1532,6 +1562,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
       propertyPath: formationController
       value: 
       objectReference: {fileID: 808193014}
@@ -1698,6 +1733,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
       propertyPath: formationController
       value: 
       objectReference: {fileID: 808193014}
@@ -1751,18 +1791,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6c40405c890f4d4e80128fdd352440d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTransform: {fileID: 330585546}
-  followTransform: {fileID: 0}
-  moveWithKeyboad: 1
-  moveWithEdgeScrolling: 1
-  moveWithMouseDrag: 1
-  fastSpeed: 0.5
-  normalSpeed: 0.1
-  cursorArrowUp: {fileID: 2800000, guid: 451830cb05068dc40bb84940fb238355, type: 3}
-  cursorArrowDown: {fileID: 2800000, guid: 189a977981508d542b73bc557231a288, type: 3}
-  cursorArrowLeft: {fileID: 2800000, guid: 8bf2fcd5447079f4b8f2bbc329eef5ed, type: 3}
-  cursorArrowRight: {fileID: 2800000, guid: fef366d0353141b48acc290122a5d172, type: 3}
-  edgeSize: 50
+  _cameraTransform: {fileID: 330585546}
+  _moveWithKeyboad: 1
+  _moveWithEdgeScrolling: 0
+  _moveWithMouseDrag: 1
+  _fastSpeed: 0.1
+  _normalSpeed: 0.05
+  CursorArrowUp: {fileID: 2800000, guid: 451830cb05068dc40bb84940fb238355, type: 3}
+  CursorArrowDown: {fileID: 2800000, guid: 189a977981508d542b73bc557231a288, type: 3}
+  CursorArrowLeft: {fileID: 2800000, guid: 8bf2fcd5447079f4b8f2bbc329eef5ed, type: 3}
+  CursorArrowRight: {fileID: 2800000, guid: fef366d0353141b48acc290122a5d172, type: 3}
+  _edgeSize: 50
 --- !u!1001 &596276523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1851,6 +1890,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -2049,6 +2093,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -2503,7 +2552,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b833a6dca2ccbf94381c2389d0411a73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boxVisual: {fileID: 163811441}
+  _boxVisual: {fileID: 163811441}
+  _unitSelectionManager: {fileID: 1200055301}
 --- !u!1 &956873288
 GameObject:
   m_ObjectHideFlags: 0
@@ -2697,6 +2747,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -2946,6 +3001,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
       propertyPath: formationController
       value: 
       objectReference: {fileID: 808193014}
@@ -3042,6 +3102,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -3193,7 +3258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7e3c1ad85a649544842948073469d44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allUnits:
+  AllUnits:
   - {fileID: 1103531194}
   - {fileID: 1601631481}
   - {fileID: 1832988897}
@@ -3218,14 +3283,14 @@ MonoBehaviour:
   - {fileID: 1177777002}
   - {fileID: 527290250}
   - {fileID: 1996758689}
-  selectedUnits: []
-  clickable:
+  SelectedUnits: []
+  Clickable:
     serializedVersion: 2
     m_Bits: 128
-  ground:
+  Ground:
     serializedVersion: 2
     m_Bits: 64
-  groundMarker: {fileID: 1085439988}
+  GroundMarker: {fileID: 1085439988}
 --- !u!4 &1200055302
 Transform:
   m_ObjectHideFlags: 0
@@ -3367,6 +3432,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
       propertyPath: formationController
       value: 
       objectReference: {fileID: 808193014}
@@ -3463,6 +3533,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -3573,6 +3648,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -3697,6 +3777,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
       propertyPath: formationController
       value: 
       objectReference: {fileID: 808193014}
@@ -3793,6 +3878,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -3915,6 +4005,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -4056,6 +4151,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -4309,6 +4409,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
       propertyPath: formationController
       value: 
       objectReference: {fileID: 808193014}
@@ -4419,6 +4524,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
       propertyPath: formationController
       value: 
       objectReference: {fileID: 808193014}
@@ -4527,6 +4637,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController
@@ -4712,6 +4827,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: FormationController
+      value: 
+      objectReference: {fileID: 808193014}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: formationController

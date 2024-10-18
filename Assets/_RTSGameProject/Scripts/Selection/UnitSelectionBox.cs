@@ -1,94 +1,98 @@
 using UnityEngine;
 
-public class UnitSelectionBox : MonoBehaviour
+namespace RTS.Scripts
 {
-    [SerializeField] private RectTransform boxVisual;
- 
-    private Camera myCam;
-    private Rect selectionBox;
-    private Vector2 startPosition;
-    private Vector2 endPosition;
- 
-    private void Start()
+    public class UnitSelectionBox : MonoBehaviour
     {
-        myCam = Camera.main;
-        startPosition = Vector2.zero;
-        endPosition = Vector2.zero;
-        DrawVisual();
-    }
+        [SerializeField] private RectTransform _boxVisual;
+        [SerializeField] private UnitSelectionManager _unitSelectionManager;
  
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
+        private Camera _mainCamera;
+        private Rect _selectionBox;
+        private Vector2 _startPosition;
+        private Vector2 _endPosition;
+ 
+        private void Start()
         {
-            startPosition = Input.mousePosition;
-            selectionBox = new Rect();
+            _mainCamera = Camera.main;
+            _startPosition = Vector2.zero;
+            _endPosition = Vector2.zero;
+            DrawVisual();
         }
  
-        if (Input.GetMouseButton(0))
+        private void Update()
         {
-            if (boxVisual.rect.width > 0 || boxVisual.rect.height > 0)
+            if (Input.GetMouseButtonDown(0))
             {
-                UnitSelectionManager.Instance.DeselectAll();
-                SelectUnits();
+                _startPosition = Input.mousePosition;
+                _selectionBox = new Rect();
             }
-            
-            endPosition = Input.mousePosition;
-            DrawVisual();
-            DrawSelection();
-        }
-        
-        if (Input.GetMouseButtonUp(0))
-        {
-            SelectUnits();
-            startPosition = Vector2.zero;
-            endPosition = Vector2.zero;
-            DrawVisual();
-        }
-    }
  
-    private void DrawVisual()
-    {
-        Vector2 boxStart = startPosition;
-        Vector2 boxEnd = endPosition;
-        Vector2 boxCenter = (boxStart + boxEnd) / 2;
-        boxVisual.position = boxCenter;
-        Vector2 boxSize = new Vector2(Mathf.Abs(boxStart.x - boxEnd.x), Mathf.Abs(boxStart.y - boxEnd.y));
-        boxVisual.sizeDelta = boxSize;
-    }
- 
-    private void DrawSelection()
-    {
-        if (Input.mousePosition.x < startPosition.x)
-        {
-            selectionBox.xMin = Input.mousePosition.x;
-            selectionBox.xMax = startPosition.x;
-        }
-        else
-        {
-            selectionBox.xMin = startPosition.x;
-            selectionBox.xMax = Input.mousePosition.x;
-        }
- 
-        if (Input.mousePosition.y < startPosition.y)
-        {
-            selectionBox.yMin = Input.mousePosition.y;
-            selectionBox.yMax = startPosition.y;
-        }
-        else
-        {
-            selectionBox.yMin = startPosition.y;
-            selectionBox.yMax = Input.mousePosition.y;
-        }
-    }
- 
-    private void SelectUnits()
-    {
-        foreach (var unit in UnitSelectionManager.Instance.allUnits)
-        {
-            if (selectionBox.Contains(myCam.WorldToScreenPoint(unit.transform.position)))
+            if (Input.GetMouseButton(0))
             {
-                UnitSelectionManager.Instance.DragSelect(unit);
+                if (_boxVisual.rect.width > 0 || _boxVisual.rect.height > 0)
+                {
+                    _unitSelectionManager.DeselectAll();
+                    SelectUnits();
+                }
+            
+                _endPosition = Input.mousePosition;
+                DrawVisual();
+                DrawSelection();
+            }
+        
+            if (Input.GetMouseButtonUp(0))
+            {
+                SelectUnits();
+                _startPosition = Vector2.zero;
+                _endPosition = Vector2.zero;
+                DrawVisual();
+            }
+        }
+ 
+        private void DrawVisual()
+        {
+            Vector2 boxStart = _startPosition;
+            Vector2 boxEnd = _endPosition;
+            Vector2 boxCenter = (boxStart + boxEnd) / 2;
+            _boxVisual.position = boxCenter;
+            Vector2 boxSize = new Vector2(Mathf.Abs(boxStart.x - boxEnd.x), Mathf.Abs(boxStart.y - boxEnd.y));
+            _boxVisual.sizeDelta = boxSize;
+        }
+ 
+        private void DrawSelection()
+        {
+            if (Input.mousePosition.x < _startPosition.x)
+            {
+                _selectionBox.xMin = Input.mousePosition.x;
+                _selectionBox.xMax = _startPosition.x;
+            }
+            else
+            {
+                _selectionBox.xMin = _startPosition.x;
+                _selectionBox.xMax = Input.mousePosition.x;
+            }
+ 
+            if (Input.mousePosition.y < _startPosition.y)
+            {
+                _selectionBox.yMin = Input.mousePosition.y;
+                _selectionBox.yMax = _startPosition.y;
+            }
+            else
+            {
+                _selectionBox.yMin = _startPosition.y;
+                _selectionBox.yMax = Input.mousePosition.y;
+            }
+        }
+ 
+        private void SelectUnits()
+        {
+            foreach (var unit in _unitSelectionManager.AllUnits)
+            {
+                if (_selectionBox.Contains(_mainCamera.WorldToScreenPoint(unit.transform.position)))
+                {
+                    _unitSelectionManager.DragSelect(unit);
+                }
             }
         }
     }

@@ -1,21 +1,22 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntryPoint : MonoBehaviour
+namespace RTS.Scripts
 {
-    [SerializeField] private List<Enemy> _enemys;
-    
-    private EnemyController _enemyController;
-    
-    private void Awake()
+    public class EntryPoint : MonoBehaviour
     {
-        _enemyController = new EnemyController(_enemys);
-    }
+        [SerializeField] private List<Enemy> _enemys;
     
-    void Update()
-    {
-        _enemyController.FixedUpdate();
+        private EnemyController _enemyController;
+    
+        private void Awake()
+        {
+            _enemyController = new EnemyController(_enemys);
+        }
+    
+        void Update()
+        {
+            _enemyController.FixedUpdate();
+        }
     }
 }
