@@ -5,19 +5,17 @@ using UnityEngine;
 
 public class EntryPoint : MonoBehaviour
 {
+    [SerializeField] private List<Enemy> _enemys;
+    
+    private EnemyController _enemyController;
     
     private void Awake()
     {
-        
-    }
-
-    void Start()
-    {
-        
+        _enemyController = new EnemyController(_enemys);
     }
     
     void Update()
     {
-        
+        _enemyController.FixedUpdate();
     }
 }
