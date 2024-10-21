@@ -8,46 +8,41 @@ namespace RTS.Scripts
     public class FormationController : MonoBehaviour
     {
         public event Action<Vector3> OnUnitChangedPosition;
-    
+
         [SerializeField] private UnitSelectionManager _unitSelectionManager;
-        [SerializeField] private List<NavMeshAgent> _agents;
     
         private IFormationPositionGenerator _generator;
+        [field: SerializeField] public bool IsManySelected { get; private set; }
     
         private void Start()
         {
             _generator = GetComponent<IFormationPositionGenerator>();
-            _unitSelectionManager.OnSelectedUnits += AddSelectedUnitsFormation;
-            _unitSelectionManager.OnDeselectedUnits += RemoveSelectedUnitsFormation;
-        }
-        private void OnDestroy()
-        {
-            _unitSelectionManager.OnSelectedUnits -= AddSelectedUnitsFormation;
-            _unitSelectionManager.OnDeselectedUnits -= RemoveSelectedUnitsFormation;
         }
 
         public void SetFormationCenter(Vector3 center)
         {
-            foreach (var element in _unitSelectionManager.SelectedUnits)
+            IsManySelected = _unitSelectionManager.IsMultiselectUnit;
+            if (IsManySelected)
             {
-                OnUnitChangedPosition?.Invoke(element.Position);
+                Vector3[] positions = _generator.GetPosition(_unitSelectionManager.SelectedUnits.Count);
+                for (int i = 0; i < positions.Length; i++)
+                {
+                    _unitSelectionManager.SelectedUnits[i].Position = positions[i];
+                }
+                
+                foreach (var element in _unitSelectionManager.SelectedUnits)
+                {
+                    OnUnitChangedPosition?.Invoke(element.Position);
+                }
             }
-        
-            Vector3[] positions = _generator.GetPosition(_agents.Count);
-            for (int i = 0; i < positions.Length; i++)
+            else
             {
-                _unitSelectionManager.SelectedUnits[i].Position = positions[i];
+                for (int i = 0; i < _unitSelectionManager.SelectedUnits.Count; i++)
+                {
+                    _unitSelectionManager.SelectedUnits[i].Position = center;
+                }
+                OnUnitChangedPosition?.Invoke(center);
             }
-        }
-
-        private void AddSelectedUnitsFormation(Unit unit)
-        {
-            _agents.Add(unit.Agent);
-        }
-    
-        private void RemoveSelectedUnitsFormation(Unit unit)
-        {
-            _agents.Remove(unit.Agent);
         }
     }
 }

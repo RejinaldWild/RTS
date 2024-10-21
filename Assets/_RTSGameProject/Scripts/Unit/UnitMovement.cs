@@ -7,6 +7,7 @@ namespace RTS.Scripts
     {
         public LayerMask Ground;
         public FormationController FormationController;
+        public UnitSelectionManager unitSelectionManager;
     
         private enum EUnitState
         {
@@ -51,6 +52,8 @@ namespace RTS.Scripts
                 case EUnitState.Move:
                     Move(hit.point);
                     break;
+                case EUnitState.Idle:
+                    break;
             }
         }
 
@@ -61,14 +64,35 @@ namespace RTS.Scripts
 
         private void Move(Vector3 point)
         {
-            if ((point - Agent.transform.position).magnitude > 1f)
+            if (unitSelectionManager.SelectedUnits.Contains(unit))
             {
-                // TakeSpeed from ScriptableObject
-                Agent.SetDestination(hit.point + (unit.Position * 2));
+                if (FormationController.IsManySelected == false)
+                {
+                    if ((point - Agent.transform.position).magnitude > 1f)
+                    {
+                        Agent.SetDestination(hit.point);
+                    }
+                    else
+                    {
+                        ChangeState(EUnitState.Idle);
+                    }
+                }
+                else
+                {
+                    if ((point - Agent.transform.position).magnitude > 1f)
+                    {
+                        // TakeSpeed from ScriptableObject
+                        Agent.SetDestination(hit.point + (unit.Position * 2));
+                    }
+                    else
+                    {
+                        //Stop movement logic
+                        ChangeState(EUnitState.Idle);
+                    }
+                }
             }
             else
             {
-                //Stop movement logic
                 ChangeState(EUnitState.Idle);
             }
         }

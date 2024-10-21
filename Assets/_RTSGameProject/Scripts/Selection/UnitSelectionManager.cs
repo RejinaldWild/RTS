@@ -6,14 +6,12 @@ namespace RTS.Scripts
 {
     public class UnitSelectionManager : MonoBehaviour
     {
-        public event Action<Unit> OnSelectedUnits;
-        public event Action<Unit> OnDeselectedUnits;
-    
         public List<Unit> AllUnits = new List<Unit>();
         public List<Unit> SelectedUnits = new List<Unit>();
         public LayerMask Clickable;
         public LayerMask Ground;
         public GameObject GroundMarker;
+        public bool IsMultiselectUnit;
     
         private Camera _camera;
         private FormationController _formationController;
@@ -85,6 +83,8 @@ namespace RTS.Scripts
                 SelectedUnits.Add(unit);
                 SelectUnit(unit, true);
             }
+
+            IsManySelected(SelectedUnits);
         }
     
         public void DeselectAll()
@@ -92,10 +92,10 @@ namespace RTS.Scripts
             foreach (var unit in SelectedUnits)
             {
                 SelectUnit(unit, false);
-                OnDeselectedUnits?.Invoke(unit);
             }
             GroundMarker.SetActive(false);
             SelectedUnits.Clear();
+            IsManySelected(SelectedUnits);
         }
     
         private void AddUnit(Unit unit)
@@ -107,14 +107,7 @@ namespace RTS.Scripts
         {
             TriggerSectionIndicator(unit, isSelected);
             EnableUnitMovement(unit, isSelected);
-            if (isSelected)
-            {
-                OnSelectedUnits?.Invoke(unit);
-            }
-            else
-            {
-                OnDeselectedUnits?.Invoke(unit);
-            }
+            IsManySelected(SelectedUnits);
         }
     
         private void MultiSelect(Unit unit)
@@ -136,6 +129,7 @@ namespace RTS.Scripts
             DeselectAll();
             SelectedUnits.Add(unit);
             SelectUnit(unit, true);
+            IsManySelected(SelectedUnits);
         }
 
         private void EnableUnitMovement(Unit unit, bool isMove)
@@ -146,6 +140,18 @@ namespace RTS.Scripts
         private void TriggerSectionIndicator(Unit unit, bool isVisible)
         {
             unit.transform.GetChild(0).gameObject.SetActive(isVisible);
+        }
+
+        private void IsManySelected(List<Unit> units)
+        {
+            if (units.Count > 1)
+            {
+                IsMultiselectUnit = true;
+            }
+            else
+            {
+                IsMultiselectUnit = false;
+            }
         }
     }
 }

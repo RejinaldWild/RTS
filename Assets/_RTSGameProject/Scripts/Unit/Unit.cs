@@ -10,7 +10,6 @@ namespace RTS.Scripts
 
         public Vector3 Position { get; set; }
         public NavMeshAgent Agent { get; private set; }
-        public UnitMovement UnitMovement { get; private set; }
     
         private void Start()
         {
@@ -21,7 +20,6 @@ namespace RTS.Scripts
         {
             OnUnitAwaked?.Invoke(this);
             Agent = GetComponent<NavMeshAgent>();
-            UnitMovement = GetComponent<UnitMovement>();
             Position = transform.position;
         }
     }
