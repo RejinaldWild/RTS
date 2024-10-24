@@ -82,7 +82,7 @@ namespace RTS.Scripts
                     if ((point - Agent.transform.position).magnitude > 1f)
                     {
                         // TakeSpeed from ScriptableObject
-                        Agent.SetDestination(hit.point + (unit.Position * 2));
+                        Agent.SetDestination(hit.point + unit.Position);
                     }
                     else
                     {

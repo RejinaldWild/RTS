@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTS.Scripts
@@ -6,18 +7,18 @@ namespace RTS.Scripts
     {
         public Vector3[] GetPosition(int count)
         {
-            //Box formation logic
-        
-            // float step = (Mathf.Deg2Rad *360f) / count;
-            // List<Vector3> result = new List<Vector3>();
-            //
-            // for (int i = 0; i < count; i++)
-            // {
-            //     result.Add(new Vector3(Mathf.Sin(i * step),0,Mathf.Cos(i * step)));
-            // }
-            //
-            // return result.ToArray();
-            return null;
+            int sideBox = Mathf.CeilToInt(Mathf.Sqrt(count));
+
+            Vector3[] result = new Vector3[count];
+            for (int i = 0; i < count; i++)
+            {
+                int row = i / sideBox;
+                int column = i % sideBox;
+
+                result[i] = new Vector3(row, 0, column);
+            }
+
+            return result;
         }
     }
 }

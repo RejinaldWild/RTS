@@ -2211,7 +2211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 808193012}
   - component: {fileID: 808193014}
-  - component: {fileID: 808193013}
+  - component: {fileID: 808193015}
   m_Layer: 0
   m_Name: FormationController
   m_TagString: Untagged
@@ -2234,18 +2234,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &808193013
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 808193011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74b1db3400a8cdd4d83bea912aa96287, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &808193014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2260,6 +2248,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unitSelectionManager: {fileID: 1200055301}
   <IsManySelected>k__BackingField: 0
+--- !u!114 &808193015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808193011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57637b60878c729459329d1906fe5821, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &814590052 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,

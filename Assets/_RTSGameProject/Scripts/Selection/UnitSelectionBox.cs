@@ -30,12 +30,16 @@ namespace RTS.Scripts
  
             if (Input.GetMouseButton(0))
             {
-                if (_boxVisual.rect.width > 0 || _boxVisual.rect.height > 0)
+                if (Input.GetKey(KeyCode.LeftShift)==false &&(_boxVisual.rect.width > 0 || _boxVisual.rect.height > 0))
                 {
                     _unitSelectionManager.DeselectAll();
                     SelectUnits();
                 }
-            
+                else
+                {
+                    SelectUnits();
+                }
+                
                 _endPosition = Input.mousePosition;
                 DrawVisual();
                 DrawSelection();

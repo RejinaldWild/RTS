@@ -97,20 +97,8 @@ namespace RTS.Scripts
             SelectedUnits.Clear();
             IsManySelected(SelectedUnits);
         }
-    
-        private void AddUnit(Unit unit)
-        {
-            AllUnits.Add(unit);
-        }
-    
-        private void SelectUnit(Unit unit, bool isSelected)
-        {
-            TriggerSectionIndicator(unit, isSelected);
-            EnableUnitMovement(unit, isSelected);
-            IsManySelected(SelectedUnits);
-        }
-    
-        private void MultiSelect(Unit unit)
+        
+        public void MultiSelect(Unit unit)
         {
             if (SelectedUnits.Contains(unit) == false)
             {
@@ -123,7 +111,19 @@ namespace RTS.Scripts
                 SelectUnit(unit, false);
             }
         }
-
+    
+        private void AddUnit(Unit unit)
+        {
+            AllUnits.Add(unit);
+        }
+    
+        private void SelectUnit(Unit unit, bool isSelected)
+        {
+            TriggerSectionIndicator(unit, isSelected);
+            EnableUnitMovement(unit, isSelected);
+            IsManySelected(SelectedUnits);
+        }
+        
         private void SelectByClicking(Unit unit)
         {
             DeselectAll();
