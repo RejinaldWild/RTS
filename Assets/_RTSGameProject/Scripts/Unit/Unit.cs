@@ -1,26 +1,21 @@
-using System;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace RTS.Scripts
 {
     public class Unit : MonoBehaviour
     {
-        public event Action<Unit> OnUnitAwaked;
-
+        private UnitMovement _unitMovement;
         public Vector3 Position { get; set; }
-        public NavMeshAgent Agent { get; private set; }
     
         private void Start()
         {
-            Instantiate();
+            Position = transform.position;
+            _unitMovement = GetComponent<UnitMovement>();
         }
     
-        public void Instantiate()
+        public void Move(Vector3 center)
         {
-            OnUnitAwaked?.Invoke(this);
-            Agent = GetComponent<NavMeshAgent>();
-            Position = transform.position;
+            _unitMovement.Move(center);
         }
     }
 }

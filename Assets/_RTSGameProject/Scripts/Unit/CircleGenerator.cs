@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RTS.Scripts
 {
-    public class CircleGenerator : MonoBehaviour, IFormationPositionGenerator
+    public class CircleGenerator : IFormationPositionGenerator
     {
         public Vector3[] GetPosition(int count)
         {

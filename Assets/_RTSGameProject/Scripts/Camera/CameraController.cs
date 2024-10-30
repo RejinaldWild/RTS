@@ -141,8 +141,11 @@ namespace RTS.Scripts
             }
 
             transform.position = _newPosition;
+            
+            //Smooth move camera
             //Vector3.Lerp(transform.position, _newPosition, Time.deltaTime * _movementSpeed);
- 
+            
+            //Edges is locked for mouse
             //Cursor.lockState = CursorLockMode.Confined;
         }
  

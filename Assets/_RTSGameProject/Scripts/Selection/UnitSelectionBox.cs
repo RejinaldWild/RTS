@@ -5,14 +5,19 @@ namespace RTS.Scripts
     public class UnitSelectionBox : MonoBehaviour
     {
         [SerializeField] private RectTransform _boxVisual;
-        [SerializeField] private UnitSelectionManager _unitSelectionManager;
+        private UnitSelectionManager _unitSelectionManager;
  
         private Camera _mainCamera;
         private Rect _selectionBox;
         private Vector2 _startPosition;
         private Vector2 _endPosition;
- 
-        private void Start()
+
+        public void Construct(UnitSelectionManager unitSelectionManager)
+        {
+            _unitSelectionManager = unitSelectionManager;
+        }
+        
+        private void Awake()
         {
             _mainCamera = Camera.main;
             _startPosition = Vector2.zero;
@@ -20,40 +25,32 @@ namespace RTS.Scripts
             DrawVisual();
         }
  
-        private void Update()
+        public void StartPositionSelectionBox()
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                _startPosition = Input.mousePosition;
-                _selectionBox = new Rect();
-            }
- 
-            if (Input.GetMouseButton(0))
-            {
-                if (Input.GetKey(KeyCode.LeftShift)==false &&(_boxVisual.rect.width > 0 || _boxVisual.rect.height > 0))
-                {
-                    _unitSelectionManager.DeselectAll();
-                    SelectUnits();
-                }
-                else
-                {
-                    SelectUnits();
-                }
-                
-                _endPosition = Input.mousePosition;
-                DrawVisual();
-                DrawSelection();
-            }
-        
-            if (Input.GetMouseButtonUp(0))
+            _startPosition = Input.mousePosition;
+            _selectionBox = new Rect();
+        }
+
+        public void StartDrawAndSelect()
+        {
+            if (_boxVisual.rect.width > 0 || _boxVisual.rect.height > 0)
             {
                 SelectUnits();
-                _startPosition = Vector2.zero;
-                _endPosition = Vector2.zero;
-                DrawVisual();
             }
+                
+            _endPosition = Input.mousePosition;
+            DrawVisual();
+            DrawSelection();
         }
- 
+
+        public void EndDrawAndSelect()
+        {
+            SelectUnits();
+            _startPosition = Vector2.zero;
+            _endPosition = Vector2.zero;
+            DrawVisual();
+        }
+        
         private void DrawVisual()
         {
             Vector2 boxStart = _startPosition;

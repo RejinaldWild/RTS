@@ -1,32 +1,21 @@
 using System.Collections.Generic;
+using RTS.Scripts;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField] private UnitMovement _unitMovement;
+    
     [field: SerializeField] public List<GameObject> Positions { get; private set; }
-
-    private int _currentPosition;
+    [field: SerializeField] public int CurrentPositionIndex { get; set; }
 
     private void Start()
     {
-        _currentPosition = 0;
+        _unitMovement = GetComponent<UnitMovement>();
     }
 
-    public void Move()
+    public void Move(Vector3 point)
     {
-        if(Positions.Count == 0) return;
-
-        Vector3 targetPosition = Positions[_currentPosition].transform.position;
-        
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime);
-        
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
-        {
-            _currentPosition++;
-            if (_currentPosition >= Positions.Count)
-            {
-                _currentPosition = 0;
-            }
-        }
+        _unitMovement.Move(point);
     }
 }

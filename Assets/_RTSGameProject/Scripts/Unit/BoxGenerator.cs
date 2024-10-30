@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace RTS.Scripts
 {
-    public class BoxGenerator : MonoBehaviour, IFormationPositionGenerator
+    public class BoxGenerator : IFormationPositionGenerator
     {
         public Vector3[] GetPosition(int count)
         {
