@@ -8,16 +8,25 @@ namespace RTS.Scripts
         private LayerMask _clickable;
         private LayerMask _ground;
         private GameObject GroundMarker;
+        private Transform _unitListParent;
     
         public List<Unit> AllUnits { get; private set; }
         public List<Unit> SelectedUnits { get; private set; }
 
-        public UnitSelectionManager(GameObject groundMarker)
+        public UnitSelectionManager(Transform unitListParent, GameObject groundMarker)
         {
-            AllUnits = new List<Unit>();
-            AllUnits.AddRange(GameObject.FindObjectsOfType<Unit>());
-            SelectedUnits = new List<Unit>();
+            _unitListParent = unitListParent;
             GroundMarker = groundMarker;
+            AllUnits = new List<Unit>();
+            SelectedUnits = new List<Unit>();
+            
+            foreach (Transform unitChild in _unitListParent)
+            {
+                if (unitChild.TryGetComponent(out Unit unit))
+                {
+                    AllUnits.Add(unit);
+                }
+            }
         }
 
         public void Select(RaycastHit hit)

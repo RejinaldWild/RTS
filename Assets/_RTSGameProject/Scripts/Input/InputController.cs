@@ -4,72 +4,81 @@ namespace RTS.Scripts
 {
     public class InputController
     {
-        private Camera _camera;
         private UnitSelectionManager _unitSelectionManager;
         private UnitSelectionBox _unitSelectionBox;
         private LayerMask _clickable;
         private LayerMask _ground;
         private FormationController _formationController;
+        private InputManager _inputManager;
 
-        public InputController(Camera camera, UnitSelectionManager unitSelectionManager, 
+        public InputController(InputManager inputManager, UnitSelectionManager unitSelectionManager, 
                                 UnitSelectionBox unitSelectionBox, LayerMask clickable, 
                                 LayerMask ground, FormationController formationController)
         {
-            _camera = camera;
+            _inputManager = inputManager;
             _unitSelectionManager = unitSelectionManager;
             _unitSelectionBox = unitSelectionBox;
             _clickable = clickable;
             _ground = ground;
             _formationController = formationController;
+
+            _inputManager.OnLeftClickMouseButtonDown += OnLeftClickMouseButtonDowned;
+            _inputManager.OnLeftClickMouseButton += OnLeftClickMouseButtoned;
+            _inputManager.OnLeftClickMouseButtonUp += OnLeftClickMouseButtonUped;
+            _inputManager.OnRightClickMouseButtonDown += OnRightClickMouseButtonDowned;
         }
 
-        public void Update()
+        private void OnLeftClickMouseButtonDowned(Ray ray)
         {
             RaycastHit hit;
-            Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-            
-            if (Input.GetMouseButtonDown(0))
+            _unitSelectionBox.StartPositionSelectionBox();
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, _clickable))
             {
-                _unitSelectionBox.StartPositionSelectionBox();
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, _clickable))
+                if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    if (Input.GetKey(KeyCode.LeftShift))
-                    {
-                        _unitSelectionManager.MultiSelectUnits(hit);
-                    }
-                    else
-                    {
-                        _unitSelectionManager.Select(hit);
-                    }
+                    _unitSelectionManager.MultiSelectUnits(hit);
                 }
                 else
                 {
-                    _unitSelectionManager.DeselectAll();
+                    _unitSelectionManager.Select(hit);
                 }
             }
-
-            if (Input.GetMouseButton(0))
+            else
             {
-                _unitSelectionBox.StartDrawAndSelect();
+                _unitSelectionManager.DeselectAll();
             }
-
-            if (Input.GetMouseButtonUp(0))
+        }
+        
+        private void OnRightClickMouseButtonDowned(Ray ray)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, _ground))
             {
-                _unitSelectionBox.EndDrawAndSelect();
-            }
-            
-            if (Input.GetMouseButtonDown(1))
-            {
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, _ground))
+                _unitSelectionManager.ShowGroundMarker(hit.point);
+                _formationController.SetFormationCenter(_unitSelectionManager.SelectedUnits);
+                foreach (var unit in _unitSelectionManager.SelectedUnits)
                 {
-                    _unitSelectionManager.ShowGroundMarker(hit.point);
-                    _formationController.SetFormationCenter(_unitSelectionManager.SelectedUnits);
-                    foreach (var unit in _unitSelectionManager.SelectedUnits)
-                    {
-                        unit.Move(hit.point + unit.Position);
-                    }
+                    unit.Move(hit.point + unit.Position);
                 }
             }
+        }
+
+        private void OnLeftClickMouseButtonUped()
+        {
+            _unitSelectionBox.EndDrawAndSelect();
+        }
+
+        private void OnLeftClickMouseButtoned()
+        {
+            _unitSelectionBox.StartDrawAndSelect();
+        }
+
+        public void Unsubscribe()
+        {
+            _inputManager.OnLeftClickMouseButtonDown -= OnLeftClickMouseButtonDowned;
+            _inputManager.OnLeftClickMouseButton -= OnLeftClickMouseButtoned;
+            _inputManager.OnLeftClickMouseButtonUp -= OnLeftClickMouseButtonUped;
+            _inputManager.OnRightClickMouseButtonDown -= OnRightClickMouseButtonDowned;
         }
     }
 }
