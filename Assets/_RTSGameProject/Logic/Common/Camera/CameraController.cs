@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace RTS.Scripts
+namespace _RTSGameProject.Logic.Common.Camera
 {
     public class CameraController : MonoBehaviour
     {
@@ -181,7 +181,7 @@ namespace RTS.Scripts
             if (Input.GetMouseButtonDown(2) && EventSystem.current.IsPointerOverGameObject() == false)
             {
                 Plane plane = new Plane(Vector3.up, Vector3.zero);
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
  
                 float entry;
  
@@ -193,7 +193,7 @@ namespace RTS.Scripts
             if (Input.GetMouseButton(2) && EventSystem.current.IsPointerOverGameObject() == false)
             {
                 Plane plane = new Plane(Vector3.up, Vector3.zero);
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
  
                 float entry;
  

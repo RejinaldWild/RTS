@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using _RTSGameProject.Logic.Common.Character.Model;
 using UnityEngine;
 
-namespace RTS.Scripts
+namespace _RTSGameProject.Logic.Common.Selection
 {
     public class UnitSelectionManager
     {

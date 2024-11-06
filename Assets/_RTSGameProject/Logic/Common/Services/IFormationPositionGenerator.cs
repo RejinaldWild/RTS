@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace RTS.Scripts
+namespace _RTSGameProject.Logic.Common.Services
 {
     public interface IFormationPositionGenerator
     {

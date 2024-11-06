@@ -1,13 +1,13 @@
 using UnityEngine;
 
-namespace RTS.Scripts
+namespace _RTSGameProject.Logic.Common.Selection
 {
     public class UnitSelectionBox : MonoBehaviour
     {
         [SerializeField] private RectTransform _boxVisual;
         private UnitSelectionManager _unitSelectionManager;
  
-        private Camera _mainCamera;
+        private UnityEngine.Camera _mainCamera;
         private Rect _selectionBox;
         private Vector2 _startPosition;
         private Vector2 _endPosition;
@@ -19,7 +19,7 @@ namespace RTS.Scripts
         
         private void Awake()
         {
-            _mainCamera = Camera.main;
+            _mainCamera = UnityEngine.Camera.main;
             _startPosition = Vector2.zero;
             _endPosition = Vector2.zero;
             DrawVisual();
@@ -27,7 +27,7 @@ namespace RTS.Scripts
  
         public void StartPositionSelectionBox()
         {
-            _startPosition = Input.mousePosition;
+            _startPosition = UnityEngine.Input.mousePosition;
             _selectionBox = new Rect();
         }
 
@@ -38,7 +38,7 @@ namespace RTS.Scripts
                 SelectUnits();
             }
                 
-            _endPosition = Input.mousePosition;
+            _endPosition = UnityEngine.Input.mousePosition;
             DrawVisual();
             DrawSelection();
         }
@@ -63,26 +63,26 @@ namespace RTS.Scripts
  
         private void DrawSelection()
         {
-            if (Input.mousePosition.x < _startPosition.x)
+            if (UnityEngine.Input.mousePosition.x < _startPosition.x)
             {
-                _selectionBox.xMin = Input.mousePosition.x;
+                _selectionBox.xMin = UnityEngine.Input.mousePosition.x;
                 _selectionBox.xMax = _startPosition.x;
             }
             else
             {
                 _selectionBox.xMin = _startPosition.x;
-                _selectionBox.xMax = Input.mousePosition.x;
+                _selectionBox.xMax = UnityEngine.Input.mousePosition.x;
             }
  
-            if (Input.mousePosition.y < _startPosition.y)
+            if (UnityEngine.Input.mousePosition.y < _startPosition.y)
             {
-                _selectionBox.yMin = Input.mousePosition.y;
+                _selectionBox.yMin = UnityEngine.Input.mousePosition.y;
                 _selectionBox.yMax = _startPosition.y;
             }
             else
             {
                 _selectionBox.yMin = _startPosition.y;
-                _selectionBox.yMax = Input.mousePosition.y;
+                _selectionBox.yMax = UnityEngine.Input.mousePosition.y;
             }
         }
  

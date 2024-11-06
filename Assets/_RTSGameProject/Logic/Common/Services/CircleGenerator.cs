@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RTS.Scripts
+namespace _RTSGameProject.Logic.Common.Services
 {
     public class CircleGenerator : IFormationPositionGenerator
     {

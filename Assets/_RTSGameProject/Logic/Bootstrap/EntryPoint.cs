@@ -1,8 +1,11 @@
-using System;
 using System.Collections.Generic;
+using _RTSGameProject.Logic.Common.Character.Model;
+using _RTSGameProject.Logic.Common.Enemy;
+using _RTSGameProject.Logic.Common.Selection;
+using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
 
-namespace RTS.Scripts
+namespace _RTSGameProject.Logic.Bootstrap
 {
     public class EntryPoint : MonoBehaviour
     {

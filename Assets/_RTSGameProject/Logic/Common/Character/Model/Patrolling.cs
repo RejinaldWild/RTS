@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace RTS.Scripts
+namespace _RTSGameProject.Logic.Common.Character.Model
 {
     internal class Patrolling
     {
-        private List<Enemy> _enemies;
+        private List<Enemy.Enemy> _enemies;
         private Vector3 delta = new(0.1f, 0, 0.1f);
 
-        public Patrolling(List<Enemy> enemies)
+        public Patrolling(List<Enemy.Enemy> enemies)
         {
             _enemies = enemies;
         }

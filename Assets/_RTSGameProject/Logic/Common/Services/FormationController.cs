@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using _RTSGameProject.Logic.Common.Character.Model;
 using UnityEngine;
 
-namespace RTS.Scripts
+namespace _RTSGameProject.Logic.Common.Services
 {
     public class FormationController
     {

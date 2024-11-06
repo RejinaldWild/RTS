@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace RTS.Scripts
+namespace _RTSGameProject.Logic.Common.Services
 {
     public class InputManager
     {
@@ -10,9 +10,9 @@ namespace RTS.Scripts
         public event Action OnLeftClickMouseButtonUp;
         public event Action<Ray> OnRightClickMouseButtonDown;
     
-        private Camera _camera;
+        private UnityEngine.Camera _camera;
     
-        public InputManager(Camera camera)
+        public InputManager(UnityEngine.Camera camera)
         {
             _camera = camera;
         }
@@ -21,22 +21,22 @@ namespace RTS.Scripts
         {
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
         
-            if (Input.GetMouseButtonDown(0))
+            if (UnityEngine.Input.GetMouseButtonDown(0))
             {
                 OnLeftClickMouseButtonDown?.Invoke(ray);
             }
 
-            if (Input.GetMouseButton(0))
+            if (UnityEngine.Input.GetMouseButton(0))
             {
                 OnLeftClickMouseButton?.Invoke();
             }
 
-            if (Input.GetMouseButtonUp(0))
+            if (UnityEngine.Input.GetMouseButtonUp(0))
             {
                 OnLeftClickMouseButtonUp?.Invoke();
             }
         
-            if (Input.GetMouseButtonDown(1))
+            if (UnityEngine.Input.GetMouseButtonDown(1))
             {
                 OnRightClickMouseButtonDown?.Invoke(ray);
             }
