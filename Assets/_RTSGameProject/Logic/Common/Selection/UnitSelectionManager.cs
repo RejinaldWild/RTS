@@ -33,7 +33,8 @@ namespace _RTSGameProject.Logic.Common.Selection
         public void Select(RaycastHit hit)
         {
             hit.collider.TryGetComponent(out Unit unit);
-            SelectByClicking(unit);
+            if(unit.Team == 0)
+                SelectByClicking(unit);
         }
         
         public void ShowGroundMarker(Vector3 point)
@@ -46,12 +47,13 @@ namespace _RTSGameProject.Logic.Common.Selection
         public void MultiSelectUnits(RaycastHit hit)
         {
             hit.collider.TryGetComponent(out Unit unit);
-            MultiSelect(unit);
+            if(unit.Team == 0)
+                MultiSelect(unit);
         }
         
         public void DragSelect(Unit unit)
         {
-            if (SelectedUnits.Contains(unit) == false)
+            if (SelectedUnits.Contains(unit) == false && unit.Team == 0)
             {
                 SelectedUnits.Add(unit);
                 SelectUnit(unit, true);

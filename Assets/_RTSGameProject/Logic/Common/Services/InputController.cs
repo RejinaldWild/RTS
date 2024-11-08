@@ -1,6 +1,4 @@
 using _RTSGameProject.Logic.Common.Selection;
-using _RTSGameProject.Logic.StateMachineAI.Core;
-using _RTSGameProject.Logic.StateMachineAI.Implementation;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Services
@@ -12,39 +10,23 @@ namespace _RTSGameProject.Logic.Common.Services
         private LayerMask _clickable;
         private LayerMask _ground;
         private FormationController _formationController;
-        private InputManager _inputManager;
-        private StateMachineAi _stateMachineAi;
-        private bool _isMove;
-        private bool _isAttack;
-        private bool _isIdle;
+        private InputCatchKeyClick _inputCatchKeyClick;
 
-        public InputController(InputManager inputManager, UnitSelectionManager unitSelectionManager, 
+        public InputController(InputCatchKeyClick inputCatchKeyClick, UnitSelectionManager unitSelectionManager, 
                                 UnitSelectionBox unitSelectionBox, LayerMask clickable, 
                                 LayerMask ground, FormationController formationController)
         {
-            _inputManager = inputManager;
+            _inputCatchKeyClick = inputCatchKeyClick;
             _unitSelectionManager = unitSelectionManager;
             _unitSelectionBox = unitSelectionBox;
             _clickable = clickable;
             _ground = ground;
             _formationController = formationController;
-            _stateMachineAi = new(new IState[]
-            {
-                new UnitMoveState(), new UnitIdle()},//, new UnitAttack()
-                new Transition[]
-            {
-                new Transition(typeof(UnitIdle),typeof(UnitMoveState),()=>_isMove),
-                new Transition(typeof(UnitMoveState),typeof(UnitIdle),()=>_isIdle),
-                // new Transition(typeof(UnitIdle),typeof(UnitAttack),()=>_isAttack),
-                // new Transition(typeof(UnitAttack),typeof(UnitIdle),()=>_isAttack),
-                // new Transition(typeof(UnitAttack),typeof(UnitMovement),()=>_isMove),
-                // new Transition(typeof(UnitMovement),typeof(UnitAttack),()=>_isAttack)
-            });
 
-            _inputManager.OnLeftClickMouseButtonDown += OnLeftClickMouseButtonDowned;
-            _inputManager.OnLeftClickMouseButton += OnLeftClickMouseButtoned;
-            _inputManager.OnLeftClickMouseButtonUp += OnLeftClickMouseButtonUped;
-            _inputManager.OnRightClickMouseButtonDown += OnRightClickMouseButtonDowned;
+            _inputCatchKeyClick.OnLeftClickMouseButtonDown += OnLeftClickMouseButtonDowned;
+            _inputCatchKeyClick.OnLeftClickMouseButton += OnLeftClickMouseButtoned;
+            _inputCatchKeyClick.OnLeftClickMouseButtonUp += OnLeftClickMouseButtonUped;
+            _inputCatchKeyClick.OnRightClickMouseButtonDown += OnRightClickMouseButtonDowned;
         }
 
         private void OnLeftClickMouseButtonDowned(Ray ray)
@@ -77,8 +59,7 @@ namespace _RTSGameProject.Logic.Common.Services
                 _formationController.SetFormationCenter(_unitSelectionManager.SelectedUnits);
                 foreach (var unit in _unitSelectionManager.SelectedUnits)
                 {
-                    _stateMachineAi.Update();
-                    unit.Move(hit.point + unit.Position);
+                    unit.Position = hit.point + unit.Position;
                 }
             }
         }
@@ -95,10 +76,10 @@ namespace _RTSGameProject.Logic.Common.Services
 
         public void Unsubscribe()
         {
-            _inputManager.OnLeftClickMouseButtonDown -= OnLeftClickMouseButtonDowned;
-            _inputManager.OnLeftClickMouseButton -= OnLeftClickMouseButtoned;
-            _inputManager.OnLeftClickMouseButtonUp -= OnLeftClickMouseButtonUped;
-            _inputManager.OnRightClickMouseButtonDown -= OnRightClickMouseButtonDowned;
+            _inputCatchKeyClick.OnLeftClickMouseButtonDown -= OnLeftClickMouseButtonDowned;
+            _inputCatchKeyClick.OnLeftClickMouseButton -= OnLeftClickMouseButtoned;
+            _inputCatchKeyClick.OnLeftClickMouseButtonUp -= OnLeftClickMouseButtonUped;
+            _inputCatchKeyClick.OnRightClickMouseButtonDown -= OnRightClickMouseButtonDowned;
         }
     }
 }

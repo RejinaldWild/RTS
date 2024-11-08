@@ -122,11 +122,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b62ce3d525d714947af88bc3d5108932, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _unitMovement: {fileID: 0}
   <Positions>k__BackingField:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  <CurrentPositionIndex>k__BackingField: 0
+  <Team>k__BackingField: 1
 --- !u!195 &7922203918792674301
 NavMeshAgent:
   m_ObjectHideFlags: 0

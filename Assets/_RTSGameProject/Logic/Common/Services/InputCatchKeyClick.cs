@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class InputManager
+    public class InputCatchKeyClick
     {
         public event Action<Ray> OnLeftClickMouseButtonDown;
         public event Action OnLeftClickMouseButton;
@@ -12,7 +12,7 @@ namespace _RTSGameProject.Logic.Common.Services
     
         private UnityEngine.Camera _camera;
     
-        public InputManager(UnityEngine.Camera camera)
+        public InputCatchKeyClick(UnityEngine.Camera camera)
         {
             _camera = camera;
         }
@@ -21,22 +21,22 @@ namespace _RTSGameProject.Logic.Common.Services
         {
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
         
-            if (UnityEngine.Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0))
             {
                 OnLeftClickMouseButtonDown?.Invoke(ray);
             }
 
-            if (UnityEngine.Input.GetMouseButton(0))
+            if (Input.GetMouseButton(0))
             {
                 OnLeftClickMouseButton?.Invoke();
             }
 
-            if (UnityEngine.Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0))
             {
                 OnLeftClickMouseButtonUp?.Invoke();
             }
         
-            if (UnityEngine.Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1))
             {
                 OnRightClickMouseButtonDown?.Invoke(ray);
             }

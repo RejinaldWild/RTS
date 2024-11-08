@@ -27,7 +27,7 @@ namespace _RTSGameProject.Logic.Common.Selection
  
         public void StartPositionSelectionBox()
         {
-            _startPosition = UnityEngine.Input.mousePosition;
+            _startPosition = Input.mousePosition;
             _selectionBox = new Rect();
         }
 
@@ -38,7 +38,7 @@ namespace _RTSGameProject.Logic.Common.Selection
                 SelectUnits();
             }
                 
-            _endPosition = UnityEngine.Input.mousePosition;
+            _endPosition = Input.mousePosition;
             DrawVisual();
             DrawSelection();
         }
@@ -63,26 +63,26 @@ namespace _RTSGameProject.Logic.Common.Selection
  
         private void DrawSelection()
         {
-            if (UnityEngine.Input.mousePosition.x < _startPosition.x)
+            if (Input.mousePosition.x < _startPosition.x)
             {
-                _selectionBox.xMin = UnityEngine.Input.mousePosition.x;
+                _selectionBox.xMin = Input.mousePosition.x;
                 _selectionBox.xMax = _startPosition.x;
             }
             else
             {
                 _selectionBox.xMin = _startPosition.x;
-                _selectionBox.xMax = UnityEngine.Input.mousePosition.x;
+                _selectionBox.xMax = Input.mousePosition.x;
             }
  
-            if (UnityEngine.Input.mousePosition.y < _startPosition.y)
+            if (Input.mousePosition.y < _startPosition.y)
             {
-                _selectionBox.yMin = UnityEngine.Input.mousePosition.y;
+                _selectionBox.yMin = Input.mousePosition.y;
                 _selectionBox.yMax = _startPosition.y;
             }
             else
             {
                 _selectionBox.yMin = _startPosition.y;
-                _selectionBox.yMax = UnityEngine.Input.mousePosition.y;
+                _selectionBox.yMax = Input.mousePosition.y;
             }
         }
  

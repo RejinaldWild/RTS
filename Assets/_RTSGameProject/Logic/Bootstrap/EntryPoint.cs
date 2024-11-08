@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Character.Model;
-using _RTSGameProject.Logic.Common.Enemy;
 using _RTSGameProject.Logic.Common.Selection;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.StateMachineAI.Core;
+using _RTSGameProject.Logic.StateMachineAI.Implementation;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Bootstrap
@@ -19,10 +20,11 @@ namespace _RTSGameProject.Logic.Bootstrap
         private UnitSelectionManager _unitSelectionManager;
         private FormationController _formationController;
         private InputController _inputController;
-        private InputManager _inputManager;
-        private Patrolling _patrolling;
+        private InputCatchKeyClick _inputCatchKeyClick;
+        private PatrollMovement _patrollMovement;
         private BoxGenerator _generator;
-        private List<Enemy> _enemies;
+        private StateMachineAi _stateMachineAi;
+        private List<StateMachine> _stateMachines;
 
         private void Awake()
         {
@@ -30,29 +32,25 @@ namespace _RTSGameProject.Logic.Bootstrap
             _unitSelectionBox.Construct(_unitSelectionManager);
             _generator = new BoxGenerator();
             _formationController = new FormationController(_generator);
-            _inputManager = new InputManager(_camera);
-            _inputController = new InputController(_inputManager, _unitSelectionManager, 
+            _inputCatchKeyClick = new InputCatchKeyClick(_camera);
+            _stateMachineAi = new StateMachineAi();
+            _stateMachines = new List<StateMachine>();
+            _inputController = new InputController(_inputCatchKeyClick, _unitSelectionManager, 
                                                     _unitSelectionBox, _clickable, _ground, _formationController);
-            _enemies = new List<Enemy>();
-            foreach (Transform enemyChild in _unitListParent)
+
+            for (int i = 0; i < _unitSelectionManager.AllUnits.Count; i++)
             {
-                if (enemyChild.TryGetComponent(out Enemy enemy))
-                {
-                    _enemies.Add(enemy);
-                }
+                _stateMachines.Add(_stateMachineAi.Create(_unitSelectionManager.AllUnits[i]));
             }
-            _patrolling = new Patrolling(_enemies);
-            _unitSelectionBox.Construct(_unitSelectionManager);
         }
 
         private void Update()
         {
-            _inputManager.Update();
-        }
-
-        private void FixedUpdate()
-        {
-            _patrolling.FixedUpdate();
+            _inputCatchKeyClick.Update();
+            foreach (StateMachine stateMachine in _stateMachines)
+            {
+                stateMachine.Update();
+            }
         }
 
         private void OnDestroy()
