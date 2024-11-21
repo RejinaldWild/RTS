@@ -1,3 +1,4 @@
+using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Selection
@@ -5,15 +6,16 @@ namespace _RTSGameProject.Logic.Common.Selection
     public class UnitSelectionBox : MonoBehaviour
     {
         [SerializeField] private RectTransform _boxVisual;
+        private UnitRepository _unitRepository;
         private UnitSelectionManager _unitSelectionManager;
- 
         private UnityEngine.Camera _mainCamera;
         private Rect _selectionBox;
         private Vector2 _startPosition;
         private Vector2 _endPosition;
 
-        public void Construct(UnitSelectionManager unitSelectionManager)
+        public void Construct(UnitRepository unitRepository, UnitSelectionManager unitSelectionManager)
         {
+            _unitRepository = unitRepository;
             _unitSelectionManager = unitSelectionManager;
         }
         
@@ -88,7 +90,7 @@ namespace _RTSGameProject.Logic.Common.Selection
  
         private void SelectUnits()
         {
-            foreach (var unit in _unitSelectionManager.AllUnits)
+            foreach (var unit in _unitRepository.AllUnits)
             {
                 if (_selectionBox.Contains(_mainCamera.WorldToScreenPoint(unit.transform.position)))
                 {

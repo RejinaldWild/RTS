@@ -3,15 +3,14 @@ using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Character.Model
 {
-    internal class PatrollMovement: MonoBehaviour
+    internal class PatrollMovement
     {
-        [field: SerializeField] public List<GameObject> Positions{ get; private set; }
         private Vector3 delta = new(0.1f, 0, 0.1f);
         
         public void Move(Unit unit, UnitMovement unitMovement)
         {
             Vector3 currentPosition = unit.transform.position;
-            Vector3 targetPosition = Positions[unit.CurrentPositionIndex].transform.position;
+            Vector3 targetPosition = unit.Positions[unit.CurrentPositionIndex].transform.position;
     
             if (Vector3.Distance(currentPosition, targetPosition) > delta.magnitude)
             {
@@ -21,7 +20,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             {
                 unit.CurrentPositionIndex++;
                 
-                if (unit.CurrentPositionIndex >= Positions.Count)
+                if (unit.CurrentPositionIndex >= unit.Positions.Count)
                 {
                     unit.CurrentPositionIndex = 0;
                 }

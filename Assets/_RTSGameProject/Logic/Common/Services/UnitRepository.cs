@@ -1,15 +1,28 @@
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Character.Model;
+using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
     public class UnitRepository
     {
-        private List<Unit> _units;
+        public List<Unit> AllUnits;
 
+        public UnitRepository(Transform unitListParent)
+        {
+            AllUnits = new List<Unit>();
+            foreach (Transform unitChild in unitListParent)
+            {
+                if (unitChild.TryGetComponent(out Unit unit))
+                {
+                    AllUnits.Add(unit);
+                }
+            }
+        }
+        
         public bool HasEnemy(Unit forUnit)
         {
-            foreach (Unit unit in _units)
+            foreach (Unit unit in AllUnits)
             {
                 if (unit.Team != forUnit.Team)
                 {
@@ -21,9 +34,9 @@ namespace _RTSGameProject.Logic.Common.Services
         }
         
         public void Register(Unit unit) => 
-            _units.Add(unit);
+            AllUnits.Add(unit);
 
         public void Unregister(Unit unit) => 
-            _units.Remove(unit);
+            AllUnits.Remove(unit);
     }
 }

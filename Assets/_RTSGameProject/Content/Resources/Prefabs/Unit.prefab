@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 3895365681154953337}
   - component: {fileID: 709487745954094920}
   - component: {fileID: 4621955965581611731}
+  - component: {fileID: 8961159229944015862}
   - component: {fileID: 3040500599371112830}
   - component: {fileID: 5140024023081137702}
-  - component: {fileID: 6065992048006056928}
   m_Layer: 7
   m_Name: Unit
   m_TagString: Untagged
@@ -148,6 +148,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 709487745954094920}
+--- !u!114 &8961159229944015862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2779144607671408749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ffeeb36581d46e6ac8cadf20b014e2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3040500599371112830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +175,8 @@ MonoBehaviour:
   <StartPosition>k__BackingField: {x: 0, y: 0, z: 0}
   <Team>k__BackingField: 0
   <CurrentPositionIndex>k__BackingField: 0
+  <Positions>k__BackingField: []
+  _health: {fileID: 0}
 --- !u!114 &5140024023081137702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,19 +196,6 @@ MonoBehaviour:
   - Team: 1
     Color: {r: 0.9916142, g: 0, b: 0, a: 1}
   _renderer: {fileID: 1597099188086043879}
---- !u!114 &6065992048006056928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2779144607671408749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3081adab9c31464abb8ca4eeca6e115d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <Positions>k__BackingField: []
 --- !u!1 &6529277964117800540
 GameObject:
   m_ObjectHideFlags: 0

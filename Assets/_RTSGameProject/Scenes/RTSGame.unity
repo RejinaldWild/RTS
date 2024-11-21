@@ -752,6 +752,31 @@ PrefabInstance:
       propertyPath: <Team>k__BackingField
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[0]
+      value: 
+      objectReference: {fileID: 800078730}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 1610329306}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[2]
+      value: 
+      objectReference: {fileID: 1068563595}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[3]
+      value: 
+      objectReference: {fileID: 266658591}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: FormationController
@@ -1742,6 +1767,7 @@ MonoBehaviour:
   CursorArrowLeft: {fileID: 2800000, guid: 8bf2fcd5447079f4b8f2bbc329eef5ed, type: 3}
   CursorArrowRight: {fileID: 2800000, guid: fef366d0353141b48acc290122a5d172, type: 3}
   _edgeSize: 50
+  CursorArrowAttack: {fileID: 2800000, guid: 24d21e256b498a944a00e2527ed7618c, type: 3}
 --- !u!1001 &596276523
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3105,6 +3131,31 @@ PrefabInstance:
       propertyPath: <Team>k__BackingField
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[0]
+      value: 
+      objectReference: {fileID: 800078730}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 1610329306}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[2]
+      value: 
+      objectReference: {fileID: 1068563595}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[3]
+      value: 
+      objectReference: {fileID: 266658591}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: FormationController
@@ -3465,6 +3516,31 @@ PrefabInstance:
       propertyPath: <Team>k__BackingField
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[0]
+      value: 
+      objectReference: {fileID: 800078730}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 1610329306}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[2]
+      value: 
+      objectReference: {fileID: 1068563595}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[3]
+      value: 
+      objectReference: {fileID: 266658591}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: FormationController
@@ -4202,6 +4278,31 @@ PrefabInstance:
       propertyPath: <Team>k__BackingField
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[0]
+      value: 
+      objectReference: {fileID: 800078730}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[1]
+      value: 
+      objectReference: {fileID: 1610329306}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[2]
+      value: 
+      objectReference: {fileID: 1068563595}
+    - target: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
+        type: 3}
+      propertyPath: <Positions>k__BackingField.Array.data[3]
+      value: 
+      objectReference: {fileID: 266658591}
     - target: {fileID: 4621955965581611731, guid: 912f0a747b19f8d49b256156888406c7,
         type: 3}
       propertyPath: FormationController

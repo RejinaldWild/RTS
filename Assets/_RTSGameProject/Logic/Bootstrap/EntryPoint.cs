@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _RTSGameProject.Logic.Common.Camera;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
 using _RTSGameProject.Logic.Common.Services;
@@ -23,24 +24,27 @@ namespace _RTSGameProject.Logic.Bootstrap
         private InputCatchKeyClick _inputCatchKeyClick;
         private PatrollMovement _patrollMovement;
         private BoxGenerator _generator;
-        private StateMachineAi _stateMachineAi;
+        private StateMachineAiFactory _stateMachineAiFactory;
         private List<StateMachine> _stateMachines;
+        private CameraController _cameraController;
+        private UnitRepository _unitRepository;
 
         private void Awake()
         {
-            _unitSelectionManager = new UnitSelectionManager(_unitListParent,_groundMarker);
-            _unitSelectionBox.Construct(_unitSelectionManager);
+            _unitRepository = new UnitRepository(_unitListParent);
+            _unitSelectionManager = new UnitSelectionManager(_groundMarker);
+            _unitSelectionBox.Construct(_unitRepository, _unitSelectionManager);
             _generator = new BoxGenerator();
             _formationController = new FormationController(_generator);
             _inputCatchKeyClick = new InputCatchKeyClick(_camera);
-            _stateMachineAi = new StateMachineAi();
+            _stateMachineAiFactory = new StateMachineAiFactory();
             _stateMachines = new List<StateMachine>();
             _inputController = new InputController(_inputCatchKeyClick, _unitSelectionManager, 
                                                     _unitSelectionBox, _clickable, _ground, _formationController);
 
-            for (int i = 0; i < _unitSelectionManager.AllUnits.Count; i++)
+            for (int i = 0; i < _unitRepository.AllUnits.Count; i++)
             {
-                _stateMachines.Add(_stateMachineAi.Create(_unitSelectionManager.AllUnits[i]));
+                _stateMachines.Add(_stateMachineAiFactory.Create(_unitRepository.AllUnits[i]));
             }
         }
 
