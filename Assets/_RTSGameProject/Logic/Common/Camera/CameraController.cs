@@ -1,3 +1,4 @@
+using _RTSGameProject.Logic.Common.Character.Model;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -18,8 +19,8 @@ namespace _RTSGameProject.Logic.Common.Camera
         [SerializeField] private bool _moveWithMouseDrag;
  
         [Header("Keyboard Movement")]
-        [SerializeField] private float _fastSpeed = 0.05f;
-        [SerializeField] private float _normalSpeed = 0.01f;
+        [SerializeField] private float _fastSpeed;
+        [SerializeField] private float _normalSpeed;
  
         [Header("Edge Scrolling Movement")]
         public Texture2D CursorArrowUp;
@@ -27,8 +28,12 @@ namespace _RTSGameProject.Logic.Common.Camera
         public Texture2D CursorArrowLeft;
         public Texture2D CursorArrowRight;
         [SerializeField] private float _edgeSize = 50f;
-    
+
+        [Header("Attack Mouse Arrow")] 
+        public Texture2D CursorArrowAttack;
+        
         private float _movementSpeed;
+        private LayerMask _clickable;
         private bool _isCursorSet = false;
         private CursorArrow _currentCursor = CursorArrow.DEFAULT;
     
@@ -38,9 +43,15 @@ namespace _RTSGameProject.Logic.Common.Camera
             DOWN,
             LEFT,
             RIGHT,
+            ATTACK,
             DEFAULT
         }
- 
+
+        public void Construct(LayerMask clickable)
+        {
+            _clickable = clickable;
+        }
+        
         private void Start()
         {
             _newPosition = transform.position;
@@ -66,6 +77,14 @@ namespace _RTSGameProject.Logic.Common.Camera
  
         private void HandleCameraMovement()
         {
+            // Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
+            // RaycastHit hit;
+            // Physics.Raycast(ray, out hit, Mathf.Infinity, _clickable);
+            // if (hit.collider.TryGetComponent(out Unit unit) && unit.Team!=0)
+            // {
+            //     ChangeCursor(CursorArrow.ATTACK);
+            // }
+            
             if (_moveWithMouseDrag)
             {
                 HandleMouseDragInput();
@@ -73,7 +92,7 @@ namespace _RTSGameProject.Logic.Common.Camera
  
             if (_moveWithKeyboad)
             {
-                if (Input.GetKey(KeyCode.LeftAlt))
+                if (Input.GetKey(KeyCode.Space))
                 {
                     _movementSpeed = _fastSpeed;
                 }
@@ -166,6 +185,9 @@ namespace _RTSGameProject.Logic.Common.Camera
                         break;
                     case CursorArrow.RIGHT:
                         Cursor.SetCursor(CursorArrowRight, new Vector2(CursorArrowRight.width, CursorArrowRight.height), CursorMode.Auto);
+                        break;
+                    case CursorArrow.ATTACK:
+                        Cursor.SetCursor(CursorArrowAttack, new Vector2(CursorArrowRight.width, CursorArrowRight.height), CursorMode.Auto);
                         break;
                     case CursorArrow.DEFAULT:
                         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);

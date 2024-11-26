@@ -1,7 +1,7 @@
 ﻿using _RTSGameProject.Logic.Common.Character.Model;
-using _RTSGameProject.Logic.StateMachineAI.Core;
+using _RTSGameProject.Logic.StateMachine.Core;
 
-namespace _RTSGameProject.Logic.StateMachineAI.Implementation
+namespace _RTSGameProject.Logic.StateMachine.Implementation
 {
     public class UnitPatrolling : IUpdateState
     {

@@ -3,17 +3,18 @@ using _RTSGameProject.Logic.StateMachine.Core;
 
 namespace _RTSGameProject.Logic.StateMachine.Implementation
 {
-    public class UnitAttack : IEnterState
+    public class MoveToEnemy : IUpdateState
     {
         private Unit _unit;
 
-        public UnitAttack(Unit unit)
+        public MoveToEnemy(Unit unit)
         {
             _unit = unit;
         }
-        public void Enter()
+        
+        public void Update()
         {
-            _unit.Attack();
+            _unit.MoveTo();
         }
     }
 }

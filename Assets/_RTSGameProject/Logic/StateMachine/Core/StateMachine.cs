@@ -3,7 +3,7 @@ using System.Linq;
 using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Character.Model;
 
-namespace _RTSGameProject.Logic.StateMachineAI.Core
+namespace _RTSGameProject.Logic.StateMachine.Core
 {
     public class StateMachine: IAiActor
     {

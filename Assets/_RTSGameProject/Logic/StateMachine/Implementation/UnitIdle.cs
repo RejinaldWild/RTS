@@ -1,6 +1,7 @@
-﻿using _RTSGameProject.Logic.StateMachineAI.Core;
+﻿using _RTSGameProject.Logic.StateMachine.Core;
+using UnityEngine;
 
-namespace _RTSGameProject.Logic.StateMachineAI.Implementation
+namespace _RTSGameProject.Logic.StateMachine.Implementation
 {
     public class UnitIdle : IState
     {

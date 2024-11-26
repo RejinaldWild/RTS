@@ -3,8 +3,8 @@ using _RTSGameProject.Logic.Common.Camera;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
 using _RTSGameProject.Logic.Common.Services;
-using _RTSGameProject.Logic.StateMachineAI.Core;
-using _RTSGameProject.Logic.StateMachineAI.Implementation;
+using _RTSGameProject.Logic.StateMachine.Core;
+using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Bootstrap
@@ -25,9 +25,10 @@ namespace _RTSGameProject.Logic.Bootstrap
         private PatrollMovement _patrollMovement;
         private BoxGenerator _generator;
         private StateMachineAiFactory _stateMachineAiFactory;
-        private List<StateMachine> _stateMachines;
+        private List<StateMachine.Core.StateMachine> _stateMachines;
         private CameraController _cameraController;
         private UnitRepository _unitRepository;
+        private Health _health;
 
         private void Awake()
         {
@@ -38,20 +39,21 @@ namespace _RTSGameProject.Logic.Bootstrap
             _formationController = new FormationController(_generator);
             _inputCatchKeyClick = new InputCatchKeyClick(_camera);
             _stateMachineAiFactory = new StateMachineAiFactory();
-            _stateMachines = new List<StateMachine>();
+            _stateMachines = new List<StateMachine.Core.StateMachine>();
             _inputController = new InputController(_inputCatchKeyClick, _unitSelectionManager, 
                                                     _unitSelectionBox, _clickable, _ground, _formationController);
-
+            
             for (int i = 0; i < _unitRepository.AllUnits.Count; i++)
             {
-                _stateMachines.Add(_stateMachineAiFactory.Create(_unitRepository.AllUnits[i]));
+                _stateMachines.Add(_stateMachineAiFactory.Create(_unitRepository.AllUnits[i], _unitRepository));
             }
         }
 
         private void Update()
         {
+            _unitRepository.Update();
             _inputCatchKeyClick.Update();
-            foreach (StateMachine stateMachine in _stateMachines)
+            foreach (StateMachine.Core.StateMachine stateMachine in _stateMachines)
             {
                 stateMachine.Update();
             }

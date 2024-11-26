@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace _RTSGameProject.Logic.StateMachineAI.Core
+namespace _RTSGameProject.Logic.StateMachine.Core
 {
     public class Transition
     {

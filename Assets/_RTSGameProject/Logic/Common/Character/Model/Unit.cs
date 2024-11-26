@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Character.Model
@@ -11,12 +12,21 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         [field: SerializeField] public int Team { get; set; }
         [field: SerializeField] public int CurrentPositionIndex { get; set; }
         [field: SerializeField] public List<GameObject> Positions{ get; private set; }
+        [field: SerializeField] public float DistanceToFindEnemy { get;private set; }
 
-        [field: SerializeField] private Health _health;
+        public Health Health;
         
+        public bool CloseEnoughToAttack => 
+            Vector3.SqrMagnitude(Position - _enemy.Position) <= Mathf.Pow(_attackAct.Distance, 2f);
+
+        public bool InAttackCooldown => _attackAct.InCooldown;
+        
+        public bool HasEnemy => _enemy!=null;
         private UnitMovement _unitMovement;
         private PatrollMovement _patrollMovement;
         private UnitAttackAct _attackAct;
+        public Unit _enemy;
+
 
         private void Start()
         {
@@ -25,6 +35,8 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             _unitMovement = GetComponent<UnitMovement>();
             _patrollMovement = new PatrollMovement();
             _attackAct = GetComponent<UnitAttackAct>();
+            Health = GetComponent<Health>();
+            DistanceToFindEnemy = 10f;
         }
     
         public void Move()
@@ -39,16 +51,29 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         public void Patrolling()
         {
             _patrollMovement.Move(this, _unitMovement);
+            Debug.Log("Unit is patrolling!");
         }
 
         public void Attack()
         {
-            _attackAct.Execute();
+            _attackAct.Execute(_enemy);
+            Debug.Log("Unit is attacking!");
         }
 
         public void TakeDamage(int damage)
         {
-            _health.TakeDamage(damage);
+            Health.TakeDamage(damage);
+        }
+        
+        public void AssignEnemy(Unit enemy)
+        {
+            _enemy = enemy;
+            Debug.Log("Enemy has found and assigned");
+        }
+
+        public void MoveTo()
+        {
+            _unitMovement.MoveTo(_enemy.Position);
         }
     }
 }

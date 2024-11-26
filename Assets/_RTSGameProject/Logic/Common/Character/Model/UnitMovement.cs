@@ -12,5 +12,15 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         {
             _agent.SetDestination(point);
         }
+
+        public void MoveTo(Vector3 target)
+        {
+            if(_agent.destination == target)
+                return;
+            else
+            {
+                _agent.destination = target;
+            }
+        }
     }
 }

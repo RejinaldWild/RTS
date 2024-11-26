@@ -60,11 +60,19 @@ namespace _RTSGameProject.Logic.Common.Services
                 _formationController.SetFormationCenter(_unitSelectionManager.SelectedUnits);
                 foreach (var unit in _unitSelectionManager.SelectedUnits)
                 {
+                    unit.Position = hit.point + unit.Position;
+                }
+            }
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, _clickable))
+            {
+                foreach (Unit unit in _unitSelectionManager.SelectedUnits)
+                {
                     if (hit.collider.TryGetComponent(out Unit enemy) && enemy.Team != 0)
                     {
+                        unit.AssignEnemy(enemy);
                         unit.Attack();
                     }
-                    unit.Position = hit.point + unit.Position;
                 }
             }
         }
