@@ -6,51 +6,78 @@ namespace _RTSGameProject.Logic.Common.Character.Model
 {
     public class Unit : MonoBehaviour
     {
-        private const float MAX_THRESHOLD = 0.5f;
-        public Vector3 Position { get; set; }
+        private const float MAX_THRESHOLD = 0.3f;
+        
         [field: SerializeField] public Vector3 StartPosition{get; private set;}
         [field: SerializeField] public int Team { get; set; }
         [field: SerializeField] public int CurrentPositionIndex { get; set; }
         [field: SerializeField] public List<GameObject> Positions{ get; private set; }
         [field: SerializeField] public float DistanceToFindEnemy { get;private set; }
 
+        public Vector3 Position { get; set; }
         public Health Health;
+        public Unit _enemy;
         
-        public bool CloseEnoughToAttack => 
-            Vector3.SqrMagnitude(Position - _enemy.Position) <= Mathf.Pow(_attackAct.Distance, 2f);
-
+        public bool CloseEnoughToMove => IsCloseEnoughToMove();
+        public bool CloseEnoughToAttack => IsCloseEnoughToAttack();
         public bool InAttackCooldown => _attackAct.InCooldown;
-        
+        public bool IsMoveCondition => IsMove();
         public bool HasEnemy => _enemy!=null;
+        public bool CommandToMove => IsCommandToMove(Position);
+
         private UnitMovement _unitMovement;
         private PatrollMovement _patrollMovement;
         private UnitAttackAct _attackAct;
-        public Unit _enemy;
 
-
+        public void Construct(int teamId)
+        {
+            Team = teamId;
+            Health = GetComponent<Health>();
+        }
+        
         private void Start()
         {
-            StartPosition = transform.position;
-            Position = StartPosition;
-            _unitMovement = GetComponent<UnitMovement>();
+            Position = transform.position;
+            _unitMovement = GetComponent<UnitMovement>(); // Start works after StateMachine -> _unitMovement,_patrollMovement, _attackAct == null
             _patrollMovement = new PatrollMovement();
             _attackAct = GetComponent<UnitAttackAct>();
             Health = GetComponent<Health>();
-            DistanceToFindEnemy = 10f;
         }
     
         public void Move()
         {
-            _unitMovement.Move(Position);
-            if ((Position - transform.position).magnitude<MAX_THRESHOLD)
-            {
-                StartPosition = Position;
-            }
+            _unitMovement.Move(Position); // NullReferenceException for unit
         }
 
+        public bool IsMove()
+        {
+            if ((Position - transform.position).magnitude < MAX_THRESHOLD)
+            {
+                Position = transform.position;
+                return false;
+            }
+            
+            return true;
+        }
+        
+        public bool IsCommandToMove(Vector3 target)
+        {
+            if (target != transform.position)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        
+        public void MoveTo()
+        {
+            _unitMovement.MoveTo(_enemy, _enemy.Position, Team); // enemy position is not enemy position - it is unit position
+        }
+        
         public void Patrolling()
         {
-            _patrollMovement.Move(this, _unitMovement);
+            _patrollMovement.Move(this, _unitMovement); // NullReferenceException for enemy
             Debug.Log("Unit is patrolling!");
         }
 
@@ -68,12 +95,24 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         public void AssignEnemy(Unit enemy)
         {
             _enemy = enemy;
-            Debug.Log("Enemy has found and assigned");
+            if (_enemy != null)
+            {
+                Debug.Log("Enemy has found and assigned");
+            }
         }
 
-        public void MoveTo()
+        private bool IsCloseEnoughToMove()
         {
-            _unitMovement.MoveTo(_enemy.Position);
+            float distanceDiff = Vector3.SqrMagnitude(Position - _enemy.Position); //? enemy position is not enemy position - it is unit position
+            float dis = DistanceToFindEnemy;
+            return distanceDiff <= dis;
+        }
+        
+        private bool IsCloseEnoughToAttack()
+        {
+            float distanceDiff = Vector3.SqrMagnitude(Position - _enemy.Position); //? enemy position is not enemy position - it is unit position
+            float dis = Mathf.Pow(_attackAct.Distance, 2f);
+            return distanceDiff <= dis;
         }
     }
 }

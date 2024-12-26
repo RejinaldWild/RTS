@@ -7,17 +7,17 @@ namespace _RTSGameProject.Logic.StateMachine.Implementation
     public class UnitFindEnemy : IEnterState
     {
         private readonly Unit _unit;
-        private readonly UnitRepository _unitRepository;
+        private readonly UnitsRepository _unitsRepository;
 
-        public UnitFindEnemy(Unit unit, UnitRepository unitRepository)
+        public UnitFindEnemy(Unit unit, UnitsRepository unitsRepository)
         {
             _unit = unit;
-            _unitRepository = unitRepository;
+            _unitsRepository = unitsRepository;
         }
 
         public void Enter()
         {
-            Unit enemy = _unitRepository.GetClosestEnemy(_unit , _unit.DistanceToFindEnemy);
+            Unit enemy = _unitsRepository.GetClosestEnemy(_unit , _unit.DistanceToFindEnemy);
             _unit.AssignEnemy(enemy);
         }
     }

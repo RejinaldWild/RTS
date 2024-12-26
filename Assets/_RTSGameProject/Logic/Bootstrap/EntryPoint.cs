@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Camera;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
@@ -24,38 +26,39 @@ namespace _RTSGameProject.Logic.Bootstrap
         private InputCatchKeyClick _inputCatchKeyClick;
         private PatrollMovement _patrollMovement;
         private BoxGenerator _generator;
+        private ActorsRepository _actorsRepository;
         private StateMachineAiFactory _stateMachineAiFactory;
-        private List<StateMachine.Core.StateMachine> _stateMachines;
+        private UnitsFactory _unitsFactory;
+        private List<StateMachineActor> _stateMachines;
         private CameraController _cameraController;
-        private UnitRepository _unitRepository;
+        private UnitsRepository _unitsRepository;
         private Health _health;
+        private AiFactory _aiFactory;
+        private Spawner _spawner;
 
         private void Awake()
         {
-            _unitRepository = new UnitRepository(_unitListParent);
+            _unitsRepository = new UnitsRepository();
             _unitSelectionManager = new UnitSelectionManager(_groundMarker);
-            _unitSelectionBox.Construct(_unitRepository, _unitSelectionManager);
+            _unitSelectionBox.Construct(_unitsRepository, _unitSelectionManager);
             _generator = new BoxGenerator();
             _formationController = new FormationController(_generator);
             _inputCatchKeyClick = new InputCatchKeyClick(_camera);
-            _stateMachineAiFactory = new StateMachineAiFactory();
-            _stateMachines = new List<StateMachine.Core.StateMachine>();
+            _actorsRepository = new ActorsRepository();
+            _unitsFactory = new UnitsFactory(_unitsRepository);
+            _aiFactory = new StateMachineAiFactory(_unitsRepository, _actorsRepository, _unitsFactory);
+            _spawner = new Spawner(_aiFactory);
+            _stateMachines = new List<StateMachineActor>();
             _inputController = new InputController(_inputCatchKeyClick, _unitSelectionManager, 
-                                                    _unitSelectionBox, _clickable, _ground, _formationController);
-            
-            for (int i = 0; i < _unitRepository.AllUnits.Count; i++)
-            {
-                _stateMachines.Add(_stateMachineAiFactory.Create(_unitRepository.AllUnits[i], _unitRepository));
-            }
+                                                    _unitSelectionBox, _clickable, _ground, _formationController, _spawner);
         }
 
         private void Update()
         {
-            _unitRepository.Update();
             _inputCatchKeyClick.Update();
-            foreach (StateMachine.Core.StateMachine stateMachine in _stateMachines)
+            foreach (IAiActor aiActor in _actorsRepository.All.ToArray())
             {
-                stateMachine.Update();
+                aiActor.Update();
             }
         }
 

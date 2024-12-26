@@ -5,21 +5,14 @@ using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class UnitRepository
+    public class UnitsRepository
     {
         public List<Unit> AllUnits;
         private Health _health;
 
-        public UnitRepository(Transform unitListParent)
+        public UnitsRepository()
         {
             AllUnits = new List<Unit>();
-            foreach (Transform unitChild in unitListParent)
-            {
-                if (unitChild.TryGetComponent(out Unit unit))
-                {
-                    Register(unit);
-                }
-            }
         }
         
         public bool HasEnemy(Unit forUnit)
@@ -55,17 +48,6 @@ namespace _RTSGameProject.Logic.Common.Services
                 return closestEnemy;
             else 
                 return null;
-        }
-
-        public void Update()
-        {
-            foreach (Unit unit in AllUnits)
-            {
-                if (unit.Health.Current <= 0)
-                {
-                    Unregister(unit);
-                }
-            }
         }
         
         public void Register(Unit unit) => 

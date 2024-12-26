@@ -16,7 +16,10 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         
         private bool _isCloseToEnemy;
 
-        
+        private void Start()
+        {
+            _currentCooldown = 1.5f;
+        }
         
         private void Update()
         {

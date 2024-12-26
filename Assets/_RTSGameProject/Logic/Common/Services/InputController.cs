@@ -1,6 +1,7 @@
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
@@ -12,10 +13,11 @@ namespace _RTSGameProject.Logic.Common.Services
         private LayerMask _ground;
         private FormationController _formationController;
         private InputCatchKeyClick _inputCatchKeyClick;
+        private Spawner _spawner;
 
         public InputController(InputCatchKeyClick inputCatchKeyClick, UnitSelectionManager unitSelectionManager, 
                                 UnitSelectionBox unitSelectionBox, LayerMask clickable, 
-                                LayerMask ground, FormationController formationController)
+                                LayerMask ground, FormationController formationController, Spawner spawner)
         {
             _inputCatchKeyClick = inputCatchKeyClick;
             _unitSelectionManager = unitSelectionManager;
@@ -23,11 +25,14 @@ namespace _RTSGameProject.Logic.Common.Services
             _clickable = clickable;
             _ground = ground;
             _formationController = formationController;
+            _spawner = spawner;
 
             _inputCatchKeyClick.OnLeftClickMouseButtonDown += OnLeftClickMouseButtonDowned;
             _inputCatchKeyClick.OnLeftClickMouseButton += OnLeftClickMouseButtoned;
             _inputCatchKeyClick.OnLeftClickMouseButtonUp += OnLeftClickMouseButtonUped;
             _inputCatchKeyClick.OnRightClickMouseButtonDown += OnRightClickMouseButtonDowned;
+            _inputCatchKeyClick.OnAlpha1KeyDown += OnAlpha1KeyDowned;
+            _inputCatchKeyClick.OnAlpha2KeyDown += OnAlpha2KeyDowned;
         }
 
         private void OnLeftClickMouseButtonDowned(Ray ray)
@@ -60,6 +65,7 @@ namespace _RTSGameProject.Logic.Common.Services
                 _formationController.SetFormationCenter(_unitSelectionManager.SelectedUnits);
                 foreach (var unit in _unitSelectionManager.SelectedUnits)
                 {
+                    unit.IsCommandToMove(hit.point);
                     unit.Position = hit.point + unit.Position;
                 }
             }
@@ -76,7 +82,7 @@ namespace _RTSGameProject.Logic.Common.Services
                 }
             }
         }
-
+        
         private void OnLeftClickMouseButtonUped()
         {
             _unitSelectionBox.EndDrawAndSelect();
@@ -93,7 +99,20 @@ namespace _RTSGameProject.Logic.Common.Services
             _inputCatchKeyClick.OnLeftClickMouseButton -= OnLeftClickMouseButtoned;
             _inputCatchKeyClick.OnLeftClickMouseButtonUp -= OnLeftClickMouseButtonUped;
             _inputCatchKeyClick.OnRightClickMouseButtonDown -= OnRightClickMouseButtonDowned;
+            _inputCatchKeyClick.OnAlpha1KeyDown -= OnAlpha1KeyDowned;
+            _inputCatchKeyClick.OnAlpha2KeyDown -= OnAlpha2KeyDowned;
         }
+        
+        private void OnAlpha1KeyDowned()
+        {
+            _spawner.Spawn(0);
+        }
+
+        private void OnAlpha2KeyDowned()
+        {
+            _spawner.Spawn(1);
+        }
+
     }
 }
 

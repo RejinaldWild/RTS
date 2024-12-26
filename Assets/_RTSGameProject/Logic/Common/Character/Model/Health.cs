@@ -15,10 +15,6 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         public void TakeDamage(int damage)
         {
             Current -= damage;
-            if (Current <= 0)
-            {
-                Destroy(gameObject);
-            }
         }
     }
 }

@@ -13,13 +13,11 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             _agent.SetDestination(point);
         }
 
-        public void MoveTo(Vector3 target)
+        public void MoveTo(Unit unit, Vector3 unitPosition, int team)
         {
-            if(_agent.destination == target)
-                return;
-            else
+            if (team != unit.Team && _agent.destination != unitPosition)
             {
-                _agent.destination = target;
+                _agent.destination = unitPosition;
             }
         }
     }

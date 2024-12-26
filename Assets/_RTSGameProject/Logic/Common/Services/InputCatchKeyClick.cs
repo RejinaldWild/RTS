@@ -9,6 +9,8 @@ namespace _RTSGameProject.Logic.Common.Services
         public event Action OnLeftClickMouseButton;
         public event Action OnLeftClickMouseButtonUp;
         public event Action<Ray> OnRightClickMouseButtonDown;
+        public event Action OnAlpha1KeyDown;
+        public event Action OnAlpha2KeyDown;
     
         private UnityEngine.Camera _camera;
     
@@ -39,6 +41,16 @@ namespace _RTSGameProject.Logic.Common.Services
             if (Input.GetMouseButtonDown(1))
             {
                 OnRightClickMouseButtonDown?.Invoke(ray);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                OnAlpha1KeyDown?.Invoke();
+            }
+            
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                OnAlpha2KeyDown?.Invoke();
             }
         }
     }
