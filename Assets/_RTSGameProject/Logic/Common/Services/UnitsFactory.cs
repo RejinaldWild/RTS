@@ -18,10 +18,12 @@ namespace _RTSGameProject.Logic.Common.Services
         {
             Unit resource = Load<Unit>("Prefabs/Unit");
             Unit instance = Instantiate<Unit>(resource, position, Quaternion.identity);
-            
-            instance.Construct(teamId);
-
             IDisposable disposable = null;
+            
+            instance.Construct(teamId, _unitsRepository);
+            _unitsRepository.Register(instance);
+            instance.Health.OnDie += DisposeUnit;
+            
             if (instance.Health.Current <= 0) //?
             {
                 DisposeUnit();
@@ -33,11 +35,11 @@ namespace _RTSGameProject.Logic.Common.Services
 
             void DisposeUnit()
             {
+                instance.Health.OnDie -= DisposeUnit;
                 _unitsRepository.Unregister(instance);
-                Destroy(instance);
                 disposable.Dispose();
+                Destroy(instance);
             }
-
         }
     }
 }

@@ -20,19 +20,16 @@ namespace _RTSGameProject.Logic.StateMachine.Implementation
                 {
                     new UnitIdle(), 
                     new UnitMoveState(unit), 
-                    new UnitPatrolling(unit), 
-                    new UnitFindEnemy(unit, UnitsRepository),
+                    new UnitPatrolling(unit),
                     new UnitAttack(unit),
                     new MoveToEnemy(unit)
                 },
                 new Transition[]
                 {
-                    new Transition(typeof(UnitIdle), typeof(UnitFindEnemy), ()=> !unit.HasEnemy && UnitsRepository.HasEnemy(unit)),
-                    new Transition(typeof(UnitFindEnemy), typeof(UnitIdle), ()=> unit.HasEnemy && !unit.CloseEnoughToMove),
-                    new Transition(typeof(UnitIdle), typeof(MoveToEnemy), ()=> unit.HasEnemy && !unit.CloseEnoughToAttack), //&& UnitsRepository.HasEnemy(unit)?
+                    //new Transition(typeof(UnitIdle), typeof(UnitMoveState), () => unit.IsMoveCondition && unit.Team==0), // point
+                    new Transition(typeof(UnitIdle), typeof(MoveToEnemy), ()=> !unit.CloseEnoughToAttack & unit.HasEnemy), //&& UnitsRepository.HasEnemy(unit)?
                     new Transition(typeof(UnitIdle), typeof(UnitPatrolling), () => !unit.HasEnemy && unit.Team==1),
-                    new Transition(typeof(UnitIdle), typeof(UnitMoveState), () => unit.CommandToMove && unit.Team==0 && unit.IsMoveCondition), // point
-                    new Transition(typeof(UnitMoveState), typeof(UnitIdle), () => unit.Team==0 && !unit.IsMoveCondition), // point = Position+-threshold
+                    //new Transition(typeof(UnitMoveState), typeof(UnitIdle), () => unit.Team==0 && !unit.IsMoveCondition), // point = Position+-threshold
                     
                     //new Transition(typeof(UnitIdle), typeof(UnitAttack), () => unit.HasEnemy && unit.CloseEnoughToAttack && unit.InAttackCooldown),
                     //new Transition(typeof(MoveToEnemy), typeof(UnitAttack), () => unit.HasEnemy && unit.CloseEnoughToAttack && unit.InAttackCooldown),

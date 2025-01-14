@@ -1,7 +1,6 @@
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
 using UnityEngine;
-using UnityEngine.VFX;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
@@ -35,6 +34,16 @@ namespace _RTSGameProject.Logic.Common.Services
             _inputCatchKeyClick.OnAlpha2KeyDown += OnAlpha2KeyDowned;
         }
 
+        public void Unsubscribe()
+        {
+            _inputCatchKeyClick.OnLeftClickMouseButtonDown -= OnLeftClickMouseButtonDowned;
+            _inputCatchKeyClick.OnLeftClickMouseButton -= OnLeftClickMouseButtoned;
+            _inputCatchKeyClick.OnLeftClickMouseButtonUp -= OnLeftClickMouseButtonUped;
+            _inputCatchKeyClick.OnRightClickMouseButtonDown -= OnRightClickMouseButtonDowned;
+            _inputCatchKeyClick.OnAlpha1KeyDown -= OnAlpha1KeyDowned;
+            _inputCatchKeyClick.OnAlpha2KeyDown -= OnAlpha2KeyDowned;
+        }
+        
         private void OnLeftClickMouseButtonDowned(Ray ray)
         {
             RaycastHit hit;
@@ -65,8 +74,9 @@ namespace _RTSGameProject.Logic.Common.Services
                 _formationController.SetFormationCenter(_unitSelectionManager.SelectedUnits);
                 foreach (var unit in _unitSelectionManager.SelectedUnits)
                 {
-                    unit.IsCommandToMove(hit.point);
+                    unit.RemoveEnemy();
                     unit.Position = hit.point + unit.Position;
+                    unit.Move();
                 }
             }
 
@@ -76,6 +86,7 @@ namespace _RTSGameProject.Logic.Common.Services
                 {
                     if (hit.collider.TryGetComponent(out Unit enemy) && enemy.Team != 0)
                     {
+                        unit.RemoveEnemy();
                         unit.AssignEnemy(enemy);
                         unit.Attack();
                     }
@@ -92,16 +103,6 @@ namespace _RTSGameProject.Logic.Common.Services
         {
             _unitSelectionBox.StartDrawAndSelect();
         }
-
-        public void Unsubscribe()
-        {
-            _inputCatchKeyClick.OnLeftClickMouseButtonDown -= OnLeftClickMouseButtonDowned;
-            _inputCatchKeyClick.OnLeftClickMouseButton -= OnLeftClickMouseButtoned;
-            _inputCatchKeyClick.OnLeftClickMouseButtonUp -= OnLeftClickMouseButtonUped;
-            _inputCatchKeyClick.OnRightClickMouseButtonDown -= OnRightClickMouseButtonDowned;
-            _inputCatchKeyClick.OnAlpha1KeyDown -= OnAlpha1KeyDowned;
-            _inputCatchKeyClick.OnAlpha2KeyDown -= OnAlpha2KeyDowned;
-        }
         
         private void OnAlpha1KeyDowned()
         {
@@ -112,7 +113,6 @@ namespace _RTSGameProject.Logic.Common.Services
         {
             _spawner.Spawn(1);
         }
-
     }
 }
 

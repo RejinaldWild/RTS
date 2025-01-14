@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 1597099188086043879}
   - component: {fileID: 3895365681154953337}
   - component: {fileID: 709487745954094920}
+  - component: {fileID: 3040500599371112830}
   - component: {fileID: 4621955965581611731}
   - component: {fileID: 2317824650960321388}
   - component: {fileID: 8961159229944015862}
-  - component: {fileID: 3040500599371112830}
   - component: {fileID: 5140024023081137702}
   m_Layer: 7
   m_Name: Unit
@@ -136,6 +136,29 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 1
+--- !u!114 &3040500599371112830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2779144607671408749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39587a4af5b0e4949adb8e901fa91823, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <StartPosition>k__BackingField: {x: 0, y: 0, z: 0}
+  <Team>k__BackingField: 0
+  <CurrentPositionIndex>k__BackingField: 0
+  <Positions>k__BackingField:
+  - {fileID: 4417575987921387776, guid: 9e8449a8d7e964d4aaac4456bb9ea67b, type: 3}
+  - {fileID: 8152051580567433287, guid: 76cbb50dfb956d1449b8fbb6d467d47d, type: 3}
+  - {fileID: 650851742411749794, guid: 4b028810caa82354480b9d8f49bb4013, type: 3}
+  - {fileID: 5399554440799958383, guid: 39064871c523ab345b0ecf1c862686d0, type: 3}
+  <DistanceToFindEnemy>k__BackingField: 6
+  Health: {fileID: 0}
+  _enemy: {fileID: 0}
 --- !u!114 &4621955965581611731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,6 +172,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 709487745954094920}
+  _updatePathCooldown: 0.15
+  _currentCooldown: 0
 --- !u!114 &2317824650960321388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179,29 +204,6 @@ MonoBehaviour:
   _currentCooldown: 1.5
   _damage: 1
   _cooldown: 1.5
---- !u!114 &3040500599371112830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2779144607671408749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39587a4af5b0e4949adb8e901fa91823, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <StartPosition>k__BackingField: {x: 0, y: 0, z: 0}
-  <Team>k__BackingField: 0
-  <CurrentPositionIndex>k__BackingField: 0
-  <Positions>k__BackingField:
-  - {fileID: 4417575987921387776, guid: 9e8449a8d7e964d4aaac4456bb9ea67b, type: 3}
-  - {fileID: 8152051580567433287, guid: 76cbb50dfb956d1449b8fbb6d467d47d, type: 3}
-  - {fileID: 650851742411749794, guid: 4b028810caa82354480b9d8f49bb4013, type: 3}
-  - {fileID: 5399554440799958383, guid: 39064871c523ab345b0ecf1c862686d0, type: 3}
-  <DistanceToFindEnemy>k__BackingField: 10
-  Health: {fileID: 0}
-  _enemy: {fileID: 0}
 --- !u!114 &5140024023081137702
 MonoBehaviour:
   m_ObjectHideFlags: 0

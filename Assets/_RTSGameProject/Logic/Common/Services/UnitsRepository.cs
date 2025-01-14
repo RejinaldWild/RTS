@@ -30,12 +30,12 @@ namespace _RTSGameProject.Logic.Common.Services
 
         public Unit GetClosestEnemy(Unit unit, float maxDistance)
         {
-            float closestSqrDistance = maxDistance * maxDistance;
+            float closestSqrDistance = maxDistance*maxDistance;
             Unit closestEnemy = null;
 
             foreach (Unit forUnit in AllUnits)
             {
-                float sqrDistance = Vector3.SqrMagnitude(forUnit.Position - unit.Position);
+                float sqrDistance = Vector3.SqrMagnitude(forUnit.transform.position - unit.transform.position);
 
                 if (unit.Team != forUnit.Team && sqrDistance <= closestSqrDistance)
                 {
