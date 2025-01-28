@@ -1,3 +1,5 @@
+using System;
+
 namespace _RTSGameProject.Logic.Common.AI
 {
     public interface IAiActor

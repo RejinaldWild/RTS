@@ -110,8 +110,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
-  m_Height: 2.7
+  m_Radius: 0.5
+  m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.017974079, z: 0}
 --- !u!195 &709487745954094920
@@ -159,6 +159,9 @@ MonoBehaviour:
   <DistanceToFindEnemy>k__BackingField: 6
   Health: {fileID: 0}
   _enemy: {fileID: 0}
+  Id: 51ebb1d8-c1d6-4eaa-89d9-1b707e8a954f
+  IsCommandedToMove: 0
+  IsCommandedToAttack: 0
 --- !u!114 &4621955965581611731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,6 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7add1cd70d5b43b997e1fdb28c8acf91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsAlive: 0
   <Max>k__BackingField: 10
   <Current>k__BackingField: 0
 --- !u!114 &8961159229944015862
@@ -200,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ffeeb36581d46e6ac8cadf20b014e2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Distance>k__BackingField: 3
+  <Distance>k__BackingField: 2
   _currentCooldown: 1.5
   _damage: 1
   _cooldown: 1.5

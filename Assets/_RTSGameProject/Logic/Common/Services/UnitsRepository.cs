@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Character.Model;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
@@ -32,11 +33,10 @@ namespace _RTSGameProject.Logic.Common.Services
         {
             float closestSqrDistance = maxDistance*maxDistance;
             Unit closestEnemy = null;
-
+            
             foreach (Unit forUnit in AllUnits)
             {
                 float sqrDistance = Vector3.SqrMagnitude(forUnit.transform.position - unit.transform.position);
-
                 if (unit.Team != forUnit.Team && sqrDistance <= closestSqrDistance)
                 {
                     closestSqrDistance = sqrDistance;
@@ -44,10 +44,9 @@ namespace _RTSGameProject.Logic.Common.Services
                 }
             }
 
-            if (closestEnemy != null)
-                return closestEnemy;
-            else 
-                return null;
+            //Assert.IsNotNull(closestEnemy);
+            
+            return closestEnemy;
         }
         
         public void Register(Unit unit) => 

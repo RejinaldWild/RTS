@@ -15,9 +15,11 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         
         public void FindEnemy(Unit unit, UnitsRepository unitsRepository)
         {
-            Unit enemy = null;
-            enemy = unitsRepository.GetClosestEnemy(unit, _distance);
-            unit.AssignEnemy(enemy);
+            Unit enemy = unitsRepository.GetClosestEnemy(unit, _distance);
+            if (enemy != null)
+            {
+                unit.AssignEnemy(enemy);
+            }
         }
     }
 }

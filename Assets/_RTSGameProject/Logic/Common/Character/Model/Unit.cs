@@ -1,13 +1,14 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Services;
+using UnityEditor;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Character.Model
 {
     public class Unit : MonoBehaviour
     {
-        private const float MAX_THRESHOLD = 0.3f;
-        
         [field: SerializeField] public Vector3 StartPosition{get; private set;}
         [field: SerializeField] public int Team { get; set; }
         [field: SerializeField] public int CurrentPositionIndex { get; set; }
@@ -17,9 +18,11 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         public Vector3 Position { get; set; }
         public Health Health;
         public Unit _enemy;
-        
-        public bool CloseEnoughToAttack => IsMoveToEnemy();
-        //public bool IsCloseEnoughToAttackEnemy => IsCloseEnoughToAttack();
+        public string Id;
+        public bool IsAlive => Health.IsAlive;
+        public bool IsCommandedToMove = false;
+        public bool IsCommandedToAttack = false;
+        public bool IsCloseToMove => IsMoveToEnemy();
         public bool InAttackCooldown => _attackAct.InCooldown;
         public bool HasEnemy => _enemy!=null;
 
@@ -38,6 +41,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         
         private void Awake()
         {
+            Id = Guid.NewGuid().ToString();
             Position = transform.position;
             Health = GetComponent<Health>();
             _unitMovement = GetComponent<UnitMovement>();
@@ -49,11 +53,15 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         public void Move()
         {
             _unitMovement.Move(Position);
+            StartCoroutine(EndPath());
         }
         
         public void MoveTo()
         {
-            _unitMovement.MoveTo(_enemy, _enemy.transform.position, Team); // enemy position is not enemy position - it is unit position
+            if(_enemy!=null && this != null) //?
+            {
+                _unitMovement.MoveTo(_enemy, _enemy.transform.position, Team);
+            }
         }
         
         public void Patrolling()
@@ -64,8 +72,9 @@ namespace _RTSGameProject.Logic.Common.Character.Model
 
         public void Attack()
         {
-            _attackAct.Execute(_enemy);
+            StartCoroutine(AttackCommand());
             Debug.Log("Unit is attacking!");
+            StartCoroutine(EndCommand());
         }
 
         public void TakeDamage(int damage)
@@ -90,21 +99,40 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         private bool IsMoveToEnemy()
         {
             _unitFindEnemy.FindEnemy(this,_unitsRepository);
-            if (_enemy != null)
+            if (_enemy != null && this != null) //?
             {
                 float distanceDiff = Vector3.SqrMagnitude(Position - _enemy.Position);
-                float dis = Mathf.Pow(_attackAct.Distance, 2f);
-                return distanceDiff <= dis;
+                return distanceDiff <= DistanceToFindEnemy;
             }
             
             return false;
         }
         
-        // private bool IsCloseEnoughToAttack()
-        // {
-        //     float distanceDiff = Vector3.SqrMagnitude(Position - _enemy.Position); //? enemy position is not enemy position - it is unit position
-        //     float dis = Mathf.Pow(_attackAct.Distance, 2f);
-        //     return distanceDiff <= dis;
-        // }
+        private IEnumerator EndPath()
+        {
+            while(IsCommandedToMove)
+            {
+                IsCommandedToMove = _unitMovement.EndPath(IsCommandedToMove);
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
+        
+        private IEnumerator AttackCommand()
+        {
+            while(Mathf.Pow(_attackAct.Distance, 2f)>= Vector3.SqrMagnitude(transform.position - _enemy.Position))
+            {
+                _attackAct.Execute(_enemy);
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
+        
+        private IEnumerator EndCommand()
+        {
+            while(IsCommandedToAttack)
+            {
+                IsCommandedToAttack = _attackAct.EndCommand(IsCommandedToAttack,_enemy);
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
     }
 }

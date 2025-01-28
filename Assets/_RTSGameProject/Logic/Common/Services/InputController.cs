@@ -74,6 +74,8 @@ namespace _RTSGameProject.Logic.Common.Services
                 _formationController.SetFormationCenter(_unitSelectionManager.SelectedUnits);
                 foreach (var unit in _unitSelectionManager.SelectedUnits)
                 {
+                    unit.IsCommandedToAttack = false;
+                    unit.IsCommandedToMove = true;
                     unit.RemoveEnemy();
                     unit.Position = hit.point + unit.Position;
                     unit.Move();
@@ -86,6 +88,8 @@ namespace _RTSGameProject.Logic.Common.Services
                 {
                     if (hit.collider.TryGetComponent(out Unit enemy) && enemy.Team != 0)
                     {
+                        unit.IsCommandedToMove = false;
+                        unit.IsCommandedToAttack = true;
                         unit.RemoveEnemy();
                         unit.AssignEnemy(enemy);
                         unit.Attack();

@@ -65,6 +65,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         private void OnDestroy()
         {
             _inputController.Unsubscribe();
+            StopAllCoroutines();
         }
     }
 }

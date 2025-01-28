@@ -28,13 +28,31 @@ namespace _RTSGameProject.Logic.Common.Character.Model
 
         public void Execute(Unit enemy)
         {
-            if(InCooldown)
-                Debug.Log("Unit is in Cooldown");
-            else
+            float distanceToEnemy = Vector3.SqrMagnitude(transform.position - enemy.Position);
+            float attackDistance = Mathf.Pow(Distance, 2f);
+            
+            if (distanceToEnemy<=attackDistance && !InCooldown)
             {
                 enemy.TakeDamage(_damage);
                 _currentCooldown = _cooldown;
             }
+            else
+            {
+                Debug.Log("Unit is in Cooldown");
+            }
+        }
+        
+        public bool EndCommand(bool priority, Unit enemy)
+        {
+            float distanceToEnemy = Vector3.SqrMagnitude(transform.position - enemy.transform.position);
+            float attackDistance = Mathf.Pow(Distance, 2f);
+            
+            if (distanceToEnemy<attackDistance || !enemy.IsAlive)
+            {
+                return false;
+            }
+
+            return priority;
         }
     }
 }

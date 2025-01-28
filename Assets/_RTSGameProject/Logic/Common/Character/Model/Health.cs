@@ -6,8 +6,8 @@ namespace _RTSGameProject.Logic.Common.Character.Model
     public class Health: MonoBehaviour
     {
         public event Action OnDie;
-        
-        private Unit _unit;
+
+        public bool IsAlive;
         
         [field:SerializeField] public int Max { get; private set; }
         [field:SerializeField] public int Current { get; private set; }
@@ -15,7 +15,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         private void Awake()
         {
             Current = Max;
-            _unit = GetComponent<Unit>();
+            IsAlive = true;
         }
 
         public void TakeDamage(int damage)
@@ -23,6 +23,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             Current -= damage;
             if (Current <= 0)
             {
+                IsAlive = false;
                 OnDie?.Invoke();
             }
         }

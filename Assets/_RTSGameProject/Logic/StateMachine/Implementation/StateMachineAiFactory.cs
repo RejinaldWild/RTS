@@ -22,29 +22,17 @@ namespace _RTSGameProject.Logic.StateMachine.Implementation
                     new UnitMoveState(unit), 
                     new UnitPatrolling(unit),
                     new UnitAttack(unit),
-                    new MoveToEnemy(unit)
+                    new MoveToEnemy(unit, UnitsRepository)
                 },
                 new Transition[]
                 {
-                    //new Transition(typeof(UnitIdle), typeof(UnitMoveState), () => unit.IsMoveCondition && unit.Team==0), // point
-                    new Transition(typeof(UnitIdle), typeof(MoveToEnemy), ()=> !unit.CloseEnoughToAttack & unit.HasEnemy), //&& UnitsRepository.HasEnemy(unit)?
-                    new Transition(typeof(UnitIdle), typeof(UnitPatrolling), () => !unit.HasEnemy && unit.Team==1),
-                    //new Transition(typeof(UnitMoveState), typeof(UnitIdle), () => unit.Team==0 && !unit.IsMoveCondition), // point = Position+-threshold
+                    new(typeof(UnitIdle), typeof(MoveToEnemy), ()=> !unit.IsCommandedToMove && UnitsRepository.HasEnemy(unit) & unit.HasEnemy && !unit.IsCloseToMove),
+                    new(typeof(UnitIdle), typeof(UnitPatrolling), () => !unit.HasEnemy && unit.Team==1),
+                    new(typeof(MoveToEnemy), typeof(UnitIdle), ()=> unit.Team!=1 & !unit.HasEnemy && !unit.IsCloseToMove),
+                    new(typeof(UnitPatrolling), typeof(MoveToEnemy), () => unit.Team==1 && UnitsRepository.HasEnemy(unit) && !unit.HasEnemy && unit.IsCloseToMove),
+                    new (typeof(MoveToEnemy), typeof(UnitAttack), () => !unit.IsCommandedToMove && !unit.IsCommandedToAttack && unit.HasEnemy && !unit.IsCloseToMove && !unit.InAttackCooldown),
+                    new (typeof(UnitAttack), typeof(MoveToEnemy), () => !unit.IsCommandedToMove && UnitsRepository.HasEnemy(unit) && unit.HasEnemy && !unit.IsCloseToMove && !unit.InAttackCooldown),
                     
-                    //new Transition(typeof(UnitIdle), typeof(UnitAttack), () => unit.HasEnemy && unit.CloseEnoughToAttack && unit.InAttackCooldown),
-                    //new Transition(typeof(MoveToEnemy), typeof(UnitAttack), () => unit.HasEnemy && unit.CloseEnoughToAttack && unit.InAttackCooldown),
-                    //new Transition(typeof(UnitAttack), typeof(UnitMoveState), () => !unit.HasEnemy && unit.IsMoveCondition),
-                    //new Transition(typeof(UnitAttack), typeof(UnitIdle), () => !unit.HasEnemy && !unit.IsMoveCondition),
-                    
-                    
-                    // new Transition(typeof(UnitFindEnemy), typeof(MoveToEnemy), () => unit.HasEnemy && !unit.CloseEnoughToMove),
-                    // new Transition(typeof(MoveToEnemy), typeof(UnitIdle), () => !unit.HasEnemy && unit.Team==0),
-                    // new Transition(typeof(MoveToEnemy), typeof(UnitPatrolling), () => !unit.HasEnemy && unit.Team==1),
-                    // new Transition(typeof(MoveToEnemy), typeof(UnitAttack), () => unit.HasEnemy && unit.CloseEnoughToMove && !unit.InAttackCooldown),
-                    // new Transition(typeof(MoveToEnemy), typeof(UnitFindEnemy), () => !unit.HasEnemy && UnitsRepository.HasEnemy(unit)),
-                    // new Transition(typeof(UnitAttack), typeof(UnitFindEnemy), () => !unit.HasEnemy && UnitsRepository.HasEnemy(unit)),
-                    // new Transition(typeof(UnitAttack), typeof(UnitIdle), () => unit.HasEnemy && unit.CloseEnoughToMove && unit.InAttackCooldown),
-                    // new Transition(typeof(UnitPatrolling), typeof(UnitFindEnemy), () => !unit.HasEnemy && UnitsRepository.HasEnemy(unit)),
                 });
         }
     }
