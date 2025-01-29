@@ -26,12 +26,12 @@ namespace _RTSGameProject.Logic.StateMachine.Implementation
                 },
                 new Transition[]
                 {
-                    new(typeof(UnitIdle), typeof(MoveToEnemy), ()=> !unit.IsCommandedToMove && UnitsRepository.HasEnemy(unit) & unit.HasEnemy && !unit.IsCloseToMove),
+                    new(typeof(UnitIdle), typeof(MoveToEnemy), ()=> !unit.IsCommandedToMove && UnitsRepository.HasEnemy(unit) & unit.HasEnemy && unit.IsCloseToMove && !unit.IsCloseToAttack),
                     new(typeof(UnitIdle), typeof(UnitPatrolling), () => !unit.HasEnemy && unit.Team==1),
                     new(typeof(MoveToEnemy), typeof(UnitIdle), ()=> unit.Team!=1 & !unit.HasEnemy && !unit.IsCloseToMove),
                     new(typeof(UnitPatrolling), typeof(MoveToEnemy), () => unit.Team==1 && UnitsRepository.HasEnemy(unit) && !unit.HasEnemy && unit.IsCloseToMove),
-                    new (typeof(MoveToEnemy), typeof(UnitAttack), () => !unit.IsCommandedToMove && !unit.IsCommandedToAttack && unit.HasEnemy && !unit.IsCloseToMove && !unit.InAttackCooldown),
-                    new (typeof(UnitAttack), typeof(MoveToEnemy), () => !unit.IsCommandedToMove && UnitsRepository.HasEnemy(unit) && unit.HasEnemy && !unit.IsCloseToMove && !unit.InAttackCooldown),
+                    new (typeof(MoveToEnemy), typeof(UnitAttack), () => !unit.IsCommandedToMove && !unit.IsCommandedToAttack && unit.HasEnemy && unit.IsCloseToAttack && !unit.InAttackCooldown),
+                    new (typeof(UnitAttack), typeof(MoveToEnemy), () => !unit.IsCommandedToMove && UnitsRepository.HasEnemy(unit) && unit.HasEnemy && unit.IsCloseToMove && !unit.IsCloseToAttack && !unit.InAttackCooldown),
                     
                 });
         }

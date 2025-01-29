@@ -37,7 +37,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
 
         public void MoveTo(Unit unit, Vector3 unitPosition, int team)
         {
-            if (team != unit.Team && Vector3.Distance( _agent.destination,unitPosition)>MAX_THRESHOLD || !InCooldown)
+            if (team != unit.Team && Vector3.Distance( _agent.destination,unitPosition) > MAX_THRESHOLD || !InCooldown)
             {
                 _agent.destination = unitPosition;
                 _currentCooldown = _updatePathCooldown;

@@ -206,7 +206,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Distance>k__BackingField: 2
   _currentCooldown: 1.5
-  _damage: 1
+  _damage: 4
   _cooldown: 1.5
 --- !u!114 &5140024023081137702
 MonoBehaviour:

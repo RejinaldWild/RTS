@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Character.Model;
+using _RTSGameProject.Logic.Common.Selection;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -10,10 +11,12 @@ namespace _RTSGameProject.Logic.Common.Services
     {
         public List<Unit> AllUnits;
         private Health _health;
+        private UnitSelectionManager _unitSelectionManager;
 
-        public UnitsRepository()
+        public UnitsRepository(UnitSelectionManager unitSelectionManager)
         {
             AllUnits = new List<Unit>();
+            _unitSelectionManager = unitSelectionManager;
         }
         
         public bool HasEnemy(Unit forUnit)
@@ -52,7 +55,10 @@ namespace _RTSGameProject.Logic.Common.Services
         public void Register(Unit unit) => 
             AllUnits.Add(unit);
 
-        public void Unregister(Unit unit) => 
+        public void Unregister(Unit unit)
+        {
             AllUnits.Remove(unit);
+            _unitSelectionManager.SelectedUnits.Remove(unit);
+        }
     }
 }

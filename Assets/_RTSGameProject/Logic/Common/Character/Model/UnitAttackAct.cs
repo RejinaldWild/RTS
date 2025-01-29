@@ -28,7 +28,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
 
         public void Execute(Unit enemy)
         {
-            float distanceToEnemy = Vector3.SqrMagnitude(transform.position - enemy.Position);
+            float distanceToEnemy = Vector3.SqrMagnitude(transform.position - enemy.transform.position);
             float attackDistance = Mathf.Pow(Distance, 2f);
             
             if (distanceToEnemy<=attackDistance && !InCooldown)

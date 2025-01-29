@@ -38,8 +38,8 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void Awake()
         {
-            _unitsRepository = new UnitsRepository();
             _unitSelectionManager = new UnitSelectionManager(_groundMarker);
+            _unitsRepository = new UnitsRepository(_unitSelectionManager);
             _unitSelectionBox.Construct(_unitsRepository, _unitSelectionManager);
             _generator = new BoxGenerator();
             _formationController = new FormationController(_generator);

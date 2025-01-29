@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Character.Model;
+using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Selection
@@ -12,7 +13,7 @@ namespace _RTSGameProject.Logic.Common.Selection
     
         public List<Unit> SelectedUnits { get; private set; }
 
-        public UnitSelectionManager( GameObject groundMarker)
+        public UnitSelectionManager(GameObject groundMarker)
         {
             GroundMarker = groundMarker;
             SelectedUnits = new List<Unit>();
@@ -87,12 +88,18 @@ namespace _RTSGameProject.Logic.Common.Selection
 
         private void EnableUnitMovement(Unit unit, bool isMove)
         {
-            unit.GetComponent<UnitMovement>().enabled = isMove;
+            if (unit != null)
+            {
+                unit.GetComponent<UnitMovement>().enabled = isMove;
+            }
         }
 
         private void TriggerSectionIndicator(Unit unit, bool isVisible)
         {
-            unit.transform.GetChild(0).gameObject.SetActive(isVisible);
+            if (unit != null)
+            {
+                unit.transform.GetChild(0).gameObject.SetActive(isVisible);
+            }
         }
     }
 }
