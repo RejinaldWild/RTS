@@ -177,6 +177,7 @@ MonoBehaviour:
   _agent: {fileID: 709487745954094920}
   _updatePathCooldown: 0.15
   _currentCooldown: 0
+  _unitAttackAct: {fileID: 8961159229944015862}
 --- !u!114 &2317824650960321388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,7 +205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ffeeb36581d46e6ac8cadf20b014e2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Distance>k__BackingField: 2
+  <DistanceToAttack>k__BackingField: 1
   _currentCooldown: 1.5
   _damage: 4
   _cooldown: 1.5

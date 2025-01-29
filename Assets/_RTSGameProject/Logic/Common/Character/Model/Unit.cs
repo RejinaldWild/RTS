@@ -102,7 +102,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             if (_enemy != null && this != null) //?
             {
                 float distanceDiff = Vector3.SqrMagnitude(transform.position - _enemy.transform.position); //???
-                return distanceDiff <= Mathf.Pow(DistanceToFindEnemy,2f);
+                return distanceDiff<= Mathf.Pow(DistanceToFindEnemy,2f);
             }
             
             return false;
@@ -111,7 +111,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         private bool IsAttackEnemy()
         {
             float distanceDiffToAttack = Vector3.SqrMagnitude(transform.position - _enemy.transform.position);
-            float distanceToAttack = Mathf.Pow(_attackAct.Distance, 2f);
+            float distanceToAttack = Mathf.Pow(_attackAct.DistanceToAttack, 2f);
             return distanceToAttack >= distanceDiffToAttack;
         }
         
@@ -127,7 +127,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         private IEnumerator AttackCommand()
         {
             while(this != null && _enemy != null &&
-                  Mathf.Pow(_attackAct.Distance, 2f) >= Vector3.SqrMagnitude(transform.position - _enemy.transform.position)) //?
+                  Mathf.Pow(_attackAct.DistanceToAttack, 2f) >= Vector3.SqrMagnitude(transform.position - _enemy.transform.position)) //?
             {
                 _attackAct.Execute(_enemy);
                 yield return new WaitForSeconds(0.1f);

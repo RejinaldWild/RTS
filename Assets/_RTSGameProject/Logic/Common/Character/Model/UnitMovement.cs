@@ -11,7 +11,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         [SerializeField] private NavMeshAgent _agent;
         [SerializeField] private float _updatePathCooldown;
         [SerializeField] private float _currentCooldown;
-        
+        [SerializeField] private UnitAttackAct _unitAttackAct;
         private bool InCooldown => _currentCooldown >0.1f;
 
         private void Update()
@@ -37,10 +37,15 @@ namespace _RTSGameProject.Logic.Common.Character.Model
 
         public void MoveTo(Unit unit, Vector3 unitPosition, int team)
         {
-            if (team != unit.Team && Vector3.Distance( _agent.destination,unitPosition) > MAX_THRESHOLD || !InCooldown)
+            if (_agent.isOnNavMesh && _agent.isActiveAndEnabled)
             {
-                _agent.destination = unitPosition;
-                _currentCooldown = _updatePathCooldown;
+                if ((team != unit.Team && Vector3.Distance( _agent.destination,unitPosition) > MAX_THRESHOLD) || !InCooldown)
+                {
+                    Vector3 direction = unitPosition - _agent.transform.position;
+                    Vector3 targetPosition = unitPosition - direction.normalized * _unitAttackAct.DistanceToAttack;
+                    _agent.destination = targetPosition; //?
+                    _currentCooldown = _updatePathCooldown;
+                }
             }
         }
     }

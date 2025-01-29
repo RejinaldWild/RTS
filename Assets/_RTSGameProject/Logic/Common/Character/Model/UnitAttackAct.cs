@@ -7,7 +7,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
     {
         public bool InCooldown => _currentCooldown>0.5f;
 
-        [field: SerializeField] public float Distance { get;private set; }
+        [field: SerializeField] public float DistanceToAttack { get;private set; }
         
         [field: SerializeField] private float _currentCooldown;
         
@@ -29,7 +29,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         public void Execute(Unit enemy)
         {
             float distanceToEnemy = Vector3.SqrMagnitude(transform.position - enemy.transform.position);
-            float attackDistance = Mathf.Pow(Distance, 2f);
+            float attackDistance = Mathf.Pow(DistanceToAttack, 2f);
             
             if (distanceToEnemy<=attackDistance && !InCooldown)
             {
@@ -44,12 +44,15 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         
         public bool EndCommand(bool priority, Unit enemy)
         {
-            float distanceToEnemy = Vector3.SqrMagnitude(transform.position - enemy.transform.position);
-            float attackDistance = Mathf.Pow(Distance, 2f);
-            
-            if (distanceToEnemy<attackDistance || !enemy.IsAlive)
+            if (enemy != null)
             {
-                return false;
+                float distanceToEnemy = Vector3.SqrMagnitude(transform.position - enemy.transform.position);
+                float attackDistance = Mathf.Pow(DistanceToAttack, 2f);
+                
+                if (distanceToEnemy<attackDistance || !enemy.IsAlive)
+                {
+                    return false;
+                }
             }
 
             return priority;
