@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using _RTSGameProject.Logic.Common.AI;
+using _RTSGameProject.Logic.Common.Building;
 using _RTSGameProject.Logic.Common.Camera;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
@@ -13,14 +14,17 @@ namespace _RTSGameProject.Logic.Bootstrap
 {
     public class EntryPoint : MonoBehaviour
     {
-        [SerializeField] private Transform _unitListParent;
         [SerializeField] private Camera _camera;
         [SerializeField] private GameObject _groundMarker;
-        [SerializeField] private UnitSelectionBox _unitSelectionBox;
+        [SerializeField] private SelectionBox selectionBox;
         [SerializeField] private LayerMask _clickable;
         [SerializeField] private LayerMask _ground;
+        [SerializeField] private LayerMask _buildingMask;
+        [SerializeField] private BuildingsRepository _buildingsRepository;
+        [SerializeField] private Building[] _buildings;
+        [SerializeField] private CanvasRenderer _canvasRenderer;
         
-        private UnitSelectionManager _unitSelectionManager;
+        private SelectionManager _selectionManager;
         private FormationController _formationController;
         private InputController _inputController;
         private InputCatchKeyClick _inputCatchKeyClick;
@@ -34,23 +38,25 @@ namespace _RTSGameProject.Logic.Bootstrap
         private UnitsRepository _unitsRepository;
         private Health _health;
         private AiFactory _aiFactory;
-        private Spawner _spawner;
 
         private void Awake()
         {
-            _unitSelectionManager = new UnitSelectionManager(_groundMarker);
-            _unitsRepository = new UnitsRepository(_unitSelectionManager);
-            _unitSelectionBox.Construct(_unitsRepository, _unitSelectionManager);
+            _selectionManager = new SelectionManager(_groundMarker);
+            _unitsRepository = new UnitsRepository(_selectionManager);
+            selectionBox.Construct(_unitsRepository, _buildingsRepository, _selectionManager);
             _generator = new BoxGenerator();
             _formationController = new FormationController(_generator);
             _inputCatchKeyClick = new InputCatchKeyClick(_camera);
             _actorsRepository = new ActorsRepository();
             _unitsFactory = new UnitsFactory(_unitsRepository);
             _aiFactory = new StateMachineAiFactory(_unitsRepository, _actorsRepository, _unitsFactory);
-            _spawner = new Spawner(_aiFactory);
             _stateMachines = new List<StateMachineActor>();
-            _inputController = new InputController(_inputCatchKeyClick, _unitSelectionManager, 
-                                                    _unitSelectionBox, _clickable, _ground, _formationController, _spawner);
+            _inputController = new InputController(_inputCatchKeyClick, _selectionManager, 
+                                                    selectionBox, _clickable, _ground, _buildingMask, _formationController, _canvasRenderer);
+            foreach (Building building in _buildings)
+            {
+                building.Construct(_aiFactory);
+            }
         }
 
         private void Update()

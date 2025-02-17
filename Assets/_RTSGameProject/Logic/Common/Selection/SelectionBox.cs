@@ -6,17 +6,18 @@ namespace _RTSGameProject.Logic.Common.Selection
     public class UnitSelectionBox : MonoBehaviour
     {
         [SerializeField] private RectTransform _boxVisual;
+        [SerializeField] private Canvas _canvas;
         private UnitsRepository _unitsRepository;
-        private UnitSelectionManager _unitSelectionManager;
+        private SelectionManager _selectionManager;
         private UnityEngine.Camera _mainCamera;
         private Rect _selectionBox;
         private Vector2 _startPosition;
         private Vector2 _endPosition;
 
-        public void Construct(UnitsRepository unitsRepository, UnitSelectionManager unitSelectionManager)
+        public void Construct(UnitsRepository unitsRepository, SelectionManager selectionManager)
         {
             _unitsRepository = unitsRepository;
-            _unitSelectionManager = unitSelectionManager;
+            _selectionManager = selectionManager;
         }
         
         private void Awake()
@@ -53,6 +54,16 @@ namespace _RTSGameProject.Logic.Common.Selection
             DrawVisual();
         }
         
+        private Vector2 GetMousePositionInCanvas()
+        {
+            Vector2 mousePosition = Input.mousePosition;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvas.GetComponent<RectTransform>(),
+                mousePosition, _canvas.worldCamera, out Vector2 localPoint);
+            localPoint /= _canvas.scaleFactor;
+
+            return localPoint;
+        }
+        
         private void DrawVisual()
         {
             Vector2 boxStart = _startPosition;
@@ -60,6 +71,7 @@ namespace _RTSGameProject.Logic.Common.Selection
             Vector2 boxCenter = (boxStart + boxEnd) / 2;
             _boxVisual.position = boxCenter;
             Vector2 boxSize = new Vector2(Mathf.Abs(boxStart.x - boxEnd.x), Mathf.Abs(boxStart.y - boxEnd.y));
+            //_boxVisual.anchoredPosition = (_startPosition + _endPosition)*0.5f;
             _boxVisual.sizeDelta = boxSize;
         }
  
@@ -94,7 +106,7 @@ namespace _RTSGameProject.Logic.Common.Selection
             {
                 if (_selectionBox.Contains(_mainCamera.WorldToScreenPoint(unit.transform.position)))
                 {
-                    _unitSelectionManager.DragSelect(unit);
+                    _selectionManager.DragSelect(unit);
                 }
             }
         }

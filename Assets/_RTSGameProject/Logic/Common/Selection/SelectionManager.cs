@@ -33,7 +33,7 @@ namespace _RTSGameProject.Logic.Common.Selection
             GroundMarker.SetActive(true);
         }
         
-        public void MultiSelectUnits(RaycastHit hit)
+        public void MultiSelect(RaycastHit hit)
         {
             hit.collider.TryGetComponent(out Unit unit);
             if(unit.Team == 0)

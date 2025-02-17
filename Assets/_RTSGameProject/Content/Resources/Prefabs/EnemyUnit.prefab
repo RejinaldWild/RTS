@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4083132231090110383}
   - component: {fileID: 6668604821263517292}
   - component: {fileID: 2847567634990492533}
-  - component: {fileID: 5489302599552919982}
   - component: {fileID: 7922203918792674301}
   - component: {fileID: 4193755895077011215}
   m_Layer: 0
@@ -110,26 +109,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5489302599552919982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7789464151134854829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b62ce3d525d714947af88bc3d5108932, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _unitMovement: {fileID: 0}
-  <Positions>k__BackingField:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  <CurrentPositionIndex>k__BackingField: 0
-  <Team>k__BackingField: 1
 --- !u!195 &7922203918792674301
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -165,3 +144,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _agent: {fileID: 7922203918792674301}
+  _updatePathCooldown: 0
+  _currentCooldown: 0
+  _unitAttackAct: {fileID: 0}
