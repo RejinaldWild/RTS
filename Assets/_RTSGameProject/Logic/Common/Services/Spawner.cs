@@ -13,12 +13,12 @@ namespace _RTSGameProject.Logic.Common.Services
             _aiFactory = aiFactory;
         }   
         
-        public void Spawn(int teamId)
+        public void Spawn(int teamId, Vector3 position)
         {
             if(teamId == 0)
-                _aiFactory.Create(teamId, new Vector3(22.5f,0.45f,32.65f));
+                _aiFactory.Create(teamId, position);
             if(teamId == 1)
-                _aiFactory.Create(teamId, new Vector3(29.2f,0.45f,22f));
+                _aiFactory.Create(teamId, position);
         }
     }
 }

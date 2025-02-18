@@ -3,20 +3,22 @@ using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Selection
 {
-    public class UnitSelectionBox : MonoBehaviour
+    public class SelectionBox : MonoBehaviour
     {
         [SerializeField] private RectTransform _boxVisual;
         [SerializeField] private Canvas _canvas;
         private UnitsRepository _unitsRepository;
+        private BuildingsRepository _buildingsRepository;
         private SelectionManager _selectionManager;
         private UnityEngine.Camera _mainCamera;
         private Rect _selectionBox;
         private Vector2 _startPosition;
         private Vector2 _endPosition;
 
-        public void Construct(UnitsRepository unitsRepository, SelectionManager selectionManager)
+        public void Construct(UnitsRepository unitsRepository, BuildingsRepository buildingsRepository, SelectionManager selectionManager)
         {
             _unitsRepository = unitsRepository;
+            _buildingsRepository = buildingsRepository;
             _selectionManager = selectionManager;
         }
         
@@ -38,9 +40,9 @@ namespace _RTSGameProject.Logic.Common.Selection
         {
             if (_boxVisual.rect.width > 0 || _boxVisual.rect.height > 0)
             {
-                SelectUnits();
+                ShowPreselect();
             }
-                
+            
             _endPosition = Input.mousePosition;
             DrawVisual();
             DrawSelection();
@@ -48,7 +50,7 @@ namespace _RTSGameProject.Logic.Common.Selection
 
         public void EndDrawAndSelect()
         {
-            SelectUnits();
+            Select();
             _startPosition = Vector2.zero;
             _endPosition = Vector2.zero;
             DrawVisual();
@@ -100,13 +102,40 @@ namespace _RTSGameProject.Logic.Common.Selection
             }
         }
  
-        private void SelectUnits()
+        private void Select() //?
         {
+            foreach (var building in _buildingsRepository.AllBuildings)
+            {
+                if (_selectionBox.Contains(_mainCamera.WorldToScreenPoint(building.transform.position)))
+                {
+                    _selectionManager.DragSelect(building);
+                }
+            }
+
             foreach (var unit in _unitsRepository.AllUnits)
             {
                 if (_selectionBox.Contains(_mainCamera.WorldToScreenPoint(unit.transform.position)))
                 {
                     _selectionManager.DragSelect(unit);
+                }
+            }
+        }
+        
+        private void ShowPreselect()
+        {
+            foreach (var building in _buildingsRepository.AllBuildings)
+            {
+                if (_selectionBox.Contains(_mainCamera.WorldToScreenPoint(building.transform.position)))
+                {
+                    _selectionManager.ShowDragPreselect(building);
+                }
+            }
+
+            foreach (var unit in _unitsRepository.AllUnits)
+            {
+                if (_selectionBox.Contains(_mainCamera.WorldToScreenPoint(unit.transform.position)))
+                {
+                    _selectionManager.ShowDragPreselect(unit);
                 }
             }
         }

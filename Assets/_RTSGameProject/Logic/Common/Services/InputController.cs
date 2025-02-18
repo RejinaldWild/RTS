@@ -1,121 +1,142 @@
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
     public class InputController
     {
-        private UnitSelectionManager _unitSelectionManager;
-        private UnitSelectionBox _unitSelectionBox;
+        private SelectionManager _selectionManager;
+        private SelectionBox _selectionBox;
         private LayerMask _clickable;
         private LayerMask _ground;
+        private LayerMask _building;
         private FormationController _formationController;
         private InputCatchKeyClick _inputCatchKeyClick;
-        private Spawner _spawner;
+        private CanvasRenderer _canvasRenderer;
 
-        public InputController(InputCatchKeyClick inputCatchKeyClick, UnitSelectionManager unitSelectionManager, 
-                                UnitSelectionBox unitSelectionBox, LayerMask clickable, 
-                                LayerMask ground, FormationController formationController, Spawner spawner)
+        public InputController(InputCatchKeyClick inputCatchKeyClick, SelectionManager selectionManager, 
+                                SelectionBox selectionBox, LayerMask clickable, 
+                                LayerMask ground, LayerMask building, FormationController formationController, CanvasRenderer canvasRenderer)
         {
             _inputCatchKeyClick = inputCatchKeyClick;
-            _unitSelectionManager = unitSelectionManager;
-            _unitSelectionBox = unitSelectionBox;
+            _selectionManager = selectionManager;
+            _selectionBox = selectionBox;
             _clickable = clickable;
             _ground = ground;
+            _building = building;
             _formationController = formationController;
-            _spawner = spawner;
+            _canvasRenderer = canvasRenderer;
 
-            _inputCatchKeyClick.OnLeftClickMouseButtonDown += OnLeftClickMouseButtonDowned;
             _inputCatchKeyClick.OnLeftClickMouseButton += OnLeftClickMouseButtoned;
+            _inputCatchKeyClick.OnLeftClickMouseButtonHold += OnLeftClickMouseButtonHolded;
             _inputCatchKeyClick.OnLeftClickMouseButtonUp += OnLeftClickMouseButtonUped;
             _inputCatchKeyClick.OnRightClickMouseButtonDown += OnRightClickMouseButtonDowned;
-            _inputCatchKeyClick.OnAlpha1KeyDown += OnAlpha1KeyDowned;
-            _inputCatchKeyClick.OnAlpha2KeyDown += OnAlpha2KeyDowned;
         }
 
         public void Unsubscribe()
         {
-            _inputCatchKeyClick.OnLeftClickMouseButtonDown -= OnLeftClickMouseButtonDowned;
             _inputCatchKeyClick.OnLeftClickMouseButton -= OnLeftClickMouseButtoned;
+            _inputCatchKeyClick.OnLeftClickMouseButtonHold -= OnLeftClickMouseButtonHolded;
             _inputCatchKeyClick.OnLeftClickMouseButtonUp -= OnLeftClickMouseButtonUped;
             _inputCatchKeyClick.OnRightClickMouseButtonDown -= OnRightClickMouseButtonDowned;
-            _inputCatchKeyClick.OnAlpha1KeyDown -= OnAlpha1KeyDowned;
-            _inputCatchKeyClick.OnAlpha2KeyDown -= OnAlpha2KeyDowned;
         }
         
-        private void OnLeftClickMouseButtonDowned(Ray ray)
+        private void OnLeftClickMouseButtoned(Ray ray)
         {
-            RaycastHit hit;
-            _unitSelectionBox.StartPositionSelectionBox();
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, _clickable))
+            if (!EventSystem.current.IsPointerOverGameObject())
             {
-                if (Input.GetKey(KeyCode.LeftShift))
+                RaycastHit hit;
+                _selectionBox.StartPositionSelectionBox();
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, _clickable))
                 {
-                    _unitSelectionManager.MultiSelectUnits(hit);
+                    if (Input.GetKey(KeyCode.LeftShift))
+                    {
+                        _selectionManager.MultiSelect(hit);
+                    }
+                    else
+                    {
+                        _selectionManager.Select(hit);
+                    }
+                }
+                else if (Physics.Raycast(ray, out hit, Mathf.Infinity, _building))
+                {
+                    if (Input.GetKey(KeyCode.LeftShift))
+                    {
+                        _selectionManager.MultiSelect(hit);
+                    }
+                    else
+                    {
+                        _selectionManager.Select(hit);
+                    }
                 }
                 else
                 {
-                    _unitSelectionManager.Select(hit);
+                    _selectionManager.DeselectAll();
                 }
-            }
-            else
-            {
-                _unitSelectionManager.DeselectAll();
             }
         }
         
-        private void OnRightClickMouseButtonDowned(Ray ray)
+        private void OnLeftClickMouseButtonHolded(Ray ray)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, _ground))
-            {
-                _unitSelectionManager.ShowGroundMarker(hit.point);
-                _formationController.SetFormationCenter(_unitSelectionManager.SelectedUnits);
-                foreach (var unit in _unitSelectionManager.SelectedUnits)
-                {
-                    unit.IsCommandedToAttack = false;
-                    unit.IsCommandedToMove = true;
-                    unit.RemoveEnemy();
-                    unit.Position = hit.point + unit.Position;
-                    unit.Move();
-                }
-            }
-
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, _clickable))
-            {
-                foreach (Unit unit in _unitSelectionManager.SelectedUnits)
-                {
-                    if (hit.collider.TryGetComponent(out Unit enemy) && enemy.Team != 0)
-                    {
-                        unit.IsCommandedToMove = false;
-                        unit.IsCommandedToAttack = true;
-                        unit.RemoveEnemy();
-                        unit.AssignEnemy(enemy);
-                        unit.Attack();
-                    }
-                }
-            }
+            _selectionBox.StartDrawAndSelect();
         }
         
         private void OnLeftClickMouseButtonUped()
         {
-            _unitSelectionBox.EndDrawAndSelect();
-        }
-
-        private void OnLeftClickMouseButtoned()
-        {
-            _unitSelectionBox.StartDrawAndSelect();
+            _selectionBox.EndDrawAndSelect();
         }
         
-        private void OnAlpha1KeyDowned()
+        private void OnRightClickMouseButtonDowned(Ray ray)
         {
-            _spawner.Spawn(0);
-        }
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+                RaycastHit hit;
+                if (_selectionManager.SelectedBuildings.Count > 0)
+                {
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, _ground))
+                    {
+                        foreach (var building in _selectionManager.SelectedBuildings)
+                        {
+                            //define Rally point
+                            building.SetRallyPoint(hit.point);
+                        }
+                    }
+                }
 
-        private void OnAlpha2KeyDowned()
-        {
-            _spawner.Spawn(1);
+                if (_selectionManager.SelectedUnits.Count > 0)
+                {
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, _ground))
+                    {
+                        _selectionManager.ShowGroundMarker(hit.point);
+                        _formationController.SetFormationCenter(_selectionManager.SelectedUnits);
+                        foreach (var unit in _selectionManager.SelectedUnits)
+                        {
+                            unit.IsCommandedToAttack = false;
+                            unit.IsCommandedToMove = true;
+                            unit.RemoveEnemy();
+                            unit.Position = hit.point + unit.Position;
+                            unit.Move();
+                        }
+                    }
+
+                    if (Physics.Raycast(ray, out hit, Mathf.Infinity, _clickable))
+                    {
+                        foreach (Unit unit in _selectionManager.SelectedUnits)
+                        {
+                            if (hit.collider.TryGetComponent(out Unit enemy) && enemy.Team != 0)
+                            {
+                                unit.IsCommandedToMove = false;
+                                unit.IsCommandedToAttack = true;
+                                unit.RemoveEnemy();
+                                unit.AssignEnemy(enemy);
+                                unit.Attack();
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

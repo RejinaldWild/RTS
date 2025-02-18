@@ -1,29 +1,37 @@
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Character.Model;
-using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace _RTSGameProject.Logic.Common.Selection
 {
-    public class UnitSelectionManager
+    public class SelectionManager
     {
         private LayerMask _clickable;
         private LayerMask _ground;
         private GameObject GroundMarker;
-    
+        
+        public List<Building.Building> SelectedBuildings { get; private set; }
         public List<Unit> SelectedUnits { get; private set; }
 
-        public UnitSelectionManager(GameObject groundMarker)
+        public SelectionManager(GameObject groundMarker)
         {
             GroundMarker = groundMarker;
+            SelectedBuildings = new List<Building.Building>();
             SelectedUnits = new List<Unit>();
         }
 
         public void Select(RaycastHit hit)
         {
-            hit.collider.TryGetComponent(out Unit unit);
-            if(unit.Team == 0)
+            if (hit.collider.TryGetComponent(out Unit unit) && unit.Team == 0)
+            {
                 SelectByClicking(unit);
+            }
+            else if (hit.collider.TryGetComponent(out Building.Building building) && building.Team == 0)
+            {
+                SelectByClicking(building);
+                building.ToggleUI(true);
+            }
         }
         
         public void ShowGroundMarker(Vector3 point)
@@ -35,9 +43,19 @@ namespace _RTSGameProject.Logic.Common.Selection
         
         public void MultiSelect(RaycastHit hit)
         {
-            hit.collider.TryGetComponent(out Unit unit);
-            if(unit.Team == 0)
-                MultiSelect(unit);
+            if(hit.collider.TryGetComponent(out Unit unit) && unit.Team == 0)
+                MultiSelectUnit(unit);
+            else if (hit.collider.TryGetComponent(out Building.Building building) && building.Team == 0)
+                MultiSelectBuilding(building);
+            
+        }
+        
+        public void ShowDragPreselect(Unit unit)
+        {
+            if (SelectedUnits.Contains(unit) == false && unit.Team == 0)
+            {
+                PreselectTriggerSectionIndicator(unit, true);
+            }
         }
         
         public void DragSelect(Unit unit)
@@ -48,18 +66,46 @@ namespace _RTSGameProject.Logic.Common.Selection
                 SelectUnit(unit, true);
             }
         }
+        
+        public void ShowDragPreselect(Building.Building building)
+        {
+            if (SelectedBuildings.Contains(building) == false && building.Team == 0)
+            {
+                PreselectTriggerSectionIndicator(building, true);
+            }
+        }
+        
+        public void DragSelect(Building.Building building)
+        {
+            if (SelectedBuildings.Contains(building) == false && building.Team == 0)
+            {
+                SelectedBuildings.Add(building);
+                SelectBuilding(building, true);
+                building.ToggleUI(true);
+            }
+        }
+        
     
         public void DeselectAll()
         {
             foreach (var unit in SelectedUnits)
             {
+                PreselectTriggerSectionIndicator(unit, false);
                 SelectUnit(unit, false);
             }
             GroundMarker.SetActive(false);
             SelectedUnits.Clear();
+            
+            foreach (var building in SelectedBuildings)
+            {
+                PreselectTriggerSectionIndicator(building, false);
+                SelectBuilding(building, false);
+                building.ToggleUI(false);
+            }
+            SelectedBuildings.Clear();
         }
         
-        public void MultiSelect(Unit unit)
+        public void MultiSelectUnit(Unit unit)
         {
             if (SelectedUnits.Contains(unit) == false)
             {
@@ -73,10 +119,33 @@ namespace _RTSGameProject.Logic.Common.Selection
             }
         }
         
+        public void MultiSelectBuilding(Building.Building building)
+        {
+            if (SelectedBuildings.Contains(building) == false)
+            {
+                SelectedBuildings.Add(building);
+                SelectBuilding(building, true);
+                building.ToggleUI(true);
+            }
+            else
+            {
+                SelectedBuildings.Remove(building);
+                SelectBuilding(building, false);
+                building.ToggleUI(false);
+            }
+        }
+        
         private void SelectUnit(Unit unit, bool isSelected)
         {
+            PreselectTriggerSectionIndicator(unit, false);
             TriggerSectionIndicator(unit, isSelected);
             EnableUnitMovement(unit, isSelected);
+        }
+        
+        private void SelectBuilding(Building.Building building, bool isSelected)
+        {
+            PreselectTriggerSectionIndicator(building, false);
+            TriggerSectionIndicator(building, isSelected);
         }
         
         private void SelectByClicking(Unit unit)
@@ -86,6 +155,15 @@ namespace _RTSGameProject.Logic.Common.Selection
             SelectUnit(unit, true);
         }
 
+        private void SelectByClicking(Building.Building building)
+        {
+            DeselectAll();
+            SelectedBuildings.Add(building);
+            SelectBuilding(building, true);
+            building.ToggleUI(true);
+        }
+        
+        
         private void EnableUnitMovement(Unit unit, bool isMove)
         {
             if (unit != null)
@@ -94,11 +172,35 @@ namespace _RTSGameProject.Logic.Common.Selection
             }
         }
 
+        private void PreselectTriggerSectionIndicator(Unit unit, bool isVisible)
+        {
+            if (unit != null)
+            {
+                unit.transform.GetChild(1).gameObject.SetActive(isVisible);
+            }
+        }
+        
         private void TriggerSectionIndicator(Unit unit, bool isVisible)
         {
             if (unit != null)
             {
                 unit.transform.GetChild(0).gameObject.SetActive(isVisible);
+            }
+        }
+        
+        private void PreselectTriggerSectionIndicator(Building.Building building, bool isVisible)
+        {
+            if (building != null)
+            {
+                building.transform.GetChild(1).gameObject.SetActive(isVisible);
+            }
+        }
+        
+        private void TriggerSectionIndicator(Building.Building building, bool isVisible)
+        {
+            if (building != null)
+            {
+                building.transform.GetChild(0).gameObject.SetActive(isVisible);
             }
         }
     }

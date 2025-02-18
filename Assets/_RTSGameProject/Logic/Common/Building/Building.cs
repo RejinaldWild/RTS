@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Services;
@@ -12,10 +13,10 @@ namespace _RTSGameProject.Logic.Common.Building
         [Header("Settings")]
         [SerializeField] private Unit[] _unitsPrefabs;
         [SerializeField] private CanvasGroup _canvasGroup;
+        [SerializeField] private List<Transform> _spawnPoints;
         
         private Button[] _uiButtons;
         private Transform _startSpawnPoint;
-        private Transform _spawnPoint;
         private Spawner _spawner;
         private AiFactory _aiFactory;
         private Vector3 _rallyPoint;
@@ -24,6 +25,8 @@ namespace _RTSGameProject.Logic.Common.Building
         
         public void Construct(AiFactory aiFactory)
         {
+            _startSpawnPoint = _spawnPoints[0];
+            _rallyPoint = _startSpawnPoint.position;
             _aiFactory = aiFactory;
             _spawner = new Spawner(_aiFactory);
         }
@@ -47,7 +50,14 @@ namespace _RTSGameProject.Logic.Common.Building
 
         public void SpawnUnit()
         {
-            _spawner.Spawn(Team);
+            if (_rallyPoint != _startSpawnPoint.position)
+            {
+                _spawner.Spawn(Team, _rallyPoint);
+            }
+            else
+            {
+                _spawner.Spawn(Team, _startSpawnPoint.position);
+            }
         }
     }
 }
