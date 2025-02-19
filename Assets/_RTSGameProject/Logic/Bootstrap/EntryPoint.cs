@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Building;
+using _RTSGameProject.Logic.Common.Building.Model;
 using _RTSGameProject.Logic.Common.Camera;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
@@ -9,6 +10,7 @@ using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.StateMachine.Core;
 using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace _RTSGameProject.Logic.Bootstrap
 {
@@ -16,11 +18,10 @@ namespace _RTSGameProject.Logic.Bootstrap
     {
         [SerializeField] private Camera _camera;
         [SerializeField] private GameObject _groundMarker;
-        [SerializeField] private SelectionBox selectionBox;
+        [SerializeField] private SelectionBox _selectionBox;
         [SerializeField] private LayerMask _clickable;
         [SerializeField] private LayerMask _ground;
         [SerializeField] private LayerMask _buildingMask;
-        [SerializeField] private BuildingsRepository _buildingsRepository;
         [SerializeField] private Building[] _buildings;
         [SerializeField] private CanvasRenderer _canvasRenderer;
         
@@ -35,6 +36,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         private UnitsFactory _unitsFactory;
         private List<StateMachineActor> _stateMachines;
         private CameraController _cameraController;
+        private BuildingsRepository _buildingsRepository;
         private UnitsRepository _unitsRepository;
         private Health _health;
         private AiFactory _aiFactory;
@@ -42,8 +44,9 @@ namespace _RTSGameProject.Logic.Bootstrap
         private void Awake()
         {
             _selectionManager = new SelectionManager(_groundMarker);
+            _buildingsRepository = new BuildingsRepository(_selectionManager, _buildings);
             _unitsRepository = new UnitsRepository(_selectionManager);
-            selectionBox.Construct(_unitsRepository, _buildingsRepository, _selectionManager);
+            _selectionBox.Construct(_unitsRepository, _buildingsRepository, _selectionManager);
             _generator = new BoxGenerator();
             _formationController = new FormationController(_generator);
             _inputCatchKeyClick = new InputCatchKeyClick(_camera);
@@ -52,7 +55,7 @@ namespace _RTSGameProject.Logic.Bootstrap
             _aiFactory = new StateMachineAiFactory(_unitsRepository, _actorsRepository, _unitsFactory);
             _stateMachines = new List<StateMachineActor>();
             _inputController = new InputController(_inputCatchKeyClick, _selectionManager, 
-                                                    selectionBox, _clickable, _ground, _buildingMask, _formationController, _canvasRenderer);
+                                                    _selectionBox, _clickable, _ground, _buildingMask, _formationController, _canvasRenderer);
             foreach (Building building in _buildings)
             {
                 building.Construct(_aiFactory);

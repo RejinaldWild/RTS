@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Character.Model
 {
-    public class Unit : MonoBehaviour
+    public class Unit : MonoBehaviour, ISelectable
     {
         [field: SerializeField] public Vector3 StartPosition{get; private set;}
         [field: SerializeField] public int Team { get; set; }

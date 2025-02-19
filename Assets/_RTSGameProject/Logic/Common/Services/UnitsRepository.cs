@@ -9,7 +9,6 @@ namespace _RTSGameProject.Logic.Common.Services
     public class UnitsRepository
     {
         public List<Unit> AllUnits;
-        private Health _health;
         private SelectionManager _selectionManager;
 
         public UnitsRepository(SelectionManager selectionManager)

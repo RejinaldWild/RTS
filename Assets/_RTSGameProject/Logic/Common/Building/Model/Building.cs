@@ -1,24 +1,22 @@
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.AI;
+using _RTSGameProject.Logic.Common.Building.View;
 using _RTSGameProject.Logic.Common.Character.Model;
+using _RTSGameProject.Logic.Common.Character.View;
 using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace _RTSGameProject.Logic.Common.Building
+namespace _RTSGameProject.Logic.Common.Building.Model
 {
-    [RequireComponent(typeof(CanvasGroup))]
-    public class Building : MonoBehaviour
+    public class Building : MonoBehaviour, ISelectable
     {
-        [Header("Settings")]
-        [SerializeField] private Unit[] _unitsPrefabs;
-        [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private List<Transform> _spawnPoints;
+        [SerializeField] private BuildPanel _buildPanel;
         
-        private Button[] _uiButtons;
-        private Transform _startSpawnPoint;
+        private TeamColor _teamColor;
         private Spawner _spawner;
         private AiFactory _aiFactory;
+        private Transform _startSpawnPoint;
         private Vector3 _rallyPoint;
         
         [field: SerializeField] public int Team { get; set; }
@@ -33,7 +31,7 @@ namespace _RTSGameProject.Logic.Common.Building
         
         private void Start()
         {
-            ToggleUI(false);
+            _buildPanel.ToggleUI(false);
         }
         
         public void SetRallyPoint(Vector3 rallyPoint)
@@ -41,13 +39,11 @@ namespace _RTSGameProject.Logic.Common.Building
             _rallyPoint = rallyPoint;
         }
 
-        public void ToggleUI(bool isShow)
+        public void ShowUIPanel(bool show)
         {
-            _canvasGroup.alpha = isShow ? 1 : 0;
-            _canvasGroup.interactable = isShow;
-            _canvasGroup.blocksRaycasts = isShow;
+            _buildPanel.ToggleUI(show);
         }
-
+        
         public void SpawnUnit()
         {
             if (_rallyPoint != _startSpawnPoint.position)
