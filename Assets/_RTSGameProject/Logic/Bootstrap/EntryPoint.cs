@@ -1,16 +1,12 @@
-using System.Collections.Generic;
 using System.Linq;
 using _RTSGameProject.Logic.Common.AI;
-using _RTSGameProject.Logic.Common.Building;
-using _RTSGameProject.Logic.Common.Building.Model;
 using _RTSGameProject.Logic.Common.Camera;
 using _RTSGameProject.Logic.Common.Character.Model;
+using _RTSGameProject.Logic.Common.Construction.Model;
 using _RTSGameProject.Logic.Common.Selection;
 using _RTSGameProject.Logic.Common.Services;
-using _RTSGameProject.Logic.StateMachine.Core;
 using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _RTSGameProject.Logic.Bootstrap
 {
@@ -22,8 +18,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private LayerMask _clickable;
         [SerializeField] private LayerMask _ground;
         [SerializeField] private LayerMask _buildingMask;
-        [SerializeField] private Building[] _buildings;
-        [SerializeField] private CanvasRenderer _canvasRenderer;
+        [SerializeField] private HouseBuilding[] _buildings;
         
         private SelectionManager _selectionManager;
         private FormationController _formationController;
@@ -34,7 +29,6 @@ namespace _RTSGameProject.Logic.Bootstrap
         private ActorsRepository _actorsRepository;
         private StateMachineAiFactory _stateMachineAiFactory;
         private UnitsFactory _unitsFactory;
-        private List<StateMachineActor> _stateMachines;
         private CameraController _cameraController;
         private BuildingsRepository _buildingsRepository;
         private UnitsRepository _unitsRepository;
@@ -53,10 +47,9 @@ namespace _RTSGameProject.Logic.Bootstrap
             _actorsRepository = new ActorsRepository();
             _unitsFactory = new UnitsFactory(_unitsRepository);
             _aiFactory = new StateMachineAiFactory(_unitsRepository, _actorsRepository, _unitsFactory);
-            _stateMachines = new List<StateMachineActor>();
             _inputController = new InputController(_inputCatchKeyClick, _selectionManager, 
-                                                    _selectionBox, _clickable, _ground, _buildingMask, _formationController, _canvasRenderer);
-            foreach (Building building in _buildings)
+                                                    _selectionBox, _clickable, _ground, _buildingMask, _formationController);
+            foreach (HouseBuilding building in _buildings)
             {
                 building.Construct(_aiFactory);
             }

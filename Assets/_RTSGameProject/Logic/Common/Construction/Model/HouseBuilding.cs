@@ -6,7 +6,7 @@ using _RTSGameProject.Logic.Common.Character.View;
 using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
 
-namespace _RTSGameProject.Logic.Common.Building.Model
+namespace _RTSGameProject.Logic.Common.Construction.Model
 {
     public class Building : MonoBehaviour, ISelectable
     {
@@ -33,7 +33,7 @@ namespace _RTSGameProject.Logic.Common.Building.Model
         {
             _buildPanel.ToggleUI(false);
         }
-        
+
         public void SetRallyPoint(Vector3 rallyPoint)
         {
             _rallyPoint = rallyPoint;
@@ -54,6 +54,16 @@ namespace _RTSGameProject.Logic.Common.Building.Model
             {
                 _spawner.Spawn(Team, _startSpawnPoint.position);
             }
+        }
+
+        public void Subscribe()
+        {
+            _buildPanel.OnClick += SpawnUnit;
+        }
+        
+        public void Unsubscribe()
+        {
+            _buildPanel.OnClick -= SpawnUnit;
         }
     }
 }

@@ -14,11 +14,10 @@ namespace _RTSGameProject.Logic.Common.Services
         private LayerMask _building;
         private FormationController _formationController;
         private InputCatchKeyClick _inputCatchKeyClick;
-        private CanvasRenderer _canvasRenderer;
 
         public InputController(InputCatchKeyClick inputCatchKeyClick, SelectionManager selectionManager, 
                                 SelectionBox selectionBox, LayerMask clickable, 
-                                LayerMask ground, LayerMask building, FormationController formationController, CanvasRenderer canvasRenderer)
+                                LayerMask ground, LayerMask building, FormationController formationController)
         {
             _inputCatchKeyClick = inputCatchKeyClick;
             _selectionManager = selectionManager;
@@ -27,7 +26,6 @@ namespace _RTSGameProject.Logic.Common.Services
             _ground = ground;
             _building = building;
             _formationController = formationController;
-            _canvasRenderer = canvasRenderer;
 
             _inputCatchKeyClick.OnLeftClickMouseButton += OnLeftClickMouseButtoned;
             _inputCatchKeyClick.OnLeftClickMouseButtonHold += OnLeftClickMouseButtonHolded;
@@ -50,17 +48,6 @@ namespace _RTSGameProject.Logic.Common.Services
                 RaycastHit hit;
                 _selectionBox.StartPositionSelectionBox();
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity, _clickable))
-                {
-                    if (Input.GetKey(KeyCode.LeftShift))
-                    {
-                        _selectionManager.MultiSelect(hit);
-                    }
-                    else
-                    {
-                        _selectionManager.Select(hit);
-                    }
-                }
-                else if (Physics.Raycast(ray, out hit, Mathf.Infinity, _building))
                 {
                     if (Input.GetKey(KeyCode.LeftShift))
                     {

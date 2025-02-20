@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7736495220647954957}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SpawnPoint01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2437492804488474246}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SpawnPoint03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 4374093053394930396}
   - component: {fileID: 8887760833379112726}
   - component: {fileID: 6454456973189954223}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PreselectedInditator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 4531626101743444839}
   - component: {fileID: 797067497898030662}
   - component: {fileID: 3528052499586031916}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SelectedIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -290,8 +290,9 @@ GameObject:
   - component: {fileID: 1215101448786747392}
   - component: {fileID: -8750833695692511682}
   - component: {fileID: 3760133893288405954}
+  - component: {fileID: 6319284467948502890}
   - component: {fileID: -819942210279383430}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,14 +403,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54486a6484c596047bac83b9b3995d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitsPrefabs:
-  - {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7, type: 3}
-  _canvasGroup: {fileID: 0}
   _spawnPoints:
   - {fileID: 7736495220647954957}
   - {fileID: 1909205026860015547}
   - {fileID: 2437492804488474246}
   - {fileID: 259135343245582808}
+  _buildPanel: {fileID: 0}
   <Team>k__BackingField: 0
 --- !u!208 &3760133893288405954
 NavMeshObstacle:
@@ -427,6 +426,26 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &6319284467948502890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4494441841740451746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 802ab207766c4a53b7cae7563538f44d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unit: {fileID: 0}
+  _houseBuilding: {fileID: -8750833695692511682}
+  _colorConfigs:
+  - Team: 0
+    Color: {r: 0.03137255, g: 0.17254902, b: 1, a: 1}
+  - Team: 1
+    Color: {r: 0.99215686, g: 0, b: 0, a: 1}
+  _renderer: {fileID: 4882862198346862402}
 --- !u!225 &-819942210279383430
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -448,7 +467,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 259135343245582808}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SpawnPoint04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -479,7 +498,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1909205026860015547}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SpawnPoint02
   m_TagString: Untagged
   m_Icon: {fileID: 0}

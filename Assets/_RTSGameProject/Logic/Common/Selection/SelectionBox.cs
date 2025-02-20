@@ -102,7 +102,7 @@ namespace _RTSGameProject.Logic.Common.Selection
             }
         }
  
-        private void Select() //?
+        private void Select() // at first must be units, if no units in box, then select buildings
         {
             foreach (var building in _buildingsRepository.AllBuildings)
             {
@@ -121,13 +121,17 @@ namespace _RTSGameProject.Logic.Common.Selection
             }
         }
         
-        private void ShowPreselect()
+        private void ShowPreselect() // at first must be units, if no units in box, then preselect buildings
         {
             foreach (var building in _buildingsRepository.AllBuildings)
             {
                 if (_selectionBox.Contains(_mainCamera.WorldToScreenPoint(building.transform.position)))
                 {
                     _selectionManager.ShowDragPreselect(building);
+                }
+                if (!_selectionBox.Contains(_mainCamera.WorldToScreenPoint(building.transform.position)))
+                {
+                    _selectionManager.HidDragPreselect(building);
                 }
             }
 
@@ -136,6 +140,10 @@ namespace _RTSGameProject.Logic.Common.Selection
                 if (_selectionBox.Contains(_mainCamera.WorldToScreenPoint(unit.transform.position)))
                 {
                     _selectionManager.ShowDragPreselect(unit);
+                }
+                if (!_selectionBox.Contains(_mainCamera.WorldToScreenPoint(unit.transform.position)))
+                {
+                    _selectionManager.HidDragPreselect(unit);
                 }
             }
         }

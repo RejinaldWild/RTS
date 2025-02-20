@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Character.Model;
+using _RTSGameProject.Logic.Common.Construction.Model;
 
 namespace _RTSGameProject.Logic.Common.Selection
 {
@@ -11,12 +12,12 @@ namespace _RTSGameProject.Logic.Common.Selection
         private GameObject GroundMarker;
         
         public List<Unit> SelectedUnits { get; private set; }
-        public List<Building.Model.Building> SelectedBuildings { get; private set; }
+        public List<HouseBuilding> SelectedBuildings { get; private set; }
 
         public SelectionManager(GameObject groundMarker)
         {
             GroundMarker = groundMarker;
-            SelectedBuildings = new List<Building.Model.Building>();
+            SelectedBuildings = new List<HouseBuilding>();
             SelectedUnits = new List<Unit>();
         }
 
@@ -48,7 +49,7 @@ namespace _RTSGameProject.Logic.Common.Selection
                PreselectTriggerSectionIndicator(unit, true);
             }
             
-            if (selectable is Building.Model.Building building && SelectedBuildings.Contains(building) == false && building.Team == 0)
+            if (selectable is HouseBuilding building && SelectedBuildings.Contains(building) == false && building.Team == 0)
             {
                 PreselectTriggerSectionIndicator(building, true);
             }
@@ -61,7 +62,7 @@ namespace _RTSGameProject.Logic.Common.Selection
                 PreselectTriggerSectionIndicator(unit, false);
             }
             
-            if (selectable is Building.Model.Building building && SelectedBuildings.Contains(building) == false && building.Team == 0)
+            if (selectable is HouseBuilding building && SelectedBuildings.Contains(building) == false && building.Team == 0)
             {
                 PreselectTriggerSectionIndicator(building, false);
             }
@@ -75,10 +76,11 @@ namespace _RTSGameProject.Logic.Common.Selection
                 SelectSelectable(unit, true);
             }
 
-            if (selectable is Building.Model.Building building && SelectedBuildings.Contains(building) == false && building.Team == 0)
+            if (selectable is HouseBuilding building && SelectedBuildings.Contains(building) == false && building.Team == 0)
             {
                 SelectedBuildings.Add(building);
                 SelectSelectable(building, true);
+                building.Subscribe();
                 building.ShowUIPanel(true);
             }
         }
@@ -97,6 +99,7 @@ namespace _RTSGameProject.Logic.Common.Selection
             {
                 PreselectTriggerSectionIndicator(building, false);
                 SelectSelectable(building, false);
+                building.Unsubscribe();
                 building.ShowUIPanel(false);
             }
             SelectedBuildings.Clear();
@@ -118,18 +121,20 @@ namespace _RTSGameProject.Logic.Common.Selection
                 }
             }
             
-            if (selectable is Building.Model.Building building)
+            if (selectable is HouseBuilding building)
             {
                 if (SelectedBuildings.Contains(building) == false)
                 {
                     SelectedBuildings.Add(building);
                     SelectSelectable(building, true);
+                    building.Subscribe();
                     building.ShowUIPanel(true);
                 }
                 else
                 {
                     SelectedBuildings.Remove(building);
                     SelectSelectable(building, false);
+                    building.Unsubscribe();
                     building.ShowUIPanel(false);
                 }
             }
@@ -144,7 +149,7 @@ namespace _RTSGameProject.Logic.Common.Selection
                 EnableUnitMovement(unit, isSelected);
             }
         }
-        
+
         private void SelectByClicking(ISelectable selectable)
         {
             DeselectAll();
@@ -154,10 +159,11 @@ namespace _RTSGameProject.Logic.Common.Selection
                 SelectSelectable(unit, true);
             }
 
-            if (selectable is Building.Model.Building building)
+            if (selectable is HouseBuilding building)
             {
                 SelectedBuildings.Add(building);
                 SelectSelectable(building, true);
+                building.Subscribe();
                 building.ShowUIPanel(true);
             }
         }
@@ -176,7 +182,7 @@ namespace _RTSGameProject.Logic.Common.Selection
             {
                 unit.transform.GetChild(1).gameObject.SetActive(isVisible);
             }
-            if (selectable is Building.Model.Building building)
+            if (selectable is HouseBuilding building)
             {
                 building.transform.GetChild(1).gameObject.SetActive(isVisible);
             }
@@ -188,7 +194,7 @@ namespace _RTSGameProject.Logic.Common.Selection
             {
                 unit.transform.GetChild(0).gameObject.SetActive(isVisible);
             }
-            if (selectable is Building.Model.Building building)
+            if (selectable is HouseBuilding building)
             {
                 building.transform.GetChild(0).gameObject.SetActive(isVisible);
             }
