@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using _RTSGameProject.Logic.Common.Character.Model;
+using UnityEngine;
 using UnityEngine.Events;
-using _RTSGameProject.Logic.Common.Character.Model;
+using UnityEngine.UI;
 
-namespace _RTSGameProject.Logic.Common.Building.View
+namespace _RTSGameProject.Logic.Common.Construction.View
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class BuildPanel : MonoBehaviour

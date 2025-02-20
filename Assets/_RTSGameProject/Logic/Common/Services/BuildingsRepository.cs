@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Character.Model;
+using _RTSGameProject.Logic.Common.Construction.Model;
 using _RTSGameProject.Logic.Common.Selection;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
     public class BuildingsRepository
     {
-        public List<Building.Model.Building> AllBuildings;
+        public List<HouseBuilding> AllBuildings;
         private Health _health;
         private SelectionManager _selectionManager;
         
-        public BuildingsRepository(SelectionManager selectionManager, Building.Model.Building[] buildings)
+        public BuildingsRepository(SelectionManager selectionManager, HouseBuilding[] buildings)
         {
-            AllBuildings = new List<Building.Model.Building>();
+            AllBuildings = new List<HouseBuilding>();
             foreach (var building in buildings)
             {
                 AllBuildings.Add(building);
@@ -20,13 +21,13 @@ namespace _RTSGameProject.Logic.Common.Services
             _selectionManager = selectionManager;
         }
         
-        public void Register(Building.Model.Building building) => 
-            AllBuildings.Add(building);
+        public void Register(HouseBuilding houseBuilding) => 
+            AllBuildings.Add(houseBuilding);
 
-        public void Unregister(Building.Model.Building building)
+        public void Unregister(HouseBuilding houseBuilding)
         {
-            AllBuildings.Remove(building);
-            _selectionManager.SelectedBuildings.Remove(building);
+            AllBuildings.Remove(houseBuilding);
+            _selectionManager.SelectedBuildings.Remove(houseBuilding);
         }
     }
 }

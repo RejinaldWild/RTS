@@ -223,6 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unit: {fileID: 3040500599371112830}
+  houseBuilding: {fileID: 0}
   _colorConfigs:
   - Team: 0
     Color: {r: 0.03039825, g: 0.17098679, b: 1, a: 1}

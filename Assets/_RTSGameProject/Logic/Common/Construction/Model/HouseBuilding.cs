@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.AI;
-using _RTSGameProject.Logic.Common.Building.View;
 using _RTSGameProject.Logic.Common.Character.Model;
-using _RTSGameProject.Logic.Common.Character.View;
+using _RTSGameProject.Logic.Common.Construction.View;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.Common.View;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Construction.Model
 {
-    public class Building : MonoBehaviour, ISelectable
+    public class HouseBuilding : MonoBehaviour, ISelectable
     {
         [SerializeField] private List<Transform> _spawnPoints;
         [SerializeField] private BuildPanel _buildPanel;
@@ -18,7 +18,7 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
         private AiFactory _aiFactory;
         private Transform _startSpawnPoint;
         private Vector3 _rallyPoint;
-        
+
         [field: SerializeField] public int Team { get; set; }
         
         public void Construct(AiFactory aiFactory)
@@ -49,10 +49,12 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
             if (_rallyPoint != _startSpawnPoint.position)
             {
                 _spawner.Spawn(Team, _rallyPoint);
+                _spawner.Spawn(1, new Vector3(34.8f,0.5f,20.75f));
             }
             else
             {
                 _spawner.Spawn(Team, _startSpawnPoint.position);
+                _spawner.Spawn(1, new Vector3(34.8f,0.5f,20.75f));
             }
         }
 
