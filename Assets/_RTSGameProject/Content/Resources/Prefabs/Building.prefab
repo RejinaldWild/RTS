@@ -403,12 +403,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54486a6484c596047bac83b9b3995d3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnPoints:
+  SpawnPoints:
   - {fileID: 7736495220647954957}
   - {fileID: 1909205026860015547}
   - {fileID: 2437492804488474246}
   - {fileID: 259135343245582808}
-  _buildPanel: {fileID: 0}
   <Team>k__BackingField: 0
 --- !u!208 &3760133893288405954
 NavMeshObstacle:

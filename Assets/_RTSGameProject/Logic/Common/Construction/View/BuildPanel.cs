@@ -15,7 +15,7 @@ namespace _RTSGameProject.Logic.Common.Construction.View
         [SerializeField] private Unit[] _unitsPrefabs;
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private Button[] _buttons;
-
+        
         private void Start()
         {
             ToggleUI(false);
@@ -32,17 +32,16 @@ namespace _RTSGameProject.Logic.Common.Construction.View
                 button.onClick.RemoveListener(HandleOnClick);
             }
         }
-
-        private void HandleOnClick()
-        {
-            OnClick?.Invoke();
-        }
         
         public void ToggleUI(bool isShow)
         {
             _canvasGroup.alpha = isShow ? 1 : 0;
             _canvasGroup.interactable = isShow;
             _canvasGroup.blocksRaycasts = isShow;
+        }
+        private void HandleOnClick()
+        {
+            OnClick?.Invoke();
         }
     }
 }

@@ -3,6 +3,7 @@ using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Camera;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Construction.Model;
+using _RTSGameProject.Logic.Common.Construction.View;
 using _RTSGameProject.Logic.Common.Selection;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.StateMachine.Implementation;
@@ -19,6 +20,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private LayerMask _ground;
         [SerializeField] private LayerMask _buildingMask;
         [SerializeField] private HouseBuilding[] _buildings;
+        [SerializeField] private BuildPanel _buildPanel;
         
         private SelectionManager _selectionManager;
         private FormationController _formationController;
@@ -32,6 +34,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         private CameraController _cameraController;
         private BuildingsRepository _buildingsRepository;
         private UnitsRepository _unitsRepository;
+        private PanelController _panelController;
         private Health _health;
         private AiFactory _aiFactory;
 
@@ -47,12 +50,16 @@ namespace _RTSGameProject.Logic.Bootstrap
             _actorsRepository = new ActorsRepository();
             _unitsFactory = new UnitsFactory(_unitsRepository);
             _aiFactory = new StateMachineAiFactory(_unitsRepository, _actorsRepository, _unitsFactory);
-            _inputController = new InputController(_inputCatchKeyClick, _selectionManager, 
-                                                    _selectionBox, _clickable, _ground, _buildingMask, _formationController);
+            _panelController = new PanelController(_buildPanel);
+            
             foreach (HouseBuilding building in _buildings)
             {
-                building.Construct(_aiFactory);
+                building.Construct(_aiFactory, _panelController);
             }
+            
+            _inputController = new InputController(_inputCatchKeyClick, _selectionManager, 
+                                                    _selectionBox, _clickable, _ground, 
+                                                    _buildingMask, _formationController);
         }
 
         private void Update()

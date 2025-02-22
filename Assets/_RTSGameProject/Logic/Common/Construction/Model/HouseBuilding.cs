@@ -1,37 +1,33 @@
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Character.Model;
-using _RTSGameProject.Logic.Common.Construction.View;
 using _RTSGameProject.Logic.Common.Services;
-using _RTSGameProject.Logic.Common.View;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Construction.Model
 {
     public class HouseBuilding : MonoBehaviour, ISelectable
     {
-        [SerializeField] private List<Transform> _spawnPoints;
-        [SerializeField] private BuildPanel _buildPanel;
+        [SerializeField] public List<Transform> SpawnPoints;
         
-        private TeamColor _teamColor;
-        private Spawner _spawner;
-        private AiFactory _aiFactory;
-        private Transform _startSpawnPoint;
+        private PanelController _panelController;
         private Vector3 _rallyPoint;
-
+        private Spawner _spawner;
+        private Transform _startSpawnPoint;
+        
         [field: SerializeField] public int Team { get; set; }
         
-        public void Construct(AiFactory aiFactory)
+        public void Construct(AiFactory aiFactory, PanelController panelController)
         {
-            _startSpawnPoint = _spawnPoints[0];
+            _startSpawnPoint = SpawnPoints[0];
             _rallyPoint = _startSpawnPoint.position;
-            _aiFactory = aiFactory;
-            _spawner = new Spawner(_aiFactory);
+            _panelController = panelController;
+            _spawner = new Spawner(aiFactory);
         }
         
         private void Start()
         {
-            _buildPanel.ToggleUI(false);
+            _panelController.StartUIPanel( false);
         }
 
         public void SetRallyPoint(Vector3 rallyPoint)
@@ -41,9 +37,9 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
 
         public void ShowUIPanel(bool show)
         {
-            _buildPanel.ToggleUI(show);
+            _panelController.ShowUIPanel(show);
         }
-        
+
         public void SpawnUnit()
         {
             if (_rallyPoint != _startSpawnPoint.position)
@@ -57,15 +53,15 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
                 _spawner.Spawn(1, new Vector3(34.8f,0.5f,20.75f));
             }
         }
-
+        
         public void Subscribe()
         {
-            _buildPanel.OnClick += SpawnUnit;
+            _panelController.Subscribe(this);
         }
         
         public void Unsubscribe()
         {
-            _buildPanel.OnClick -= SpawnUnit;
+            _panelController.Unsubscribe(this);
         }
     }
 }
