@@ -11,14 +11,9 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
             _buildPanel = buildPanel;
         }
         
-        public void StartUIPanel(bool isStart)
+        public void ShowUIPanel(bool flagShow)
         {
-            _buildPanel.ToggleUI(isStart);
-        }
-        
-        public void ShowUIPanel(bool show)
-        {
-            _buildPanel.ToggleUI(show);
+            _buildPanel.ToggleUI(flagShow);
         }
         
         public void Subscribe(HouseBuilding building)

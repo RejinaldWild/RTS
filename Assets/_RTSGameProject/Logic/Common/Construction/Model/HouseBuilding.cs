@@ -27,7 +27,7 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
         
         private void Start()
         {
-            _panelController.StartUIPanel( false);
+            _panelController.ShowUIPanel(false);
         }
 
         public void SetRallyPoint(Vector3 rallyPoint)
@@ -35,9 +35,9 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
             _rallyPoint = rallyPoint;
         }
 
-        public void ShowUIPanel(bool show)
+        public void ShowUIPanel(bool flagShow)
         {
-            _panelController.ShowUIPanel(show);
+            _panelController.ShowUIPanel(flagShow);
         }
 
         public void SpawnUnit()
