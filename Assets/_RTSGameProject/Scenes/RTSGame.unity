@@ -1316,7 +1316,7 @@ GameObject:
   - component: {fileID: 824608850}
   - component: {fileID: 824608849}
   m_Layer: 0
-  m_Name: EntryPoint
+  m_Name: EntryPointCore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

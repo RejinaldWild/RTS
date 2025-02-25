@@ -6,12 +6,13 @@ using _RTSGameProject.Logic.Common.Construction.Model;
 using _RTSGameProject.Logic.Common.Construction.View;
 using _RTSGameProject.Logic.Common.Selection;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.Common.View;
 using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Bootstrap
 {
-    public class EntryPoint : MonoBehaviour
+    public class EntryPointCore : MonoBehaviour
     {
         [SerializeField] private Camera _camera;
         [SerializeField] private GameObject _groundMarker;

@@ -25,7 +25,5 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
         {
             _buildPanel.OnClick -= building.SpawnUnit;
         }
-        
-        
     }
 }
