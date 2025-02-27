@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
@@ -8,6 +9,9 @@ namespace _RTSGameProject.Logic.Common.Services
 {
     public class UnitsRepository
     {
+        public event Action OnUnitKill;
+        public event Action OnEnemyKill;
+        
         public List<Unit> AllUnits;
         private SelectionManager _selectionManager;
 
@@ -55,6 +59,15 @@ namespace _RTSGameProject.Logic.Common.Services
 
         public void Unregister(Unit unit)
         {
+            if (unit.Team == 0)
+            {
+                OnUnitKill?.Invoke();
+            }
+
+            if (unit.Team == 1)
+            {
+                OnEnemyKill?.Invoke();
+            }
             AllUnits.Remove(unit);
             _selectionManager.SelectedUnits.Remove(unit);
         }

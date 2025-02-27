@@ -33,8 +33,10 @@ namespace _RTSGameProject.Logic.Common.Services
             for (int i = 0; i < _tryFindPoint; i++)
             {
                 Vector3 randomPoint = center + Random.insideUnitSphere * radius;
-                if(NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, _maxDistance, NavMesh.AllAreas))
-                    return hit.position;
+                if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, _maxDistance, NavMesh.AllAreas))
+                {
+                    return new Vector3(hit.position.x, 0.5f, hit.position.z);
+                }
             }
             return Vector3.zero;
         }

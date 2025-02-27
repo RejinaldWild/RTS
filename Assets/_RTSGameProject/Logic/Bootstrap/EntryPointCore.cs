@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Camera;
@@ -14,6 +15,9 @@ namespace _RTSGameProject.Logic.Bootstrap
 {
     public class EntryPointCore : MonoBehaviour
     {
+        [SerializeField] private int _winConditionKillUnits;
+        [SerializeField] private int _loseConditionKillUnits;
+        [SerializeField] private WinLoseWindow _winLoseWindow;
         [SerializeField] private Camera _camera;
         [SerializeField] private GameObject _groundMarker;
         [SerializeField] private SelectionBox _selectionBox;
@@ -22,6 +26,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private LayerMask _buildingMask;
         [SerializeField] private HouseBuilding[] _buildings;
         [SerializeField] private BuildPanel _buildPanel;
+        [SerializeField] private MainMenuButton _mainMenuButton;
         
         private SelectionManager _selectionManager;
         private FormationController _formationController;
@@ -38,6 +43,8 @@ namespace _RTSGameProject.Logic.Bootstrap
         private PanelController _panelController;
         private Health _health;
         private AiFactory _aiFactory;
+        private WinLoseGame _winLoseGame;
+        private ReturnToMainMenu _returnToMainMenuMenu;
 
         private void Awake()
         {
@@ -52,7 +59,8 @@ namespace _RTSGameProject.Logic.Bootstrap
             _unitsFactory = new UnitsFactory(_unitsRepository);
             _aiFactory = new StateMachineAiFactory(_unitsRepository, _actorsRepository, _unitsFactory);
             _panelController = new PanelController(_buildPanel);
-            
+            _winLoseGame = new WinLoseGame(_winLoseWindow,_unitsRepository, _winConditionKillUnits, _loseConditionKillUnits);
+            _returnToMainMenuMenu = new ReturnToMainMenu(_mainMenuButton);
             foreach (HouseBuilding building in _buildings)
             {
                 building.Construct(_aiFactory, _panelController);
@@ -75,6 +83,8 @@ namespace _RTSGameProject.Logic.Bootstrap
         private void OnDestroy()
         {
             _inputController.Unsubscribe();
+            _winLoseGame.Unsubscribe();
+            _returnToMainMenuMenu.Unsubscribe();
             StopAllCoroutines();
         }
     }

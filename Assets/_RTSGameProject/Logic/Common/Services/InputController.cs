@@ -86,7 +86,6 @@ namespace _RTSGameProject.Logic.Common.Services
                     {
                         foreach (var building in _selectionManager.SelectedBuildings)
                         {
-                            //define Rally point
                             building.SetRallyPoint(hit.point);
                         }
                     }
