@@ -10,6 +10,7 @@ using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.Common.View;
 using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _RTSGameProject.Logic.Bootstrap
 {
@@ -26,7 +27,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private LayerMask _buildingMask;
         [SerializeField] private HouseBuilding[] _buildings;
         [SerializeField] private BuildPanel _buildPanel;
-        [SerializeField] private MainMenuButton _mainMenuButton;
+        [SerializeField] private Button[] _mainMenuButton;
         
         private SelectionManager _selectionManager;
         private FormationController _formationController;
@@ -44,7 +45,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         private Health _health;
         private AiFactory _aiFactory;
         private WinLoseGame _winLoseGame;
-        private ReturnToMainMenu _returnToMainMenuMenu;
+        private ChangeScene _changeScene;
 
         private void Awake()
         {
@@ -60,7 +61,7 @@ namespace _RTSGameProject.Logic.Bootstrap
             _aiFactory = new StateMachineAiFactory(_unitsRepository, _actorsRepository, _unitsFactory);
             _panelController = new PanelController(_buildPanel);
             _winLoseGame = new WinLoseGame(_winLoseWindow,_unitsRepository, _winConditionKillUnits, _loseConditionKillUnits);
-            _returnToMainMenuMenu = new ReturnToMainMenu(_mainMenuButton);
+            _changeScene = new ChangeScene(_mainMenuButton);
             foreach (HouseBuilding building in _buildings)
             {
                 building.Construct(_aiFactory, _panelController);
@@ -84,7 +85,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         {
             _inputController.Unsubscribe();
             _winLoseGame.Unsubscribe();
-            _returnToMainMenuMenu.Unsubscribe();
+            _changeScene.Unsubscribe();
             StopAllCoroutines();
         }
     }

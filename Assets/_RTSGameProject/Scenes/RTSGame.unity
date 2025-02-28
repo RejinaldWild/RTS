@@ -1819,8 +1819,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae5353e87a214b242b08b78265a56fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _winConditionKillUnits: 1
-  _loseConditionKillUnits: 5
+  _winConditionKillUnits: 5
+  _loseConditionKillUnits: 1
   _winLoseWindow: {fileID: 1593189310}
   _camera: {fileID: 330585545}
   _groundMarker: {fileID: 1085439988}
@@ -1839,7 +1839,9 @@ MonoBehaviour:
   - {fileID: 2127035461}
   - {fileID: 1032520082}
   _buildPanel: {fileID: 1196035381}
-  _mainMenuButton: {fileID: 1593189311}
+  _mainMenuButton:
+  - {fileID: 1639961332}
+  - {fileID: 1599597424}
 --- !u!4 &824608850
 Transform:
   m_ObjectHideFlags: 0
@@ -2869,9 +2871,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 603975da408b5b44c8d68bb8b1aaeac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mainMenuButtons:
-  - {fileID: 1639961332}
-  - {fileID: 1599597424}
 --- !u!1 &1596702129
 GameObject:
   m_ObjectHideFlags: 0

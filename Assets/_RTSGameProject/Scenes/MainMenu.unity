@@ -902,7 +902,7 @@ GameObject:
   - component: {fileID: 1602627837}
   - component: {fileID: 1602627836}
   m_Layer: 0
-  m_Name: EntryPointMainMenu
+  m_Name: MainMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -920,7 +920,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 688b50fc97334b049943724497b08aa8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uiButton: {fileID: 630108555}
+  _startButton: {fileID: 931128807}
+  _quitButton: {fileID: 872638713}
 --- !u!4 &1602627837
 Transform:
   m_ObjectHideFlags: 0

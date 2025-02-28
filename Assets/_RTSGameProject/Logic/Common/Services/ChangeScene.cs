@@ -1,33 +1,61 @@
-using _RTSGameProject.Logic.Common.View;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
     public class ChangeScene
     {
-        private UIButton _button;
-        private int _sceneIndex = 0;
-    
-        public ChangeScene(UIButton button)
+        private int _sceneIndex;
+        private Button _startButton;
+        private Button _quitButton;
+        private Button[] _mainMenuButtons;
+        private readonly int _mainMenuSceneIndex;
+        
+        public ChangeScene(Button[] mainMenuButtons)
         {
-            _button = button;
+            _mainMenuSceneIndex = 0;
+            _mainMenuButtons = mainMenuButtons;
+            foreach (Button button in _mainMenuButtons)
+            {
+                button.onClick.AddListener(ToMainMenu);
+            }
         }
-
-        public void Subscribe()
+        
+        public ChangeScene(int sceneIndex, Button startButton, Button quitButton)
         {
-            _button.OnClickStart += StartScene;
-            _button.OnClickQuit += QuitGame;
+            _mainMenuSceneIndex = 0;
+            _sceneIndex = sceneIndex;
+            _startButton = startButton;
+            _quitButton = quitButton;
+            _startButton.onClick.AddListener(ToNextLevel);
+            _quitButton.onClick.AddListener(QuitGame);
         }
 
         public void Unsubscribe()
         {
-            _button.OnClickStart -= StartScene;
-            _button.OnClickQuit -= QuitGame;
+            if (_startButton != null && _quitButton != null)
+            {
+                _startButton.onClick.RemoveListener(ToNextLevel);
+                _quitButton.onClick.RemoveListener(QuitGame);
+            }
+            
+            if (_mainMenuButtons != null)
+            {
+                foreach (Button button in _mainMenuButtons)
+                {
+                    button.onClick.RemoveListener(ToMainMenu);
+                }
+            }
         }
     
-        private void StartScene()
+        public void ToMainMenu()
+        {
+            SceneManager.LoadScene(sceneBuildIndex: _mainMenuSceneIndex);
+        }
+        
+        private void ToNextLevel()
         {
             if (_sceneIndex + 1 <= SceneManager.sceneCountInBuildSettings - 1)
             {

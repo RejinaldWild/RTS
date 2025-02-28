@@ -1,19 +1,21 @@
 using _RTSGameProject.Logic.Common.Services;
-using _RTSGameProject.Logic.Common.View;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _RTSGameProject.Logic.Bootstrap
 {
-    public class EntryPointMainMenu : MonoBehaviour
+    public class MainMenu : MonoBehaviour
     {
-        [SerializeField] private UIButton _uiButton;
+        [SerializeField] private Button _startButton;
+        [SerializeField] private Button _quitButton;
         
         private ChangeScene _changeScene;
+        private int _sceneIndex;
         
         void Awake()
         {
-            _changeScene = new ChangeScene(_uiButton);
-            _changeScene.Subscribe();
+            _sceneIndex = 0;
+            _changeScene = new ChangeScene(_sceneIndex,_startButton, _quitButton);
         }
 
         private void OnDestroy()
