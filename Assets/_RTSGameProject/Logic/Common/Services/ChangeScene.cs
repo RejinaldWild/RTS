@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,29 +8,38 @@ namespace _RTSGameProject.Logic.Common.Services
 {
     public class ChangeScene
     {
+        public Action OnSceneLoad;
+        
         private int _sceneIndex;
         private Button _startButton;
+        private Button _loadButton;
         private Button _quitButton;
+        private Button _nextLevelButton;
         private Button[] _mainMenuButtons;
         private readonly int _mainMenuSceneIndex;
         
-        public ChangeScene(Button[] mainMenuButtons)
+        public ChangeScene(int sceneIndex, Button[] mainMenuButtons, Button nextLevelButton)
         {
             _mainMenuSceneIndex = 0;
+            _sceneIndex = sceneIndex;
             _mainMenuButtons = mainMenuButtons;
+            _nextLevelButton = nextLevelButton;
+            _nextLevelButton.onClick.AddListener(ToNextLevel);
             foreach (Button button in _mainMenuButtons)
             {
                 button.onClick.AddListener(ToMainMenu);
             }
         }
         
-        public ChangeScene(int sceneIndex, Button startButton, Button quitButton)
+        public ChangeScene(int sceneIndex, Button startButton, Button quitButton, Button loadButton)
         {
             _mainMenuSceneIndex = 0;
             _sceneIndex = sceneIndex;
             _startButton = startButton;
             _quitButton = quitButton;
-            _startButton.onClick.AddListener(ToNextLevel);
+            _loadButton = loadButton;
+            _startButton.onClick.AddListener(ToStartGame);
+            _loadButton.onClick.AddListener(ToLoadGame);
             _quitButton.onClick.AddListener(QuitGame);
         }
 
@@ -37,12 +47,14 @@ namespace _RTSGameProject.Logic.Common.Services
         {
             if (_startButton != null && _quitButton != null)
             {
-                _startButton.onClick.RemoveListener(ToNextLevel);
+                _startButton.onClick.RemoveListener(ToStartGame);
+                _loadButton.onClick.RemoveListener(ToLoadGame);
                 _quitButton.onClick.RemoveListener(QuitGame);
             }
             
             if (_mainMenuButtons != null)
             {
+                _nextLevelButton.onClick.RemoveListener(ToNextLevel);
                 foreach (Button button in _mainMenuButtons)
                 {
                     button.onClick.RemoveListener(ToMainMenu);
@@ -55,17 +67,30 @@ namespace _RTSGameProject.Logic.Common.Services
             SceneManager.LoadScene(sceneBuildIndex: _mainMenuSceneIndex);
         }
         
+        private void ToStartGame()
+        {
+            _sceneIndex = 1;
+            SceneManager.LoadScene(sceneBuildIndex: _sceneIndex);
+        }
+
         private void ToNextLevel()
         {
-            if (_sceneIndex + 1 <= SceneManager.sceneCountInBuildSettings - 1)
+            _sceneIndex++;
+            if (_sceneIndex <= SceneManager.sceneCountInBuildSettings - 1)
             {
-                SceneManager.LoadScene(sceneBuildIndex: _sceneIndex + 1);
+                SceneManager.LoadScene(_sceneIndex);
             }
             else
             {
                 _sceneIndex = 0;
-                SceneManager.LoadScene(sceneBuildIndex: _sceneIndex);
+                SceneManager.LoadScene(_sceneIndex);
             }
+        }
+
+        private void ToLoadGame()
+        {
+            OnSceneLoad?.Invoke();
+            SceneManager.LoadScene(_sceneIndex);
         }
     
         private void QuitGame()

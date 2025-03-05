@@ -153,10 +153,10 @@ MonoBehaviour:
   <Team>k__BackingField: 0
   <CurrentPositionIndex>k__BackingField: 0
   <Positions>k__BackingField:
-  - {fileID: 4417575987921387776, guid: 9e8449a8d7e964d4aaac4456bb9ea67b, type: 3}
-  - {fileID: 8152051580567433287, guid: 76cbb50dfb956d1449b8fbb6d467d47d, type: 3}
-  - {fileID: 650851742411749794, guid: 4b028810caa82354480b9d8f49bb4013, type: 3}
-  - {fileID: 5399554440799958383, guid: 39064871c523ab345b0ecf1c862686d0, type: 3}
+  - {fileID: 6202451260672804003, guid: 081cabcdb36bce24680d462c5428b4fb, type: 3}
+  - {fileID: 2973951896169872672, guid: c115befed967c0148910181e9c71f835, type: 3}
+  - {fileID: 3567711420994671123, guid: 079d186213e645a409e6bcfadc1a430a, type: 3}
+  - {fileID: 7422977048250811487, guid: 5ac6652b83a60eb4695562214f315199, type: 3}
   <DistanceToFindEnemy>k__BackingField: 6
   Health: {fileID: 0}
   _enemy: {fileID: 0}
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unit: {fileID: 3040500599371112830}
-  houseBuilding: {fileID: 0}
+  _houseBuilding: {fileID: 0}
   _colorConfigs:
   - Team: 0
     Color: {r: 0.03039825, g: 0.17098679, b: 1, a: 1}

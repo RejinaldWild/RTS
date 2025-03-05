@@ -1,13 +1,10 @@
-using System;
 using UnityEngine;
 
-public class WinLoseWindow : MonoBehaviour
+namespace _RTSGameProject.Logic.Common.View
 {
-    [field:SerializeField] public GameObject WinPanel {get; private set;}
-    [field:SerializeField] public GameObject LosePanel {get; private set;}
-
-    private void OnDestroy()
+    public class WinLoseWindow : MonoBehaviour
     {
-        Time.timeScale = 1;
+        [field:SerializeField] public GameObject WinPanel {get; private set;}
+        [field:SerializeField] public GameObject LosePanel {get; private set;}
     }
 }

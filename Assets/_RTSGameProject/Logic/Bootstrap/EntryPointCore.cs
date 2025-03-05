@@ -1,15 +1,17 @@
-using System;
 using System.Linq;
 using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Camera;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Construction.Model;
 using _RTSGameProject.Logic.Common.Construction.View;
+using _RTSGameProject.Logic.Common.Score.Model;
+using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Selection;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.Common.View;
 using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace _RTSGameProject.Logic.Bootstrap
@@ -27,7 +29,9 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private LayerMask _buildingMask;
         [SerializeField] private HouseBuilding[] _buildings;
         [SerializeField] private BuildPanel _buildPanel;
+        [SerializeField] private Button _nextLevelButton;
         [SerializeField] private Button[] _mainMenuButton;
+        [SerializeField] private ScoreUI _scoreView;
         
         private SelectionManager _selectionManager;
         private FormationController _formationController;
@@ -46,6 +50,13 @@ namespace _RTSGameProject.Logic.Bootstrap
         private AiFactory _aiFactory;
         private WinLoseGame _winLoseGame;
         private ChangeScene _changeScene;
+        private PlayerPrefsDataStorage _playerDataStorage;
+        private JsonConverter _jsonConverter;
+        private SaveSystem _saveSystem;
+        private int _sceneIndex;
+        private ScoreController _scoreController;
+        private ScoreData _scoreData;
+        private PauseGame _pauseGame;
 
         private void Awake()
         {
@@ -60,8 +71,17 @@ namespace _RTSGameProject.Logic.Bootstrap
             _unitsFactory = new UnitsFactory(_unitsRepository);
             _aiFactory = new StateMachineAiFactory(_unitsRepository, _actorsRepository, _unitsFactory);
             _panelController = new PanelController(_buildPanel);
-            _winLoseGame = new WinLoseGame(_winLoseWindow,_unitsRepository, _winConditionKillUnits, _loseConditionKillUnits);
-            _changeScene = new ChangeScene(_mainMenuButton);
+            _pauseGame = new PauseGame(_unitsRepository, _winLoseWindow);
+            _winLoseGame = new WinLoseGame(_winLoseWindow, _pauseGame, _unitsRepository, _winConditionKillUnits, _loseConditionKillUnits);
+            _playerDataStorage = new PlayerPrefsDataStorage();
+            _jsonConverter = new JsonConverter();
+            _saveSystem = new SaveSystem(_jsonConverter, _playerDataStorage);
+            _sceneIndex = SceneManager.GetActiveScene().buildIndex;
+            _changeScene = new ChangeScene(_sceneIndex, _mainMenuButton, _nextLevelButton);
+            _scoreData = new ScoreData();
+            _scoreController = new ScoreController(_scoreView, _scoreData, _winLoseGame, _changeScene, _saveSystem);
+            _scoreView.Construct(_scoreController);
+            
             foreach (HouseBuilding building in _buildings)
             {
                 building.Construct(_aiFactory, _panelController);
@@ -85,6 +105,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         {
             _inputController.Unsubscribe();
             _winLoseGame.Unsubscribe();
+            _scoreController.Unsubscribe();
             _changeScene.Unsubscribe();
             StopAllCoroutines();
         }

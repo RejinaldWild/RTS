@@ -1,20 +1,28 @@
+using System;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.Common.View;
 using UnityEngine;
 
 public class WinLoseGame
 {
+    public Action OnWin;
+    public Action OnLose;
+    
     private bool _isGameOver;
     private int _winCondition;
     private int _loseCondition;
     private WinLoseWindow _winLoseWindow;
     private UnitsRepository _unitsRepository;
+    private PauseGame _pauseGame;
     
-    public WinLoseGame(WinLoseWindow winLoseGame, UnitsRepository unitsRepository, int winCondition, int loseCondition)
+    public WinLoseGame(WinLoseWindow winLoseWindow, PauseGame pauseGame, UnitsRepository unitsRepository, int winCondition, int loseCondition)
     {
-        _winLoseWindow = winLoseGame;
+        _isGameOver = false;
+        _winLoseWindow = winLoseWindow;
         _unitsRepository = unitsRepository;
         _winCondition = winCondition;
         _loseCondition = loseCondition;
+        _pauseGame = pauseGame;
         _unitsRepository.OnUnitKill += UnitKilled;
         _unitsRepository.OnEnemyKill += EnemyKilled;
     }
@@ -30,9 +38,11 @@ public class WinLoseGame
         _winCondition -= 1;
         if (_winCondition <= 0)
         {
+            OnWin?.Invoke();
             _winLoseWindow.gameObject.SetActive(true);
             _winLoseWindow.WinPanel.SetActive(true);
             GameOver();
+            _isGameOver = false;
         }
     }
 
@@ -41,15 +51,17 @@ public class WinLoseGame
         _loseCondition -= 1;
         if (_loseCondition <= 0)
         {
+            OnLose?.Invoke();
             _winLoseWindow.gameObject.SetActive(true);
             _winLoseWindow.LosePanel.SetActive(true);
             GameOver();
+            _isGameOver = false;
         }
     }
 
     private void GameOver()
     {
         _isGameOver = true;
-        Time.timeScale = 0;
+        _pauseGame.Pause();
     }
 }
