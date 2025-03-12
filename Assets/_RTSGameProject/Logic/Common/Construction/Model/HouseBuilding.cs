@@ -14,15 +14,18 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
         private Vector3 _rallyPoint;
         private Spawner _spawner;
         private Transform _startSpawnPoint;
+        private PauseGame _pauseGame;
         
         [field: SerializeField] public int Team { get; set; }
         
-        public void Construct(AiFactory aiFactory, PanelController panelController)
+        public void Construct(AiFactory aiFactory, PauseGame pauseGame, PanelController panelController)
         {
             _startSpawnPoint = SpawnPoints[0];
             _rallyPoint = _startSpawnPoint.position;
             _panelController = panelController;
             _spawner = new Spawner(aiFactory);
+            _pauseGame = pauseGame;
+            _pauseGame.OnPause += OnPaused;
         }
         
         private void Start()
@@ -62,6 +65,11 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
         public void Unsubscribe()
         {
             _panelController.Unsubscribe(this);
+        }
+        
+        private void OnPaused()
+        {
+            Unsubscribe();
         }
     }
 }

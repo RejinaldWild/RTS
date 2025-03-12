@@ -11,7 +11,6 @@ using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.Common.View;
 using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace _RTSGameProject.Logic.Bootstrap
@@ -31,7 +30,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private BuildPanel _buildPanel;
         [SerializeField] private Button _nextLevelButton;
         [SerializeField] private Button[] _mainMenuButton;
-        [SerializeField] private ScoreUI _scoreView;
+        [SerializeField] private ScoreGameUI _scoreGameView;
         
         private SelectionManager _selectionManager;
         private FormationController _formationController;
@@ -53,8 +52,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         private PlayerPrefsDataStorage _playerDataStorage;
         private JsonConverter _jsonConverter;
         private SaveSystem _saveSystem;
-        private int _sceneIndex;
-        private ScoreController _scoreController;
+        private ScoreGameController _scoreGameController;
         private ScoreData _scoreData;
         private PauseGame _pauseGame;
 
@@ -62,32 +60,31 @@ namespace _RTSGameProject.Logic.Bootstrap
         {
             _selectionManager = new SelectionManager(_groundMarker);
             _buildingsRepository = new BuildingsRepository(_selectionManager, _buildings);
-            _unitsRepository = new UnitsRepository(_selectionManager);
+            _pauseGame = new PauseGame();
+            _unitsRepository = new UnitsRepository(_selectionManager,_pauseGame,_winLoseWindow);
             _selectionBox.Construct(_unitsRepository, _buildingsRepository, _selectionManager);
             _generator = new BoxGenerator();
             _formationController = new FormationController(_generator);
-            _inputCatchKeyClick = new InputCatchKeyClick(_camera);
             _actorsRepository = new ActorsRepository();
-            _unitsFactory = new UnitsFactory(_unitsRepository);
-            _aiFactory = new StateMachineAiFactory(_unitsRepository, _actorsRepository, _unitsFactory);
+            _inputCatchKeyClick = new InputCatchKeyClick(_camera,_pauseGame);
+            _unitsFactory = new UnitsFactory(_unitsRepository, _pauseGame);
+            _aiFactory = new StateMachineAiFactory(_unitsRepository, _actorsRepository, _unitsFactory, _pauseGame);
             _panelController = new PanelController(_buildPanel);
-            _pauseGame = new PauseGame(_unitsRepository, _winLoseWindow);
             _winLoseGame = new WinLoseGame(_winLoseWindow, _pauseGame, _unitsRepository, _winConditionKillUnits, _loseConditionKillUnits);
             _playerDataStorage = new PlayerPrefsDataStorage();
             _jsonConverter = new JsonConverter();
             _saveSystem = new SaveSystem(_jsonConverter, _playerDataStorage);
-            _sceneIndex = SceneManager.GetActiveScene().buildIndex;
-            _changeScene = new ChangeScene(_sceneIndex, _mainMenuButton, _nextLevelButton);
+            _changeScene = new ChangeScene(_mainMenuButton, _nextLevelButton);
             _scoreData = new ScoreData();
-            _scoreController = new ScoreController(_scoreView, _scoreData, _winLoseGame, _changeScene, _saveSystem);
-            _scoreView.Construct(_scoreController);
+            _scoreGameController = new ScoreGameController(_scoreGameView, _scoreData, _winLoseGame, _saveSystem);
+            _scoreGameView.Construct(_scoreGameController);
             
             foreach (HouseBuilding building in _buildings)
             {
-                building.Construct(_aiFactory, _panelController);
+                building.Construct(_aiFactory, _pauseGame, _panelController);
             }
             
-            _inputController = new InputController(_inputCatchKeyClick, _selectionManager, 
+            _inputController = new InputController(_inputCatchKeyClick, _pauseGame, _selectionManager, 
                                                     _selectionBox, _clickable, _ground, 
                                                     _buildingMask, _formationController);
         }
@@ -99,14 +96,16 @@ namespace _RTSGameProject.Logic.Bootstrap
             {
                 aiActor.Update();
             }
+            
         }
 
         private void OnDestroy()
         {
             _inputController.Unsubscribe();
             _winLoseGame.Unsubscribe();
-            _scoreController.Unsubscribe();
+            _scoreGameController.Unsubscribe();
             _changeScene.Unsubscribe();
+            _unitsRepository.Unsubscribe();
             StopAllCoroutines();
         }
     }

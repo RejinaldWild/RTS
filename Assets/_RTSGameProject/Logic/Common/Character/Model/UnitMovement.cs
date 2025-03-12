@@ -1,3 +1,4 @@
+using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -47,6 +48,16 @@ namespace _RTSGameProject.Logic.Common.Character.Model
                     _currentCooldown = _updatePathCooldown;
                 }
             }
+        }
+
+        public void Stop()
+        {
+            _agent.isStopped = true;
+        }
+
+        public void Continue()
+        {
+            _agent.isStopped = false;
         }
     }
 }

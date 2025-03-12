@@ -14,12 +14,15 @@ namespace _RTSGameProject.Logic.Common.Services
         private LayerMask _building;
         private FormationController _formationController;
         private InputCatchKeyClick _inputCatchKeyClick;
+        private PauseGame _pauseGame;
+        private bool _gameOnPause;
 
-        public InputController(InputCatchKeyClick inputCatchKeyClick, SelectionManager selectionManager, 
+        public InputController(InputCatchKeyClick inputCatchKeyClick, PauseGame pauseGame, SelectionManager selectionManager, 
                                 SelectionBox selectionBox, LayerMask clickable, 
                                 LayerMask ground, LayerMask building, FormationController formationController)
         {
             _inputCatchKeyClick = inputCatchKeyClick;
+            _pauseGame = pauseGame;
             _selectionManager = selectionManager;
             _selectionBox = selectionBox;
             _clickable = clickable;
@@ -31,14 +34,34 @@ namespace _RTSGameProject.Logic.Common.Services
             _inputCatchKeyClick.OnLeftClickMouseButtonHold += OnLeftClickMouseButtonHolded;
             _inputCatchKeyClick.OnLeftClickMouseButtonUp += OnLeftClickMouseButtonUped;
             _inputCatchKeyClick.OnRightClickMouseButtonDown += OnRightClickMouseButtonDowned;
+            _pauseGame.OnPause += OnPaused;
+            _pauseGame.OnUnPause += OnUnPaused;
+            _inputCatchKeyClick.OnEscPress += _pauseGame.Pause;
+            _inputCatchKeyClick.OnEscPressAgain += _pauseGame.UnPause;
         }
 
+        private void OnPaused()
+        {
+            _inputCatchKeyClick.OnRightClickMouseButtonDown -= OnRightClickMouseButtonDowned;
+            Debug.Log("Game on pause!");
+        }
+
+        private void OnUnPaused()
+        {
+            _inputCatchKeyClick.OnRightClickMouseButtonDown += OnRightClickMouseButtonDowned;
+            Debug.Log("Game is continue!");
+        }
+        
         public void Unsubscribe()
         {
             _inputCatchKeyClick.OnLeftClickMouseButton -= OnLeftClickMouseButtoned;
             _inputCatchKeyClick.OnLeftClickMouseButtonHold -= OnLeftClickMouseButtonHolded;
             _inputCatchKeyClick.OnLeftClickMouseButtonUp -= OnLeftClickMouseButtonUped;
             _inputCatchKeyClick.OnRightClickMouseButtonDown -= OnRightClickMouseButtonDowned;
+            _pauseGame.OnPause -= OnPaused;
+            _pauseGame.OnUnPause -= OnUnPaused;
+            _inputCatchKeyClick.OnEscPress -= _pauseGame.Pause;
+            _inputCatchKeyClick.OnEscPressAgain -= _pauseGame.UnPause;
         }
         
         private void OnLeftClickMouseButtoned(Ray ray)

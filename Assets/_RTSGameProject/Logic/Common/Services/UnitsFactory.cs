@@ -8,9 +8,11 @@ namespace _RTSGameProject.Logic.Common.Services
     public class UnitsFactory
     {
         private UnitsRepository _unitsRepository;
-        public UnitsFactory(UnitsRepository unitsRepository)
+        private PauseGame _pauseGame;
+        public UnitsFactory(UnitsRepository unitsRepository, PauseGame pauseGame)
         {
             _unitsRepository = unitsRepository;
+            _pauseGame = pauseGame;
         }
 
         internal Unit Create(int teamId, Vector3 position)
@@ -19,6 +21,8 @@ namespace _RTSGameProject.Logic.Common.Services
             Unit instance = Instantiate<Unit>(resource, position, Quaternion.identity);
             
             instance.Construct(teamId, _unitsRepository);
+            _pauseGame.OnPause += instance.OnPaused;
+            _pauseGame.OnUnPause += instance.OnUnPaused;
             _unitsRepository.Register(instance);
             instance.Health.OnDie += DisposeUnit;
 
@@ -28,6 +32,8 @@ namespace _RTSGameProject.Logic.Common.Services
             {
                 instance.Health.OnDie -= DisposeUnit;
                 _unitsRepository.Unregister(instance);
+                _pauseGame.OnPause -= instance.OnPaused;
+                _pauseGame.OnUnPause -= instance.OnUnPaused;
                 Destroy(instance.gameObject);
             }
         }

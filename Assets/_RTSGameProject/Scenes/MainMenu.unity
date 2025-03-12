@@ -1299,7 +1299,7 @@ MonoBehaviour:
   _startButton: {fileID: 931128807}
   _loadButton: {fileID: 1063384771}
   _quitButton: {fileID: 872638713}
-  _scoreView: {fileID: 1963908472}
+  _scoreMenuView: {fileID: 1963908472}
 --- !u!4 &1602627837
 Transform:
   m_ObjectHideFlags: 0
@@ -1444,7 +1444,7 @@ GameObject:
   - component: {fileID: 1963908471}
   - component: {fileID: 1963908472}
   m_Layer: 5
-  m_Name: ScoreUI
+  m_Name: ScoreMenuUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -5,7 +5,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
 {
     internal class UnitAttackAct: MonoBehaviour
     {
-        public bool InCooldown => _currentCooldown>0.5f;
+        public bool InCooldown =>_currentCooldown > 0.5f;
 
         [field: SerializeField] public float DistanceToAttack { get;private set; }
         
@@ -15,7 +15,8 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         [SerializeField] private float _cooldown;
         
         private bool _isCloseToEnemy;
-
+        private float _pauseCooldown;
+        
         private void Start()
         {
             _currentCooldown = 1.5f;
@@ -38,7 +39,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             }
             else
             {
-                Debug.Log("Unit is in Cooldown");
+                Debug.Log("Unit is in cooldown to attack");
             }
         }
         
@@ -56,6 +57,17 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             }
 
             return priority;
+        }
+
+        public void Stop()
+        {
+            _pauseCooldown = _currentCooldown;
+            _currentCooldown = Single.PositiveInfinity;
+        }
+
+        public void Continue()
+        {
+            _currentCooldown = _pauseCooldown;
         }
     }
 }

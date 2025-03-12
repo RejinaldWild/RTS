@@ -2,6 +2,7 @@
 using System.Linq;
 using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Character.Model;
+using _RTSGameProject.Logic.Common.Services;
 
 namespace _RTSGameProject.Logic.StateMachine.Core
 {
@@ -11,25 +12,34 @@ namespace _RTSGameProject.Logic.StateMachine.Core
         private readonly IState[] _states;
         private readonly Transition[] _transitions;
         private readonly Unit _unit;
+        private PauseGame _pauseGame;
 
-        public StateMachineActor(IState originState, IState[] states, Transition[] transitions)
+        public StateMachineActor(IState originState, PauseGame pauseGame, IState[] states, Transition[] transitions)
         {
             _states = states;
             _transitions = transitions;
             _currentState = originState;
+            _pauseGame = pauseGame;
         }
 
         public void Update()
         {
-            foreach (Transition transition in _transitions)
+            if (_pauseGame.OnPaused)
             {
-                if (transition.Condition())
-                    TranslateTo(transition.To);
+                
             }
-            
-            if (_currentState is IUpdateState updateState)
+            else
             {
-                updateState.Update();
+                foreach (Transition transition in _transitions)
+                {
+                    if (transition.Condition())
+                        TranslateTo(transition.To);
+                }
+                
+                if (_currentState is IUpdateState updateState)
+                {
+                    updateState.Update();
+                }
             }
         }
 

@@ -50,6 +50,21 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             _patrollMovement = new PatrollMovement();
         }
     
+        public void OnPaused()
+        {
+            StopCoroutine(AttackCommand());
+            StopCoroutine(EndCommand());
+            StopCoroutine(EndPath());
+            _unitMovement.Stop();
+            _attackAct.Stop();
+        }
+        
+        public void OnUnPaused()
+        {
+            _unitMovement.Continue();
+            _attackAct.Continue();
+        }
+        
         public void Move()
         {
             _unitMovement.Move(Position);
@@ -143,5 +158,6 @@ namespace _RTSGameProject.Logic.Common.Character.Model
                 yield return new WaitForSeconds(0.1f);
             }
         }
+
     }
 }

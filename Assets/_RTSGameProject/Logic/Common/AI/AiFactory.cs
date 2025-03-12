@@ -1,8 +1,6 @@
-﻿using System;
-using _RTSGameProject.Logic.Common.Character.Model;
+﻿using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
-using static UnityEngine.Object;
 
 namespace _RTSGameProject.Logic.Common.AI
 {
@@ -11,18 +9,20 @@ namespace _RTSGameProject.Logic.Common.AI
         protected readonly UnitsFactory UnitsFactory;
         protected readonly UnitsRepository UnitsRepository;
         protected readonly ActorsRepository ActorsRepository;
+        protected readonly PauseGame PauseGame;
 
-        public AiFactory(UnitsRepository unitsRepository, ActorsRepository actorsRepository, UnitsFactory unitFactory)
+        public AiFactory(UnitsRepository unitsRepository, ActorsRepository actorsRepository, UnitsFactory unitFactory, PauseGame pauseGame)
         {
             UnitsRepository = unitsRepository;
             ActorsRepository = actorsRepository;
             UnitsFactory = unitFactory;
+            PauseGame = pauseGame;
         }
 
         public void Create(int teamId, Vector3 position)
         {
             Unit unit = UnitsFactory.Create(teamId, position);
-            IAiActor aiActor = CreateAiActor(unit);
+            IAiActor aiActor = CreateAiActor(unit,PauseGame);
             
             unit.Health.OnDie += DisposeAi;
             ActorsRepository.Register(aiActor);
@@ -34,6 +34,6 @@ namespace _RTSGameProject.Logic.Common.AI
             }
         }
         
-        protected abstract IAiActor CreateAiActor(Unit unit);
+        protected abstract IAiActor CreateAiActor(Unit unit, PauseGame pauseGame);
     }
 }

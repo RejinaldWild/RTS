@@ -10,18 +10,18 @@ namespace _RTSGameProject.Logic.Common.Services
     {
         public Action OnSceneLoad;
         
+        private readonly int _mainMenuSceneIndex;
         private int _sceneIndex;
         private Button _startButton;
         private Button _loadButton;
         private Button _quitButton;
         private Button _nextLevelButton;
         private Button[] _mainMenuButtons;
-        private readonly int _mainMenuSceneIndex;
         
-        public ChangeScene(int sceneIndex, Button[] mainMenuButtons, Button nextLevelButton)
+        public ChangeScene(Button[] mainMenuButtons, Button nextLevelButton)
         {
             _mainMenuSceneIndex = 0;
-            _sceneIndex = sceneIndex;
+            _sceneIndex = SceneManager.GetActiveScene().buildIndex;
             _mainMenuButtons = mainMenuButtons;
             _nextLevelButton = nextLevelButton;
             _nextLevelButton.onClick.AddListener(ToNextLevel);
@@ -31,10 +31,10 @@ namespace _RTSGameProject.Logic.Common.Services
             }
         }
         
-        public ChangeScene(int sceneIndex, Button startButton, Button quitButton, Button loadButton)
+        public ChangeScene(Button startButton, Button quitButton, Button loadButton)
         {
             _mainMenuSceneIndex = 0;
-            _sceneIndex = sceneIndex;
+            _sceneIndex = _mainMenuSceneIndex;
             _startButton = startButton;
             _quitButton = quitButton;
             _loadButton = loadButton;
@@ -62,14 +62,14 @@ namespace _RTSGameProject.Logic.Common.Services
             }
         }
     
-        public void ToMainMenu()
+        private void ToMainMenu()
         {
             SceneManager.LoadScene(sceneBuildIndex: _mainMenuSceneIndex);
         }
         
         private void ToStartGame()
         {
-            _sceneIndex = 1;
+            _sceneIndex++;
             SceneManager.LoadScene(sceneBuildIndex: _sceneIndex);
         }
 
@@ -82,7 +82,7 @@ namespace _RTSGameProject.Logic.Common.Services
             }
             else
             {
-                _sceneIndex = 0;
+                _sceneIndex = _mainMenuSceneIndex;
                 SceneManager.LoadScene(_sceneIndex);
             }
         }

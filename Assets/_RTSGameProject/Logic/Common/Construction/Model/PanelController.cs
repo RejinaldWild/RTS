@@ -10,7 +10,7 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
         {
             _buildPanel = buildPanel;
         }
-        
+
         public void ShowUIPanel(bool flagShow)
         {
             _buildPanel.ToggleUI(flagShow);
