@@ -72,8 +72,7 @@ namespace _RTSGameProject.Logic.Common.Selection
             Vector2 boxEnd = _endPosition;
             Vector2 boxCenter = (boxStart + boxEnd) / 2;
             _boxVisual.position = boxCenter;
-            Vector2 boxSize = new Vector2(Mathf.Abs(boxStart.x - boxEnd.x), Mathf.Abs(boxStart.y - boxEnd.y));
-            //_boxVisual.anchoredPosition = (_startPosition + _endPosition)*0.5f;
+            Vector2 boxSize = new Vector2(Mathf.Abs(boxStart.x - boxEnd.x), Mathf.Abs(boxStart.y - boxEnd.y))/ _canvas.scaleFactor;
             _boxVisual.sizeDelta = boxSize;
         }
  

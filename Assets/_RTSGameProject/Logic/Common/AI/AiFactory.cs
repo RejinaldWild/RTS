@@ -1,6 +1,8 @@
-﻿using _RTSGameProject.Logic.Common.Character.Model;
+﻿using System;
 using _RTSGameProject.Logic.Common.Services;
+using UniRx;
 using UnityEngine;
+using Unit = _RTSGameProject.Logic.Common.Character.Model.Unit;
 
 namespace _RTSGameProject.Logic.Common.AI
 {
@@ -23,14 +25,22 @@ namespace _RTSGameProject.Logic.Common.AI
         {
             Unit unit = UnitsFactory.Create(teamId, position);
             IAiActor aiActor = CreateAiActor(unit,PauseGame);
+
+            IDisposable disposable = null;
+            disposable = unit.IsAlive.Subscribe(isAlive =>
+            {
+                if (!isAlive)
+                {
+                    DisposeAi();
+                }
+            });
             
-            unit.Health.OnDie += DisposeAi;
             ActorsRepository.Register(aiActor);
             
             void DisposeAi()
             {
-                unit.Health.OnDie -= DisposeAi;
                 ActorsRepository.Unregister(aiActor);
+                disposable.Dispose();
             }
         }
         

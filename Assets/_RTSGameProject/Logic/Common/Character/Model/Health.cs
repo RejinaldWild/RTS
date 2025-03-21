@@ -1,31 +1,26 @@
 ﻿using System;
+using UniRx;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Character.Model
 {
     public class Health: MonoBehaviour
     {
-        public event Action OnDie;
+        public float Max;
 
-        public bool IsAlive;
-        
-        [field:SerializeField] public int Max { get; private set; }
-        [field:SerializeField] public int Current { get; private set; }
-        
+        public IReadOnlyReactiveProperty<bool> IsAlive;
+        public IReadOnlyReactiveProperty<float> Current => _current;
+        private ReactiveProperty<float> _current;
+
         private void Awake()
         {
-            Current = Max;
-            IsAlive = true;
+            _current = new ReactiveProperty<float>(Max);
+            IsAlive = Current.Select(x => x > 0f).ToReadOnlyReactiveProperty();
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(float damage)
         {
-            Current -= damage;
-            if (Current <= 0)
-            {
-                IsAlive = false;
-                OnDie?.Invoke();
-            }
+            _current.Value = Mathf.Max(_current.Value - damage, 0f);
         }
     }
 }

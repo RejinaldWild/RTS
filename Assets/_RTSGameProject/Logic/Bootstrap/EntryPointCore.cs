@@ -40,6 +40,8 @@ namespace _RTSGameProject.Logic.Bootstrap
         private BoxGenerator _generator;
         private ActorsRepository _actorsRepository;
         private StateMachineAiFactory _stateMachineAiFactory;
+        private HealthBarFactory _healthBarFactory;
+        private HealthBarRepository _healthBarRepository;
         private UnitsFactory _unitsFactory;
         private CameraController _cameraController;
         private BuildingsRepository _buildingsRepository;
@@ -58,16 +60,18 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void Awake()
         {
+            _pauseGame = new PauseGame();
             _selectionManager = new SelectionManager(_groundMarker);
             _buildingsRepository = new BuildingsRepository(_selectionManager, _buildings);
-            _pauseGame = new PauseGame();
             _unitsRepository = new UnitsRepository(_selectionManager,_pauseGame,_winLoseWindow);
+            _healthBarRepository = new HealthBarRepository();
+            _actorsRepository = new ActorsRepository();
             _selectionBox.Construct(_unitsRepository, _buildingsRepository, _selectionManager);
             _generator = new BoxGenerator();
             _formationController = new FormationController(_generator);
-            _actorsRepository = new ActorsRepository();
             _inputCatchKeyClick = new InputCatchKeyClick(_camera,_pauseGame);
-            _unitsFactory = new UnitsFactory(_unitsRepository, _pauseGame);
+            _healthBarFactory = new HealthBarFactory(_healthBarRepository);
+            _unitsFactory = new UnitsFactory(_unitsRepository, _healthBarFactory, _pauseGame);
             _aiFactory = new StateMachineAiFactory(_unitsRepository, _actorsRepository, _unitsFactory, _pauseGame);
             _panelController = new PanelController(_buildPanel);
             _winLoseGame = new WinLoseGame(_winLoseWindow, _pauseGame, _unitsRepository, _winConditionKillUnits, _loseConditionKillUnits);

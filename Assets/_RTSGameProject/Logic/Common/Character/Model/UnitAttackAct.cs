@@ -11,7 +11,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         
         [field: SerializeField] private float _currentCooldown;
         
-        [SerializeField] private int _damage;
+        [SerializeField] private float _damage;
         [SerializeField] private float _cooldown;
         
         private bool _isCloseToEnemy;
@@ -50,7 +50,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
                 float distanceToEnemy = Vector3.SqrMagnitude(transform.position - enemy.transform.position);
                 float attackDistance = Mathf.Pow(DistanceToAttack, 2f);
                 
-                if (distanceToEnemy<attackDistance || !enemy.IsAlive)
+                if (distanceToEnemy<attackDistance || !enemy.IsAlive.Value)
                 {
                     return false;
                 }

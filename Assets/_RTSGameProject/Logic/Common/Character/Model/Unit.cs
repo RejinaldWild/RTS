@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Services;
+using UniRx;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Character.Model
@@ -15,23 +16,25 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         [field: SerializeField] public float DistanceToFindEnemy { get;private set; }
 
         public Vector3 Position { get; set; }
+        
+        public IReadOnlyReactiveProperty<bool> IsAlive => Health.IsAlive;
+        
         public Health Health;
         public Unit _enemy;
         public string Id;
-        public bool IsAlive => Health.IsAlive;
         public bool IsCommandedToMove = false;
         public bool IsCommandedToAttack = false;
         public bool IsCloseToMove => IsMoveToEnemy();
         public bool IsCloseToAttack => IsAttackEnemy();
         public bool InAttackCooldown => _attackAct.InCooldown;
-        public bool HasEnemy => _enemy!=null;
+        public bool HasEnemy => _enemy!=null && _enemy.IsAlive.Value;
 
         private UnitMovement _unitMovement;
         private PatrollMovement _patrollMovement;
         private UnitAttackAct _attackAct;
         private UnitFindEnemy _unitFindEnemy;
         private UnitsRepository _unitsRepository;
-
+        
         public void Construct(int teamId, UnitsRepository unitsRepository)
         {
             Team = teamId;
@@ -92,7 +95,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             StartCoroutine(EndCommand());
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(float damage)
         {
             Health.TakeDamage(damage);
         }
@@ -145,7 +148,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
                   Mathf.Pow(_attackAct.DistanceToAttack, 2f) >= Vector3.SqrMagnitude(transform.position - _enemy.transform.position)) //?
             {
                 _attackAct.Execute(_enemy);
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.5f);
             }
             
         }
