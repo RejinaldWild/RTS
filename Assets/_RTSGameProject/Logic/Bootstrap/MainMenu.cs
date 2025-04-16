@@ -1,11 +1,8 @@
-using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
-using _RTSGameProject.Logic.Common.View;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Bootstrap
 {
@@ -14,30 +11,36 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private Button _startButton;
         [SerializeField] private Button _loadButton;
         [SerializeField] private Button _quitButton;
-        [SerializeField] private ScoreMenuUI _scoreMenuView;
+        
+        [SerializeField] private ScoreMenuUI _scoreMenuUI;
         
         private ChangeScene _changeScene;
-        private PlayerPrefsDataStorage _playerDataStorage;
-        private SaveSystem _saveSystem;
-        private JsonConverter _jsonConverter;
+        private IInstantiator _diContainer;
+        private MainMenuController _mainMenuController;
         private ScoreMenuController _scoreMenuController;
-        private ScoreData _scoreData;
+        
+        public Button StartButton => _startButton;
+        public Button LoadButton => _loadButton;
+        public Button QuitButton => _quitButton;
 
+        [Inject]
+        public void Construct(IInstantiator diContainer)
+        {
+            _diContainer = diContainer;
+            _changeScene = _diContainer.Instantiate<ChangeScene>();
+            _scoreMenuController = _diContainer.Instantiate<ScoreMenuController>();
+        }
+        
         void Awake()
         {
-            _playerDataStorage = new PlayerPrefsDataStorage();
-            _jsonConverter = new JsonConverter();
-            _saveSystem = new SaveSystem(_jsonConverter, _playerDataStorage);
-            _changeScene = new ChangeScene(_startButton, _quitButton, _loadButton);
-            _scoreData = new ScoreData();
-            _scoreMenuController = new ScoreMenuController(_scoreMenuView, _scoreData, _changeScene, _saveSystem);
-            _scoreMenuView.Construct(_scoreMenuController);
+            _mainMenuController = new MainMenuController(this, _changeScene);
+            _scoreMenuUI.Construct(_scoreMenuController);
         }
 
         private void OnDestroy()
         {
-            _changeScene.Unsubscribe();
             _scoreMenuController.Unsubscribe();
+            _mainMenuController.Unsubscribe();
             StopAllCoroutines();
         }
     }

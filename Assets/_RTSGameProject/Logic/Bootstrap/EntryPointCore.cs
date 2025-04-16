@@ -2,6 +2,7 @@ using System.Linq;
 using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Camera;
 using _RTSGameProject.Logic.Common.Character.Model;
+using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.Construction.Model;
 using _RTSGameProject.Logic.Common.Construction.View;
 using _RTSGameProject.Logic.Common.Score.Model;
@@ -12,13 +13,13 @@ using _RTSGameProject.Logic.Common.View;
 using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Bootstrap
 {
     public class EntryPointCore : MonoBehaviour
     {
-        [SerializeField] private int _winConditionKillUnits;
-        [SerializeField] private int _loseConditionKillUnits;
+        [SerializeField] private WinLoseConfig _winLoseConfig;
         [SerializeField] private WinLoseWindow _winLoseWindow;
         [SerializeField] private Camera _camera;
         [SerializeField] private GameObject _groundMarker;
@@ -26,11 +27,14 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private LayerMask _clickable;
         [SerializeField] private LayerMask _ground;
         [SerializeField] private LayerMask _buildingMask;
-        [SerializeField] private HouseBuilding[] _buildings;
         [SerializeField] private BuildPanel _buildPanel;
         [SerializeField] private Button _nextLevelButton;
-        [SerializeField] private Button[] _mainMenuButton;
         [SerializeField] private ScoreGameUI _scoreGameView;
+        [SerializeField] private HouseBuilding[] _buildings;
+        [SerializeField] private Button[] _mainMenuButtons;
+        
+        public Button NextLevelButton => _nextLevelButton;
+        public Button[] MainMenuButtons => _mainMenuButtons;
         
         private SelectionManager _selectionManager;
         private FormationController _formationController;
@@ -55,32 +59,46 @@ namespace _RTSGameProject.Logic.Bootstrap
         private JsonConverter _jsonConverter;
         private SaveSystem _saveSystem;
         private ScoreGameController _scoreGameController;
-        private ScoreData _scoreData;
+        private ScoreGameData _scoreGameData;
         private PauseGame _pauseGame;
-
+        private EntryPointCoreController _entryPointCoreController;
+        private IInstantiator _diContainer;
+        
+        [Inject]
+        public void Construct(IInstantiator diContainer)
+        {
+            _diContainer = diContainer;
+            _healthBarRepository = _diContainer.Instantiate<HealthBarRepository>();
+            _actorsRepository = _diContainer.Instantiate<ActorsRepository>();
+            _buildingsRepository = _diContainer.Instantiate<BuildingsRepository>();
+            _unitsRepository = _diContainer.Instantiate<UnitsRepository>();
+            _selectionManager = _diContainer.Instantiate<SelectionManager>();
+            _pauseGame = _diContainer.Instantiate<PauseGame>();
+            _saveSystem = _diContainer.Instantiate<SaveSystem>();
+            _changeScene = _diContainer.Instantiate<ChangeScene>();
+            _formationController = _diContainer.Instantiate<FormationController>();
+            _panelController = _diContainer.Instantiate<PanelController>();
+            _inputCatchKeyClick = _diContainer.Instantiate<InputCatchKeyClick>();
+            _winLoseGame = _diContainer.Instantiate<WinLoseGame>();
+            _scoreGameController = _diContainer.Instantiate<ScoreGameController>();
+            //_inputController = _diContainer.Instantiate<InputController>();
+            // _healthBarFactory = _diContainer.Instantiate<HealthBarFactory>();
+            // _unitsFactory = _diContainer.Instantiate<UnitsFactory>();
+            // _aiFactory = _diContainer.Instantiate<StateMachineAiFactory>();
+        }
+        
         private void Awake()
         {
-            _pauseGame = new PauseGame();
-            _selectionManager = new SelectionManager(_groundMarker);
-            _buildingsRepository = new BuildingsRepository(_selectionManager, _buildings);
-            _unitsRepository = new UnitsRepository(_selectionManager,_pauseGame,_winLoseWindow);
-            _healthBarRepository = new HealthBarRepository();
-            _actorsRepository = new ActorsRepository();
+            _entryPointCoreController = new EntryPointCoreController(this, _changeScene);
             _selectionBox.Construct(_unitsRepository, _buildingsRepository, _selectionManager);
-            _generator = new BoxGenerator();
-            _formationController = new FormationController(_generator);
-            _inputCatchKeyClick = new InputCatchKeyClick(_camera,_pauseGame);
+            
             _healthBarFactory = new HealthBarFactory(_healthBarRepository);
             _unitsFactory = new UnitsFactory(_unitsRepository, _healthBarFactory, _pauseGame);
             _aiFactory = new StateMachineAiFactory(_unitsRepository, _actorsRepository, _unitsFactory, _pauseGame);
-            _panelController = new PanelController(_buildPanel);
-            _winLoseGame = new WinLoseGame(_winLoseWindow, _pauseGame, _unitsRepository, _winConditionKillUnits, _loseConditionKillUnits);
-            _playerDataStorage = new PlayerPrefsDataStorage();
-            _jsonConverter = new JsonConverter();
-            _saveSystem = new SaveSystem(_jsonConverter, _playerDataStorage);
-            _changeScene = new ChangeScene(_mainMenuButton, _nextLevelButton);
-            _scoreData = new ScoreData();
-            _scoreGameController = new ScoreGameController(_scoreGameView, _scoreData, _winLoseGame, _saveSystem);
+            
+            //_winLoseGame = new WinLoseGame(_winLoseWindow, _pauseGame, _unitsRepository, _winLoseConfig);
+            _winLoseGame.Subscribe();
+            _unitsRepository.Subscribe();
             _scoreGameView.Construct(_scoreGameController);
             
             foreach (HouseBuilding building in _buildings)
@@ -100,7 +118,6 @@ namespace _RTSGameProject.Logic.Bootstrap
             {
                 aiActor.Update();
             }
-            
         }
 
         private void OnDestroy()
@@ -108,7 +125,7 @@ namespace _RTSGameProject.Logic.Bootstrap
             _inputController.Unsubscribe();
             _winLoseGame.Unsubscribe();
             _scoreGameController.Unsubscribe();
-            _changeScene.Unsubscribe();
+            _entryPointCoreController.Unsubscribe();
             _unitsRepository.Unsubscribe();
             StopAllCoroutines();
         }

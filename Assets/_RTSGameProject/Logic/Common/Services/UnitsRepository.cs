@@ -5,6 +5,7 @@ using _RTSGameProject.Logic.Common.Selection;
 using _RTSGameProject.Logic.Common.View;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
@@ -17,16 +18,20 @@ namespace _RTSGameProject.Logic.Common.Services
         private SelectionManager _selectionManager;
         private PauseGame _pauseGame;
         private WinLoseWindow _winLoseWindow;
-
+        
         public UnitsRepository(SelectionManager selectionManager, PauseGame pauseGame, WinLoseWindow winLoseWindow)
         {
             AllUnits = new List<Unit>();
             _selectionManager = selectionManager;
             _pauseGame = pauseGame;
             _winLoseWindow = winLoseWindow;
-            _pauseGame.OnPause += OnPaused;
         }
 
+        public void Subscribe()
+        {
+            _pauseGame.OnPause += OnPaused;
+        }
+        
         public bool HasEnemy(Unit forUnit)
         {
             foreach (Unit unit in AllUnits)

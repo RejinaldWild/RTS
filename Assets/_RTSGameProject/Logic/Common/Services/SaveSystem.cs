@@ -13,9 +13,9 @@ namespace _RTSGameProject.Logic.Common.Services
             _playerDataStorage = storage;
         }
 
-        public void SaveGame(string key, ScoreData data)
+        public void SaveGame(string key, ScoreGameData menuData)
         {
-            string serializedData = _jsonConverter.ToJson(data.ToString());
+            string serializedData = _jsonConverter.ToJson(menuData.ToString());
             _playerDataStorage.WriteAsync(key, serializedData);
             _playerDataStorage.Save();
         }

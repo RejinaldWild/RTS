@@ -2,12 +2,13 @@ using System;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.View;
 using UniRx;
+using Zenject;
 using static UnityEngine.Object;
 using Unit = _RTSGameProject.Logic.Common.Character.Model.Unit;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class HealthBarFactory
+    public class HealthBarFactory: PlaceholderFactory<HealthView>
     {
         private HealthBarRepository _healthBarRepository;
         

@@ -76,7 +76,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         
         public void MoveTo()
         {
-            if(this != null && _enemy!=null) //?
+            if(this != null && _enemy!=null)
             {
                 _unitMovement.MoveTo(_enemy, _enemy.transform.position, Team);
             }
@@ -102,7 +102,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         
         public void AssignEnemy(Unit enemy)
         {
-            if (_enemy != enemy && enemy!=null) //?
+            if (_enemy != enemy && enemy!=null)
             {
                 _enemy = enemy;
                 Debug.Log("Enemy has found and assigned");
@@ -117,7 +117,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         private bool IsMoveToEnemy()
         {
             _unitFindEnemy.FindEnemy(this,_unitsRepository);
-            if (_enemy != null && this != null) //?
+            if (_enemy != null && this != null)
             {
                 float distanceDiff = Vector3.SqrMagnitude(transform.position - _enemy.transform.position); //???
                 return distanceDiff<= Mathf.Pow(DistanceToFindEnemy,2f);

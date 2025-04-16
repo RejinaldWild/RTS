@@ -1,4 +1,5 @@
 using System;
+using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.Common.View;
 using UnityEngine;
@@ -15,18 +16,23 @@ public class WinLoseGame
     private UnitsRepository _unitsRepository;
     private PauseGame _pauseGame;
     
-    public WinLoseGame(WinLoseWindow winLoseWindow, PauseGame pauseGame, UnitsRepository unitsRepository, int winCondition, int loseCondition)
+    public WinLoseGame(WinLoseWindow winLoseWindow, PauseGame pauseGame, 
+                        UnitsRepository unitsRepository, WinLoseConfig winLoseCondition)
     {
         _isGameOver = false;
         _winLoseWindow = winLoseWindow;
         _unitsRepository = unitsRepository;
-        _winCondition = winCondition;
-        _loseCondition = loseCondition;
+        _winCondition = winLoseCondition.WinConditionKillUnits;
+        _loseCondition = winLoseCondition.LoseConditionKillUnits;
         _pauseGame = pauseGame;
+    }
+
+    public void Subscribe()
+    {
         _unitsRepository.OnUnitKill += UnitKilled;
         _unitsRepository.OnEnemyKill += EnemyKilled;
     }
-
+    
     public void Unsubscribe()
     {
         _unitsRepository.OnUnitKill -= UnitKilled;

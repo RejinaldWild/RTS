@@ -1,7 +1,7 @@
-using System;
 using _RTSGameProject.Logic.Common.Services;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Score.View
 {

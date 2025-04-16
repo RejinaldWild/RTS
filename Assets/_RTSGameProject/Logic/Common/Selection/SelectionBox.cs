@@ -14,7 +14,7 @@ namespace _RTSGameProject.Logic.Common.Selection
         private Rect _selectionBox;
         private Vector2 _startPosition;
         private Vector2 _endPosition;
-
+        
         public void Construct(UnitsRepository unitsRepository, BuildingsRepository buildingsRepository, SelectionManager selectionManager)
         {
             _unitsRepository = unitsRepository;

@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Construction.Model;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Selection
 {
@@ -14,6 +15,7 @@ namespace _RTSGameProject.Logic.Common.Selection
         public List<Unit> SelectedUnits { get; private set; }
         public List<HouseBuilding> SelectedBuildings { get; private set; }
 
+        [Inject]
         public SelectionManager(GameObject groundMarker)
         {
             GroundMarker = groundMarker;
