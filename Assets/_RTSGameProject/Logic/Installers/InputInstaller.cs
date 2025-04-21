@@ -8,9 +8,9 @@ namespace _RTSGameProject.Logic.Installers
     public class InputInstaller : MonoInstaller
     {
         [SerializeField] private Camera _camera;
-        // [SerializeField] private LayerMask _clickable;
-        // [SerializeField] private LayerMask _ground;
-        // [SerializeField] private LayerMask _buildingMask;
+        [SerializeField] private LayerMask _clickable;
+        [SerializeField] private LayerMask _ground;
+        [SerializeField] private LayerMask _buildingMask;
         [SerializeField] private SelectionBox _selectionBox;
 
         public override void InstallBindings()
@@ -21,16 +21,33 @@ namespace _RTSGameProject.Logic.Installers
 
         private void BindInputCatchClick()
         {
-            Container.Bind<Camera>().FromInstance(_camera).AsSingle();
+            Container
+                .Bind<Camera>()
+                .FromInstance(_camera)
+                .AsSingle();
         }
 
         private void BindInput()
         {
-            Container.Bind<InputCatchKeyClick>().AsSingle();
-            Container.Bind<SelectionBox>().FromInstance(_selectionBox).AsSingle();
-            //  Container.Bind<LayerMask>().FromInstance(_clickable).AsSingle();
-            // Container.Bind<LayerMask>().FromInstance(_ground).AsSingle();
-            // Container.Bind<LayerMask>().FromInstance(_buildingMask).AsSingle();
+            Container
+                .Bind<InputCatchKeyClick>()
+                .AsSingle();
+            Container
+                .Bind<SelectionBox>()
+                .FromInstance(_selectionBox)
+                .AsSingle();
+            Container
+                .Bind<LayerMask>()
+                .WithId("Clickable")
+                .FromInstance(_clickable);
+            Container
+                .Bind<LayerMask>()
+                .WithId("Ground")
+                .FromInstance(_ground);
+            Container
+                .Bind<LayerMask>()
+                .WithId("Building")
+                .FromInstance(_buildingMask);
         } 
     }
 }

@@ -2099,6 +2099,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 330585545}
+  _clickable:
+    serializedVersion: 2
+    m_Bits: 128
+  _ground:
+    serializedVersion: 2
+    m_Bits: 64
+  _buildingMask:
+    serializedVersion: 2
+    m_Bits: 256
   _selectionBox: {fileID: 934540599}
 --- !u!1 &824608848
 GameObject:
@@ -2134,15 +2143,6 @@ MonoBehaviour:
   _camera: {fileID: 330585545}
   _groundMarker: {fileID: 1085439988}
   _selectionBox: {fileID: 934540599}
-  _clickable:
-    serializedVersion: 2
-    m_Bits: 128
-  _ground:
-    serializedVersion: 2
-    m_Bits: 64
-  _buildingMask:
-    serializedVersion: 2
-    m_Bits: 256
   _buildPanel: {fileID: 1196035381}
   _nextLevelButton: {fileID: 1931951951}
   _scoreGameView: {fileID: 1420435226}

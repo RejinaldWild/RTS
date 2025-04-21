@@ -2,6 +2,7 @@ using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
@@ -9,27 +10,31 @@ namespace _RTSGameProject.Logic.Common.Services
     {
         private SelectionManager _selectionManager;
         private SelectionBox _selectionBox;
+
+        [Inject(Id = "Clickable")]
         private LayerMask _clickable;
+        [Inject(Id = "Ground")]
         private LayerMask _ground;
+        [Inject(Id = "Building")]
         private LayerMask _building;
+        
         private FormationController _formationController;
         private InputCatchKeyClick _inputCatchKeyClick;
         private PauseGame _pauseGame;
         private bool _gameOnPause;
 
-        public InputController(InputCatchKeyClick inputCatchKeyClick, PauseGame pauseGame, SelectionManager selectionManager, 
-                                SelectionBox selectionBox, LayerMask clickable, 
-                                LayerMask ground, LayerMask building, FormationController formationController)
+        public InputController(InputCatchKeyClick inputCatchKeyClick, PauseGame pauseGame, 
+                                SelectionManager selectionManager, SelectionBox selectionBox, FormationController formationController)
         {
             _inputCatchKeyClick = inputCatchKeyClick;
             _pauseGame = pauseGame;
             _selectionManager = selectionManager;
             _selectionBox = selectionBox;
-            _clickable = clickable;
-            _ground = ground;
-            _building = building;
             _formationController = formationController;
+        }
 
+        public void Subscribe()
+        {
             _inputCatchKeyClick.OnLeftClickMouseButton += OnLeftClickMouseButtoned;
             _inputCatchKeyClick.OnLeftClickMouseButtonHold += OnLeftClickMouseButtonHolded;
             _inputCatchKeyClick.OnLeftClickMouseButtonUp += OnLeftClickMouseButtonUped;

@@ -24,6 +24,9 @@ namespace _RTSGameProject.Logic.Installers
             Container
                 .Bind<SaveSystem>()
                 .AsSingle();
+            Container
+                .Bind<ScoreMenuController>()
+                .AsSingle();
         }
     }
 }

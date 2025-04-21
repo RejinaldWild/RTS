@@ -21,9 +21,13 @@ namespace _RTSGameProject.Logic.Common.Services
             _scoreMenuData = scoreMenuData;
             _changeScene = changeScene;
             _saveSystem = saveSystem;
-            _changeScene.OnSceneLoad += OnSceneLoaded;
         }
 
+        public void Subscribe()
+        {
+            _changeScene.OnSceneLoad += OnSceneLoaded;
+        }
+        
         public void Unsubscribe()
         {
             _changeScene.OnSceneLoad -= OnSceneLoaded;

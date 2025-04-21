@@ -13,6 +13,7 @@ namespace _RTSGameProject.Logic.Common.Score.View
         
         public string Id { get; private set; }
         
+        [Inject]
         public void Construct(ScoreMenuController scoreMenuController)
         {
             _scoreMenuController = scoreMenuController;

@@ -82,7 +82,7 @@ namespace _RTSGameProject.Logic.Common.Selection
             {
                 SelectedBuildings.Add(building);
                 SelectSelectable(building, true);
-                building.Subscribe();
+                building.SubscribeClickPanel();
                 building.ShowUIPanel(true);
             }
         }
@@ -101,7 +101,7 @@ namespace _RTSGameProject.Logic.Common.Selection
             {
                 PreselectTriggerSectionIndicator(building, false);
                 SelectSelectable(building, false);
-                building.Unsubscribe();
+                building.UnsubscribeClickPanel();
                 building.ShowUIPanel(false);
             }
             SelectedBuildings.Clear();
@@ -129,14 +129,14 @@ namespace _RTSGameProject.Logic.Common.Selection
                 {
                     SelectedBuildings.Add(building);
                     SelectSelectable(building, true);
-                    building.Subscribe();
+                    building.SubscribeClickPanel();
                     building.ShowUIPanel(true);
                 }
                 else
                 {
                     SelectedBuildings.Remove(building);
                     SelectSelectable(building, false);
-                    building.Unsubscribe();
+                    building.UnsubscribeClickPanel();
                     building.ShowUIPanel(false);
                 }
             }
@@ -165,7 +165,7 @@ namespace _RTSGameProject.Logic.Common.Selection
             {
                 SelectedBuildings.Add(building);
                 SelectSelectable(building, true);
-                building.Subscribe();
+                building.SubscribeClickPanel();
                 building.ShowUIPanel(true);
             }
         }

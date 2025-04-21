@@ -1,5 +1,6 @@
 using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Selection
 {
@@ -15,7 +16,9 @@ namespace _RTSGameProject.Logic.Common.Selection
         private Vector2 _startPosition;
         private Vector2 _endPosition;
         
-        public void Construct(UnitsRepository unitsRepository, BuildingsRepository buildingsRepository, SelectionManager selectionManager)
+        [Inject]
+        public void Construct(UnitsRepository unitsRepository, BuildingsRepository buildingsRepository,
+                            SelectionManager selectionManager)
         {
             _unitsRepository = unitsRepository;
             _buildingsRepository = buildingsRepository;

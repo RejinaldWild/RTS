@@ -34,7 +34,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         void Awake()
         {
             _mainMenuController = new MainMenuController(this, _changeScene);
-            _scoreMenuUI.Construct(_scoreMenuController);
+            _scoreMenuController.Subscribe();
         }
 
         private void OnDestroy()

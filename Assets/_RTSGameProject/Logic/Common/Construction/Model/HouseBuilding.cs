@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Construction.Model
 {
@@ -18,14 +20,14 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
         
         [field: SerializeField] public int Team { get; set; }
         
-        public void Construct(AiFactory aiFactory, PauseGame pauseGame, PanelController panelController)
+        [Inject]
+        public void Construct(StateMachineAiFactory aiFactory, PauseGame pauseGame, PanelController panelController)
         {
             _startSpawnPoint = SpawnPoints[0];
             _rallyPoint = _startSpawnPoint.position;
             _panelController = panelController;
             _spawner = new Spawner(aiFactory);
             _pauseGame = pauseGame;
-            _pauseGame.OnPause += OnPaused;
         }
         
         private void Start()
@@ -56,20 +58,30 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
                 _spawner.Spawn(1, new Vector3(34.8f,0.5f,20.75f));
             }
         }
-        
+
         public void Subscribe()
+        {
+            _pauseGame.OnPause += OnPaused;
+        }
+        
+        public void Unsubscribe()
+        {
+            _pauseGame.OnPause -= OnPaused;
+        }
+        
+        public void SubscribeClickPanel()
         {
             _panelController.Subscribe(this);
         }
         
-        public void Unsubscribe()
+        public void UnsubscribeClickPanel()
         {
             _panelController.Unsubscribe(this);
         }
         
         private void OnPaused()
         {
-            Unsubscribe();
+            UnsubscribeClickPanel();
         }
     }
 }

@@ -4,8 +4,6 @@ using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
 using _RTSGameProject.Logic.Common.View;
 using UnityEngine;
-using UnityEngine.Assertions;
-using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
 {

@@ -2,6 +2,7 @@ using System;
 using _RTSGameProject.Logic.Common.Services;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Score.View
 {
@@ -13,6 +14,7 @@ namespace _RTSGameProject.Logic.Common.Score.View
         
         public string Id { get; private set; }
         
+        [Inject]
         public void Construct(ScoreGameController scoreGameController)
         {
             _scoreGameController = scoreGameController;

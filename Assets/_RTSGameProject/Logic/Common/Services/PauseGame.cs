@@ -8,10 +8,7 @@ namespace _RTSGameProject.Logic.Common.Services
     public class PauseGame
     {
         public event Action OnPause;
-        public event Action OnUnPause ; 
-        
-        private UnitsRepository _unitsRepository;
-        private WinLoseWindow _winLoseWindow;
+        public event Action OnUnPause;
         
         public bool OnPaused { get; private set; }
 

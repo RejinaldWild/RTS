@@ -1,12 +1,14 @@
 ﻿using System;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.StateMachine.Core;
 using UniRx;
 using UnityEngine;
+using Zenject;
 using Unit = _RTSGameProject.Logic.Common.Character.Model.Unit;
 
 namespace _RTSGameProject.Logic.Common.AI
 {
-    public abstract class AiFactory
+    public abstract class AiFactory: PlaceholderFactory<StateMachineActor>
     {
         protected readonly UnitsFactory UnitsFactory;
         protected readonly UnitsRepository UnitsRepository;

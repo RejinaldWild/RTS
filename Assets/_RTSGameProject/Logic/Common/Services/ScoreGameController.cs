@@ -21,10 +21,14 @@ namespace _RTSGameProject.Logic.Common.Services
             _scoreGameData = scoreGameData;
             _winLoseGame = winLoseGame;
             _saveSystem = saveSystem;
+        }
+
+        public void Subscribe()
+        {
             _winLoseGame.OnWin += AddWinScore;
             _winLoseGame.OnLose += AddLoseScore;
         }
-
+        
         public void Unsubscribe()
         {
             _winLoseGame.OnWin -= AddWinScore;

@@ -26,39 +26,59 @@ namespace _RTSGameProject.Logic.Installers
 
         private void BindUnits()
         {
-            Container.Bind<UnitsRepository>().AsSingle();
+            Container
+                .Bind<UnitsRepository>()
+                .AsSingle();
         }
         
         private void BindWinLoseWindow()
         {
-            Container.Bind<WinLoseWindow>().FromInstance(_winLoseWindow).AsSingle();
+            Container
+                .Bind<WinLoseWindow>()
+                .FromInstance(_winLoseWindow)
+                .AsSingle();
         }
         
         private void BindPause()
         {
-            Container.Bind<PauseGame>().AsSingle();
+            Container
+                .Bind<PauseGame>()
+                .AsSingle();
         }
         
         private void BindBuildings()
         {
-           Container.Bind<HouseBuilding[]>().FromInstance(_buildings);
-           Container.Bind<BuildingsRepository>().AsSingle();
+           Container
+               .Bind<HouseBuilding[]>()
+               .FromInstance(_buildings);
+           Container
+               .Bind<BuildingsRepository>()
+               .AsSingle();
         }
         
         private void BindSelection()
         {
-            Container.Bind<GameObject>().FromInstance(_groundMarker).AsSingle();
-            Container.Bind<SelectionManager>().AsSingle();
+            Container
+                .Bind<GameObject>()
+                .FromInstance(_groundMarker)
+                .AsSingle();
+            Container
+                .Bind<SelectionManager>()
+                .AsSingle();
         }
 
         private void BindActors()
         {
-            Container.Bind<ActorsRepository>().AsSingle();
+            Container
+                .Bind<ActorsRepository>()
+                .AsSingle();
         }
         
         private void BindHealthBar()
         {
-            Container.Bind<HealthBarRepository>().AsSingle();
+            Container
+                .Bind<HealthBarRepository>()
+                .AsSingle();
         }
     }
 }

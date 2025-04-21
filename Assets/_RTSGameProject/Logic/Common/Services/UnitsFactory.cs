@@ -10,11 +10,12 @@ using Unit = _RTSGameProject.Logic.Common.Character.Model.Unit;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class UnitsFactory : PlaceholderFactory<Unit, HealthView>
+    public class UnitsFactory : PlaceholderFactory<Unit>
     {
         private UnitsRepository _unitsRepository;
         private HealthBarFactory _healthBarFactory;
         private PauseGame _pauseGame;
+        
         public UnitsFactory(UnitsRepository unitsRepository, HealthBarFactory healthBarFactory, PauseGame pauseGame)
         {
             _unitsRepository = unitsRepository;

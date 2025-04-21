@@ -42,7 +42,9 @@ namespace _RTSGameProject.Logic.Installers
             Container
                 .Bind<WinLoseGame>()
                 .AsSingle();
-
+            Container
+                .Bind<ScoreGameController>()
+                .AsSingle();
         }
     }
 }

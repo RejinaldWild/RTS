@@ -1,4 +1,5 @@
-﻿using _RTSGameProject.Logic.Common.Construction.View;
+﻿using _RTSGameProject.Logic.Common.Construction.Model;
+using _RTSGameProject.Logic.Common.Construction.View;
 using UnityEngine;
 using Zenject;
 
@@ -10,12 +11,18 @@ namespace _RTSGameProject.Logic.Installers
         
         public override void InstallBindings()
         {
-            BuildUIPanelBind();
+            BindBuildUIPanel();
         }
 
-        public void BuildUIPanelBind()
+        public void BindBuildUIPanel()
         {
-            Container.Bind<BuildPanel>().FromInstance(_buildPanel).AsSingle();
+            Container
+                .Bind<BuildPanel>()
+                .FromInstance(_buildPanel)
+                .AsSingle();
+            Container
+                .Bind<PanelController>()
+                .AsSingle();
         }
     }
 }

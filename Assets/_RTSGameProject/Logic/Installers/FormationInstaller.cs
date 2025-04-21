@@ -7,13 +7,19 @@ namespace _RTSGameProject.Logic.Installers
     {
         public override void InstallBindings()
         {
-            Container.Bind<FormationController>().AsCached();
             BoxFormationBind();
+            
+            Container
+                .Bind<FormationController>()
+                .AsCached();
         }
 
         private void BoxFormationBind()
         {
-            Container.Bind<IFormationPositionGenerator>().To<BoxGenerator>().AsCached();
+            Container
+                .Bind<IFormationPositionGenerator>()
+                .To<BoxGenerator>()
+                .AsCached();
         }
     }
 }

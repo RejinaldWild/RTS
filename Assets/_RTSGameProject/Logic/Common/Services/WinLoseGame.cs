@@ -2,7 +2,6 @@ using System;
 using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.Common.View;
-using UnityEngine;
 
 public class WinLoseGame
 {
