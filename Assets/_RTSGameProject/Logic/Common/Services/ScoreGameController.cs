@@ -35,9 +35,9 @@ namespace _RTSGameProject.Logic.Common.Services
             _winLoseGame.OnLose -= AddLoseScore;
         }
 
-        public void Show()
+        public void Update()
         {
-            _scoreGameUI.scoreText.text = $"Score - Win: {_scoreGameData.WinScore} - Lose: {_scoreGameData.LoseScore}";
+            _scoreGameUI.Show();
         }
 
         private void AddWinScore()

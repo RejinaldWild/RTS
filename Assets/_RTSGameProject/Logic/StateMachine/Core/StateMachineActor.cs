@@ -3,6 +3,7 @@ using System.Linq;
 using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.StateMachine.Implementation;
 
 namespace _RTSGameProject.Logic.StateMachine.Core
 {
@@ -13,8 +14,8 @@ namespace _RTSGameProject.Logic.StateMachine.Core
         private readonly Transition[] _transitions;
         private readonly Unit _unit;
         private PauseGame _pauseGame;
-
-        public StateMachineActor(IState originState, PauseGame pauseGame, IState[] states, Transition[] transitions)
+        
+        public StateMachineActor(UnitIdle originState, PauseGame pauseGame, IState[] states, Transition[] transitions)
         {
             _states = states;
             _transitions = transitions;

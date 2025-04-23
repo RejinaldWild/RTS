@@ -2138,8 +2138,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae5353e87a214b242b08b78265a56fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _winLoseConfig: {fileID: 11400000, guid: 1f8e842954e1a4d4bbbdc70e67f38f47, type: 2}
-  _winLoseWindow: {fileID: 1593189310}
   _camera: {fileID: 330585545}
   _groundMarker: {fileID: 1085439988}
   _selectionBox: {fileID: 934540599}

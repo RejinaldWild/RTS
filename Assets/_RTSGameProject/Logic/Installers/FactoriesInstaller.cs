@@ -14,6 +14,13 @@ namespace _RTSGameProject.Logic.Installers
         [SerializeField] private Unit _unit;
         [SerializeField] private HealthView _healthView;
         
+        private IState[] _states;
+        private UnitIdle _idleState;
+        private UnitAttack _attackState;
+        private UnitMoveState _moveState;
+        private MoveToEnemy _moveToEnemy;
+        private UnitPatrolling _patrolling;
+        
         public override void InstallBindings()
         {
             BindUnitFactory();
@@ -21,6 +28,7 @@ namespace _RTSGameProject.Logic.Installers
 
         private void BindUnitFactory()
         {
+            _states = new IState[] { _idleState, _attackState,_moveState,_moveToEnemy, _patrolling };
             Container
                 .BindFactory<HealthView, HealthBarFactory>()
                 .FromComponentInNewPrefab(_healthView)
@@ -31,7 +39,8 @@ namespace _RTSGameProject.Logic.Installers
                 .AsSingle();
             Container
                 .BindFactory<StateMachineActor, StateMachineAiFactory>()
-                .AsSingle();
+                .AsSingle()
+                .WithArguments(_idleState, _states);
 
         }
     }

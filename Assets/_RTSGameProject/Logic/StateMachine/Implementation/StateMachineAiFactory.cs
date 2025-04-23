@@ -2,7 +2,6 @@ using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.StateMachine.Core;
-using Zenject;
 
 namespace _RTSGameProject.Logic.StateMachine.Implementation
 {
@@ -15,7 +14,7 @@ namespace _RTSGameProject.Logic.StateMachine.Implementation
         
         protected override IAiActor CreateAiActor(Unit unit, PauseGame pauseGame)
         {
-           return new Core.StateMachineActor(new UnitIdle(), pauseGame,
+           return new StateMachineActor(new UnitIdle(), pauseGame,
                 new IState[]
                 {
                     new UnitIdle(), 
