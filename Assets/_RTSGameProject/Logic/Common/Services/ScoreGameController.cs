@@ -1,7 +1,8 @@
 using System;
+using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
-using Zenject;
+using Cysharp.Threading.Tasks;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
@@ -22,7 +23,7 @@ namespace _RTSGameProject.Logic.Common.Services
             _winLoseGame = winLoseGame;
             _saveSystem = saveSystem;
         }
-
+        
         public void Subscribe()
         {
             _winLoseGame.OnWin += AddWinScore;
@@ -42,16 +43,19 @@ namespace _RTSGameProject.Logic.Common.Services
 
         private void AddWinScore()
         {
-            _key = _scoreGameUI.Id;
             _scoreGameData.WinScore++;
-            _saveSystem.SaveGame(_key, _scoreGameData);
+            SaveGameAsync();
         }
 
         private void AddLoseScore()
         {
-            _key = _scoreGameUI.Id;
             _scoreGameData.LoseScore++;
-            _saveSystem.SaveGame(_key, _scoreGameData);
+            SaveGameAsync();
+        }
+
+        private async UniTask SaveGameAsync()
+        {
+            await _saveSystem.SaveAsync(_scoreGameData);
         }
     }
 }

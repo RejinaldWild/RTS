@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 
-namespace _RTSGameProject.Logic.Common.Services
+namespace _RTSGameProject.Logic.Common.SaveLoad
 {
     public interface IDataStorage
     {

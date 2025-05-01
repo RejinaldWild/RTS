@@ -9,7 +9,7 @@ namespace _RTSGameProject.Logic.Installers
 {
     public class RepositoriesInstaller : MonoInstaller
     {
-        [SerializeField] private GameObject _groundMarker;
+        [SerializeField] private GroundMarker _groundMarker;
         [SerializeField] private WinLoseWindow _winLoseWindow;
         [SerializeField] private HouseBuilding[] _buildings;
         
@@ -59,7 +59,7 @@ namespace _RTSGameProject.Logic.Installers
         private void BindSelection()
         {
             Container
-                .Bind<GameObject>()
+                .Bind<GroundMarker>()
                 .FromInstance(_groundMarker)
                 .AsSingle();
             Container

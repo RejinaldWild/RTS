@@ -2,19 +2,17 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class ChangeScene
+    public class SceneChanger
     {
-        public Action OnSceneLoad;
+        public event Action OnSceneLoad;
         
         private int _sceneIndex;
         private int _mainMenuSceneIndex;
         
-        public ChangeScene()
+        public SceneChanger()
         {
             _mainMenuSceneIndex = 0;
             _sceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -53,7 +51,10 @@ namespace _RTSGameProject.Logic.Common.Services
     
         public void ToQuitGame()
         {
+            #if UNITY_EDITOR 
             EditorApplication.isPlaying = false;
+            #endif
+            
             Application.Quit();
         }
     }

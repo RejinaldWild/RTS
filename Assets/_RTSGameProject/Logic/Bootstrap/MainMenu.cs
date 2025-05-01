@@ -1,5 +1,8 @@
+using _RTSGameProject.Logic.Common.SaveLoad;
+using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -14,34 +17,74 @@ namespace _RTSGameProject.Logic.Bootstrap
         
         [SerializeField] private ScoreMenuUI _scoreMenuUI;
         
-        private ChangeScene _changeScene;
+        private SceneChanger _sceneChanger;
         private IInstantiator _diContainer;
-        private MainMenuController _mainMenuController;
         private ScoreMenuController _scoreMenuController;
+        private SaveSystem _saveSystem;
         
         public Button StartButton => _startButton;
         public Button LoadButton => _loadButton;
         public Button QuitButton => _quitButton;
 
         [Inject]
-        public void Construct(IInstantiator diContainer)
+        public void Construct(IInstantiator diContainer, SaveSystem saveSystem)
         {
             _diContainer = diContainer;
-            _changeScene = _diContainer.Instantiate<ChangeScene>();
+            _saveSystem = saveSystem;
+            _sceneChanger = _diContainer.Instantiate<SceneChanger>();
             _scoreMenuController = _diContainer.Instantiate<ScoreMenuController>();
         }
         
         void Awake()
         {
-            _mainMenuController = new MainMenuController(this, _changeScene);
-            _scoreMenuController.Subscribe();
+            Subscribe();
+            
+            if (_saveSystem.IsSaveExist<ScoreGameData>().Status == UniTaskStatus.Succeeded)
+            {
+               _saveSystem.LoadAsync<ScoreGameData>();
+            }
+        }
+
+        private void Update()
+        {
+            _scoreMenuController.Update();
         }
 
         private void OnDestroy()
         {
-            _scoreMenuController.Unsubscribe();
-            _mainMenuController.Unsubscribe();
+            Unsubscribe();
             StopAllCoroutines();
+        }
+
+        private void Subscribe()
+        {
+            _scoreMenuController.Subscribe();
+            StartButton.onClick.AddListener(OnStartButtonClick);
+            LoadButton.onClick.AddListener(OnLoadButtonClick);
+            QuitButton.onClick.AddListener(OnQuitButtonClick);
+        }
+        
+        private void OnStartButtonClick()
+        {
+            _sceneChanger.ToStartGame();
+        }
+
+        private void OnLoadButtonClick()
+        {
+            _sceneChanger.ToLoadGame();
+        }
+
+        private void OnQuitButtonClick()
+        {
+            _sceneChanger.ToQuitGame();
+        }
+
+        private void Unsubscribe()
+        {
+            _scoreMenuController.Unsubscribe();
+            StartButton.onClick.RemoveListener(OnStartButtonClick);
+            LoadButton.onClick.RemoveListener(OnLoadButtonClick);
+            QuitButton.onClick.RemoveListener(OnQuitButtonClick);
         }
     }
 }

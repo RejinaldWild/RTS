@@ -1,3 +1,4 @@
+using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Services;
 using TMPro;
 using UnityEngine;
@@ -9,14 +10,14 @@ namespace _RTSGameProject.Logic.Common.Score.View
     {
         [SerializeField] public TextMeshProUGUI scoreText;
         
-        private ScoreMenuController _scoreMenuController;
+        private ScoreMenuData _scoreMenuData;
         
         public string Id { get; private set; }
         
         [Inject]
-        public void Construct(ScoreMenuController scoreMenuController)
+        public void Construct(ScoreMenuData scoreMenuData)
         {
-            _scoreMenuController = scoreMenuController;
+            _scoreMenuData = scoreMenuData;
         }
         
         private void Start()
@@ -24,9 +25,9 @@ namespace _RTSGameProject.Logic.Common.Score.View
             scoreText.text = "Score - Win: 0 - Lose: 0";
         }
 
-        private void Update()
+        public void Show()
         {
-            _scoreMenuController.Show();
+            scoreText.text = $"Score - Win: {_scoreMenuData.WinScore} - Lose: {_scoreMenuData.LoseScore}";
         }
 
         public void CreateId(string id)

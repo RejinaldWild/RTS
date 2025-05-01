@@ -1053,7 +1053,7 @@ GameObject:
   - component: {fileID: 361648431}
   - component: {fileID: 361648432}
   m_Layer: 0
-  m_Name: FactoriesInstaller
+  m_Name: Factories
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1217,7 +1217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 436490306}
   m_Layer: 0
-  m_Name: Zenject
+  m_Name: Initialization
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1567,6 +1567,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 617073702}
   m_CullTransparentMesh: 1
+--- !u!1 &636824699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 636824700}
+  - component: {fileID: 636824701}
+  m_Layer: 0
+  m_Name: SaveLoad
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &636824700
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636824699}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1534610957}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &636824701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636824699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2186f608eca74d2b964a23ed0a916d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &664739834
 GameObject:
   m_ObjectHideFlags: 0
@@ -1578,7 +1622,7 @@ GameObject:
   - component: {fileID: 664739835}
   - component: {fileID: 664739836}
   m_Layer: 0
-  m_Name: UIPanelInstaller
+  m_Name: UIPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2065,7 +2109,7 @@ GameObject:
   - component: {fileID: 817449079}
   - component: {fileID: 817449080}
   m_Layer: 0
-  m_Name: InputInstaller
+  m_Name: Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2138,16 +2182,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae5353e87a214b242b08b78265a56fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 330585545}
-  _groundMarker: {fileID: 1085439988}
-  _selectionBox: {fileID: 934540599}
-  _buildPanel: {fileID: 1196035381}
   _nextLevelButton: {fileID: 1931951951}
-  _scoreGameView: {fileID: 1420435226}
-  _buildings:
-  - {fileID: 8199193517402644004}
-  - {fileID: 2127035461}
-  - {fileID: 1032520082}
   _mainMenuButtons:
   - {fileID: 1639961332}
   - {fileID: 1599597424}
@@ -2374,7 +2409,7 @@ GameObject:
   - component: {fileID: 966681212}
   - component: {fileID: 966681213}
   m_Layer: 0
-  m_Name: FormationInstaller
+  m_Name: Formation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2546,6 +2581,7 @@ GameObject:
   - component: {fileID: 1085439991}
   - component: {fileID: 1085439990}
   - component: {fileID: 1085439989}
+  - component: {fileID: 1085439993}
   m_Layer: 0
   m_Name: GroundMarker
   m_TagString: Untagged
@@ -2640,6 +2676,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &1085439993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085439988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3d023ec8132ed14fa3ee9e75603602d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1089453076
 GameObject:
   m_ObjectHideFlags: 0
@@ -2692,6 +2740,7 @@ MonoBehaviour:
   - {fileID: 664739836}
   - {fileID: 361648432}
   - {fileID: 817449080}
+  - {fileID: 636824701}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -3060,6 +3109,7 @@ Transform:
   - {fileID: 664739835}
   - {fileID: 361648431}
   - {fileID: 817449079}
+  - {fileID: 636824700}
   m_Father: {fileID: 436490306}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1540907393
@@ -3073,7 +3123,7 @@ GameObject:
   - component: {fileID: 1540907394}
   - component: {fileID: 1540907395}
   m_Layer: 0
-  m_Name: ScoreGameInstaller
+  m_Name: ScoreGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3773,7 +3823,7 @@ GameObject:
   - component: {fileID: 1944576675}
   - component: {fileID: 1944576676}
   m_Layer: 0
-  m_Name: RepositoriesInstaller
+  m_Name: Repositories
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3806,7 +3856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eed916c1463ca2949b40e922e87440f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _groundMarker: {fileID: 1085439988}
+  _groundMarker: {fileID: 1085439993}
   _winLoseWindow: {fileID: 1593189310}
   _buildings:
   - {fileID: 8199193517402644004}

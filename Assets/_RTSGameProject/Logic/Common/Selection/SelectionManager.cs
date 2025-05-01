@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Construction.Model;
+using _RTSGameProject.Logic.Common.View;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Selection
@@ -10,15 +11,15 @@ namespace _RTSGameProject.Logic.Common.Selection
     {
         private LayerMask _clickable;
         private LayerMask _ground;
-        private GameObject GroundMarker;
+        private GroundMarker _groundMarker;
         
         public List<Unit> SelectedUnits { get; private set; }
         public List<HouseBuilding> SelectedBuildings { get; private set; }
 
         [Inject]
-        public SelectionManager(GameObject groundMarker)
+        public SelectionManager(GroundMarker groundMarker)
         {
-            GroundMarker = groundMarker;
+            _groundMarker = groundMarker;
             SelectedBuildings = new List<HouseBuilding>();
             SelectedUnits = new List<Unit>();
         }
@@ -33,9 +34,9 @@ namespace _RTSGameProject.Logic.Common.Selection
         
         public void ShowGroundMarker(Vector3 point)
         {
-            GroundMarker.transform.position = point + new Vector3(0, 0.1f, 0);
-            GroundMarker.SetActive(false);
-            GroundMarker.SetActive(true);
+            _groundMarker.transform.position = point + new Vector3(0, 0.1f, 0);
+            _groundMarker.gameObject.SetActive(false);
+            _groundMarker.gameObject.SetActive(true);
         }
         
         public void MultiSelect(RaycastHit hit)
@@ -94,7 +95,7 @@ namespace _RTSGameProject.Logic.Common.Selection
                 PreselectTriggerSectionIndicator(unit, false);
                 SelectSelectable(unit, false);
             }
-            GroundMarker.SetActive(false);
+            _groundMarker.gameObject.SetActive(false);
             SelectedUnits.Clear();
             
             foreach (var building in SelectedBuildings)

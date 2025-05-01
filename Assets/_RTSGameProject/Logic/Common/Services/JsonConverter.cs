@@ -1,17 +1,22 @@
+using _RTSGameProject.Logic.Common.Score.Model;
+using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class JsonConverter
+    public class JsonConverter: ISerializer
     {
-        public string ToJson(string data)
+        public UniTask<string> ToJsonAsync<TData>(TData data)
         {
-            return JsonUtility.ToJson(data);
+            string json = JsonConvert.SerializeObject(data);
+            return UniTask.FromResult(json);
         }
 
-        public string FromJson(string serializedData)
+        public UniTask<TData> FromJsonAsync<TData>(string serializedData)
         {
-            return JsonUtility.FromJson<string>(serializedData);
+            var data = JsonConvert.DeserializeObject<TData>(serializedData);
+            return UniTask.FromResult(data);
         }
     }
 }

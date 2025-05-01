@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace _RTSGameProject.Logic.Common.Services
+namespace _RTSGameProject.Logic.Common.SaveLoad
 {
     public class PlayerPrefsDataStorage : IDataStorage
     {
