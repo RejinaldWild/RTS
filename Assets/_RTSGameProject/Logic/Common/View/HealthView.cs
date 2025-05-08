@@ -21,21 +21,32 @@ namespace _RTSGameProject.Logic.Common.View
         private void Start()
         {
             MainCamera = UnityEngine.Camera.main;
+            Subscribe();
+        }
+
+        private void Subscribe()
+        {
+            this.ObserveEveryValueChanged(x => x.transform.position)
+                .Subscribe(rotation =>
+                {
+                    LookAtCamera(transform.position);
+                });
+            
             _viewModel.HeathRelative
                 .Subscribe(Draw)
                 .AddTo(this);
         }
-
+        
         private void Draw(float value)
         {
             _healthBarSlider.value = value;
         }
 
-        private void Update()
+        private void LookAtCamera(Vector3 position)
         {
-            Vector3 direction = MainCamera.transform.position - transform.position;
-            direction.y = 0;
-            transform.LookAt(direction);
+            Vector3 directionToLook = MainCamera.transform.position - position;
+            directionToLook.y = 0;
+            transform.LookAt(directionToLook);
         }
     }
 }

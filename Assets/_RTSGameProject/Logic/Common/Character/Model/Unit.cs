@@ -14,8 +14,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         [field: SerializeField] public int CurrentPositionIndex { get; set; }
         [field: SerializeField] public List<GameObject> Positions{ get; private set; }
         [field: SerializeField] public float DistanceToFindEnemy { get;private set; }
-
-        public Vector3 Position { get; set; }
+        [field: SerializeField] public Vector3 Position { get; set; }
         
         public IReadOnlyReactiveProperty<bool> IsAlive => Health.IsAlive;
         
