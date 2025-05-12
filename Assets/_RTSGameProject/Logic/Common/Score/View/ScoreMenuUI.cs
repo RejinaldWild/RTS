@@ -1,5 +1,4 @@
 using _RTSGameProject.Logic.Common.Score.Model;
-using _RTSGameProject.Logic.Common.Services;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -10,29 +9,34 @@ namespace _RTSGameProject.Logic.Common.Score.View
     {
         [SerializeField] public TextMeshProUGUI scoreText;
         
-        private ScoreMenuData _scoreMenuData;
+        private ScoreGameData _scoreGameData;
         
         public string Id { get; private set; }
         
         [Inject]
-        public void Construct(ScoreMenuData scoreMenuData)
+        public void Construct(ScoreGameData scoreGameData)
         {
-            _scoreMenuData = scoreMenuData;
+            _scoreGameData = scoreGameData;
         }
         
         private void Start()
         {
-            scoreText.text = "Score - Win: 0 - Lose: 0";
+            scoreText.text = $"Last score - Win: {_scoreGameData.WinScore} - Lose: {_scoreGameData.LoseScore}";
         }
 
         public void Show()
         {
-            scoreText.text = $"Score - Win: {_scoreMenuData.WinScore} - Lose: {_scoreMenuData.LoseScore}";
+            scoreText.text = $"Last score - Win: {_scoreGameData.WinScore} - Lose: {_scoreGameData.LoseScore}";
         }
 
         public void CreateId(string id)
         {
             Id = id;
+        }
+
+        public void GiveScoreGameData(ScoreGameData scoreGameData)
+        {
+            _scoreGameData = scoreGameData;
         }
     }
 }

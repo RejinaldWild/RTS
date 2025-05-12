@@ -21,7 +21,7 @@ namespace _RTSGameProject.Logic.Installers
                 .Bind<SceneChanger>()
                 .AsSingle();
             Container
-                .Bind<ScoreMenuData>()
+                .Bind<ScoreGameData>()
                 .AsSingle();
             Container
                 .Bind<SaveSystem>()

@@ -23,6 +23,12 @@ namespace _RTSGameProject.Logic.Common.Services
             _winLoseGame = winLoseGame;
             _saveSystem = saveSystem;
         }
+
+        public async UniTask LoadData()
+        {
+            _scoreGameData = await _saveSystem.LoadAsync<ScoreGameData>();
+            _scoreGameUI.GiveScoreGameData(_scoreGameData);
+        }
         
         public void Subscribe()
         {
@@ -44,6 +50,7 @@ namespace _RTSGameProject.Logic.Common.Services
         private void AddWinScore()
         {
             _scoreGameData.WinScore++;
+            _scoreGameData.SceneIndex++;
             SaveGameAsync();
         }
 

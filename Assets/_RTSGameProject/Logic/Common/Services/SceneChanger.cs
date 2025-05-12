@@ -1,4 +1,7 @@
 using System;
+using _RTSGameProject.Logic.Common.SaveLoad;
+using _RTSGameProject.Logic.Common.Score.Model;
+using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,41 +14,59 @@ namespace _RTSGameProject.Logic.Common.Services
         
         private int _sceneIndex;
         private int _mainMenuSceneIndex;
+        private ScoreGameData _scoreGameData;
+        private SaveSystem _saveSystem;
         
-        public SceneChanger()
+        public int SceneIndex => _sceneIndex;
+        public int MainMenuSceneIndex => _mainMenuSceneIndex;
+        
+        public SceneChanger(ScoreGameData scoreGameData, SaveSystem saveSystem)
         {
             _mainMenuSceneIndex = 0;
+            _scoreGameData = scoreGameData;
+            _saveSystem = saveSystem;
             _sceneIndex = SceneManager.GetActiveScene().buildIndex;
         }
-    
+        
+        public async UniTask LoadStartData()
+        {
+            if (_saveSystem.IsSaveExist<ScoreGameData>().ToString() != "False")
+            {
+                _scoreGameData = await _saveSystem.LoadAsync<ScoreGameData>();
+            }
+            _scoreGameData.SceneIndex = SceneManager.GetActiveScene().buildIndex;
+        }
+        
         public void ToMainMenu()
         {
-            SceneManager.LoadScene(sceneBuildIndex: _mainMenuSceneIndex);
+            _scoreGameData.SceneIndex = _mainMenuSceneIndex;
+            SceneManager.LoadScene(sceneBuildIndex: _scoreGameData.SceneIndex);
         }
         
         public void ToStartGame()
         {
-            _sceneIndex++;
-            SceneManager.LoadScene(sceneBuildIndex: _sceneIndex);
+            _scoreGameData.SceneIndex = _sceneIndex+1;
+            SceneManager.LoadScene(sceneBuildIndex: _scoreGameData.SceneIndex);
         }
 
         public void ToNextLevel()
         {
-            _sceneIndex++;
-            if (_sceneIndex <= SceneManager.sceneCountInBuildSettings - 1)
+            _scoreGameData.SceneIndex = _sceneIndex+1;
+            if (_scoreGameData.SceneIndex <= SceneManager.sceneCountInBuildSettings - 1)
             {
-                SceneManager.LoadScene(_sceneIndex);
+                SceneManager.LoadScene(_scoreGameData.SceneIndex);
             }
             else
             {
-                _sceneIndex = _mainMenuSceneIndex;
-                SceneManager.LoadScene(_sceneIndex);
+                _scoreGameData.SceneIndex = _mainMenuSceneIndex;
+                SceneManager.LoadScene(_scoreGameData.SceneIndex);
             }
         }
 
-        public void ToLoadGame()
+        public async void ToLoadGame()
         {
-            SceneManager.LoadScene(_sceneIndex);
+            _scoreGameData = await _saveSystem.LoadAsync<ScoreGameData>();
+            SceneManager.LoadScene(_scoreGameData.SceneIndex);
             OnSceneLoad?.Invoke();
         }
     

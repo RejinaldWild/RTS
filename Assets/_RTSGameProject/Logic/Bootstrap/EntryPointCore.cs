@@ -52,10 +52,13 @@ namespace _RTSGameProject.Logic.Bootstrap
         private void Awake()
         {
             Subscribe();
-            
-            if (_saveSystem.IsSaveExist<ScoreGameData>().Status == UniTaskStatus.Succeeded)
+            if (_saveSystem.IsSaveExist<ScoreGameData>().ToString() != "False")
             {
-                _saveSystem.LoadAsync<ScoreGameData>();
+                _scoreGameController.LoadData();
+            }
+            else
+            {
+                _sceneChanger.LoadStartData();
             }
         }
 

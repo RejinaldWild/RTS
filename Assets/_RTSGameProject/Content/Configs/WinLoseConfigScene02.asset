@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84ebdfc7583c44d09088a10c5ad2e3a3, type: 3}
   m_Name: WinLoseConfigScene02
   m_EditorClassIdentifier: 
-  _winConditionKillUnits: 3
-  _loseConditionKillUnits: 5
+  _winConditionKillUnits: 6
+  _loseConditionKillUnits: 3

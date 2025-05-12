@@ -36,5 +36,11 @@ namespace _RTSGameProject.Logic.Common.SaveLoad
             string serializedData = await _dataStorage.ReadAsync(dataKey);
             return await _serializer.FromJsonAsync<TData>(serializedData);
         }
+
+        public async UniTask DeleteAsync<TData>() where TData : ISaveData
+        {
+            string dataKey = _keyProvider.Provide<TData>();
+            await _dataStorage.DeleteAsync(dataKey);
+        }
     }
 }

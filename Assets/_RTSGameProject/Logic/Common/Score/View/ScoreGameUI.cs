@@ -37,5 +37,10 @@ namespace _RTSGameProject.Logic.Common.Score.View
         {
             Id = id;
         }
+
+        public void GiveScoreGameData(ScoreGameData scoreGameData)
+        {
+            _scoreGameData = scoreGameData;
+        }
     }
 }

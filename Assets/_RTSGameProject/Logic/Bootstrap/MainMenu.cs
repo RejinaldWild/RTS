@@ -2,7 +2,6 @@ using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -13,6 +12,7 @@ namespace _RTSGameProject.Logic.Bootstrap
     {
         [SerializeField] private Button _startButton;
         [SerializeField] private Button _loadButton;
+        [SerializeField] private Button _deleteSavesButton;
         [SerializeField] private Button _quitButton;
         
         [SerializeField] private ScoreMenuUI _scoreMenuUI;
@@ -24,6 +24,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         
         public Button StartButton => _startButton;
         public Button LoadButton => _loadButton;
+        public Button DeleteSavesButton => _deleteSavesButton;
         public Button QuitButton => _quitButton;
 
         [Inject]
@@ -38,10 +39,13 @@ namespace _RTSGameProject.Logic.Bootstrap
         void Awake()
         {
             Subscribe();
-            
-            if (_saveSystem.IsSaveExist<ScoreGameData>().Status == UniTaskStatus.Succeeded)
+            if (_saveSystem.IsSaveExist<ScoreGameData>().ToString() != "False")
             {
-               _saveSystem.LoadAsync<ScoreGameData>();
+                _scoreMenuController.LoadData();
+            }
+            else
+            {
+                _sceneChanger.LoadStartData();
             }
         }
 
@@ -61,6 +65,7 @@ namespace _RTSGameProject.Logic.Bootstrap
             _scoreMenuController.Subscribe();
             StartButton.onClick.AddListener(OnStartButtonClick);
             LoadButton.onClick.AddListener(OnLoadButtonClick);
+            DeleteSavesButton.onClick.AddListener(OnDeleteButtonClick);
             QuitButton.onClick.AddListener(OnQuitButtonClick);
         }
         
@@ -71,7 +76,19 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void OnLoadButtonClick()
         {
-            _sceneChanger.ToLoadGame();
+            if (_saveSystem.IsSaveExist<ScoreGameData>().ToString() != "False")
+            {
+                _sceneChanger.ToLoadGame();
+            }
+            else
+            {
+                Debug.Log("You do not have any saves to load");
+            }
+        }
+        
+        private void OnDeleteButtonClick()
+        {
+            _saveSystem.DeleteAsync<ScoreGameData>();
         }
 
         private void OnQuitButtonClick()
@@ -84,6 +101,7 @@ namespace _RTSGameProject.Logic.Bootstrap
             _scoreMenuController.Unsubscribe();
             StartButton.onClick.RemoveListener(OnStartButtonClick);
             LoadButton.onClick.RemoveListener(OnLoadButtonClick);
+            DeleteSavesButton.onClick.RemoveListener(OnDeleteButtonClick);
             QuitButton.onClick.RemoveListener(OnQuitButtonClick);
         }
     }
