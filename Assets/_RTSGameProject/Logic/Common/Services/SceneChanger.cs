@@ -17,7 +17,6 @@ namespace _RTSGameProject.Logic.Common.Services
         private ScoreGameData _scoreGameData;
         private SaveSystem _saveSystem;
         
-        public int SceneIndex => _sceneIndex;
         public int MainMenuSceneIndex => _mainMenuSceneIndex;
         
         public SceneChanger(ScoreGameData scoreGameData, SaveSystem saveSystem)
@@ -30,7 +29,7 @@ namespace _RTSGameProject.Logic.Common.Services
         
         public async UniTask LoadStartData()
         {
-            if (_saveSystem.IsSaveExist<ScoreGameData>().ToString() != "False")
+            if (_saveSystem.IsSaveExist<ScoreGameData>())
             {
                 _scoreGameData = await _saveSystem.LoadAsync<ScoreGameData>();
             }

@@ -23,10 +23,9 @@ namespace _RTSGameProject.Logic.Common.SaveLoad
             return UniTask.CompletedTask;
         }
 
-        public UniTask<bool> ExistAsync(string key)
+        public bool Exist(string key)
         {
-            bool exist = PlayerPrefs.HasKey(key);
-            return UniTask.FromResult(exist);
+            return PlayerPrefs.HasKey(key);
         }
 
         public UniTask Save()

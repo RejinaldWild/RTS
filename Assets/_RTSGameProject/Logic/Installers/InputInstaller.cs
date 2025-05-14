@@ -30,7 +30,10 @@ namespace _RTSGameProject.Logic.Installers
         private void BindInput()
         {
             Container
-                .Bind<InputCatchKeyClick>()
+                .BindInterfacesAndSelfTo<InputController>()
+                .AsSingle();
+            Container
+                .BindInterfacesAndSelfTo<InputCatchKeyClick>()
                 .AsSingle();
             Container
                 .Bind<SelectionBox>()

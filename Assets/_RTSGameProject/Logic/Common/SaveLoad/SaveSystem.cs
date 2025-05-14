@@ -17,10 +17,10 @@ namespace _RTSGameProject.Logic.Common.SaveLoad
             _keyProvider = keyProvider;
         }
 
-        public UniTask<bool> IsSaveExist<TData>() where TData: ISaveData
+        public bool IsSaveExist<TData>() where TData: ISaveData
         {
             string dataKey = _keyProvider.Provide<TData>();
-            return _dataStorage.ExistAsync(dataKey);
+            return _dataStorage.Exist(dataKey);
         }
         
         public async UniTask SaveAsync<TData>(TData data) where TData: ISaveData

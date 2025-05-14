@@ -4,10 +4,11 @@ using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
 using _RTSGameProject.Logic.Common.View;
 using UnityEngine;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class UnitsRepository
+    public class UnitsRepository: IInitializable, IDisposable
     {
         public event Action OnUnitKill;
         public event Action OnEnemyKill;
@@ -25,9 +26,14 @@ namespace _RTSGameProject.Logic.Common.Services
             _winLoseWindow = winLoseWindow;
         }
 
-        public void Subscribe()
+        public void Initialize()
         {
             _pauseGame.OnPause += OnPaused;
+        }
+
+        public void Dispose()
+        {
+            _pauseGame.OnPause -= OnPaused;
         }
         
         public bool HasEnemy(Unit forUnit)
@@ -79,11 +85,6 @@ namespace _RTSGameProject.Logic.Common.Services
             }
             AllUnits.Remove(unit);
             _selectionManager.SelectedUnits.Remove(unit);
-        }
-
-        public void Unsubscribe()
-        {
-            _pauseGame.OnPause -= OnPaused;
         }
         
         private void OnPaused()

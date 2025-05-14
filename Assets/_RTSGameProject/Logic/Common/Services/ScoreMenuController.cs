@@ -3,18 +3,17 @@ using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
 using Cysharp.Threading.Tasks;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class ScoreMenuController
+    public class ScoreMenuController: IInitializable, IDisposable, ITickable
     {
         private ScoreMenuUI _scoreMenuUI;
         private WinLoseGame _winLoseGame;
         private SceneChanger _sceneChanger;
         private SaveSystem _saveSystem;
         private ScoreGameData _scoreGameData;
-
-        public ScoreGameData ScoreGameData => _scoreGameData;
         
         public ScoreMenuController(ScoreMenuUI scoreMenuUI, ScoreGameData scoreGameData, SceneChanger sceneChanger, SaveSystem saveSystem)
         {
@@ -24,7 +23,17 @@ namespace _RTSGameProject.Logic.Common.Services
             _sceneChanger = sceneChanger;
             _saveSystem = saveSystem;
         }
+        
+        public void Initialize()
+        {
+            _sceneChanger.OnSceneLoad += OnSceneChangerLoaded;
+        }
 
+        public void Tick()
+        {
+            _scoreMenuUI.Show();
+        }
+        
         public async UniTask LoadData()
         {
             _scoreGameData = await _saveSystem.LoadAsync<ScoreGameData>();
@@ -32,19 +41,9 @@ namespace _RTSGameProject.Logic.Common.Services
             _scoreMenuUI.GiveScoreGameData(_scoreGameData);
         }
         
-        public void Subscribe()
-        {
-            _sceneChanger.OnSceneLoad += OnSceneChangerLoaded;
-        }
-        
-        public void Unsubscribe()
+        public void Dispose()
         {
             _sceneChanger.OnSceneLoad -= OnSceneChangerLoaded;
-        }
-
-        public void Update()
-        {
-            _scoreMenuUI.Show();
         }
         
         private void OnSceneChangerLoaded()

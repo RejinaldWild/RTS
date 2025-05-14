@@ -1,4 +1,3 @@
-using _RTSGameProject.Logic.Common.Character.Model;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -58,7 +57,7 @@ namespace _RTSGameProject.Logic.Common.Camera
             _movementSpeed = _normalSpeed;
         }
  
-        private void Update()
+        public void Update()
         {
             if (_followTransform != null)
             {

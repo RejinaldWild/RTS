@@ -27,7 +27,7 @@ namespace _RTSGameProject.Logic.Installers
         private void BindUnits()
         {
             Container
-                .Bind<UnitsRepository>()
+                .BindInterfacesAndSelfTo<UnitsRepository>()
                 .AsSingle();
         }
         

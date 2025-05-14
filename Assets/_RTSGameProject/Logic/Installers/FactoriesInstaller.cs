@@ -1,5 +1,4 @@
-﻿using _RTSGameProject.Logic.Common.AI;
-using _RTSGameProject.Logic.Common.Character.Model;
+﻿using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.Common.View;
 using _RTSGameProject.Logic.StateMachine.Core;

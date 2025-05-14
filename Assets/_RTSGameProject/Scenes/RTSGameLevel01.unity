@@ -2182,10 +2182,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae5353e87a214b242b08b78265a56fe6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nextLevelButton: {fileID: 1931951951}
-  _mainMenuButtons:
-  - {fileID: 1639961332}
-  - {fileID: 1599597424}
 --- !u!4 &824608850
 Transform:
   m_ObjectHideFlags: 0
@@ -2250,6 +2246,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &893828094
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 893828095}
+  - component: {fileID: 893828096}
+  m_Layer: 0
+  m_Name: SceneManagment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &893828095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893828094}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1534610957}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &893828096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893828094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c19232e602b346b8b77155d0fb990300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &926836072
 GameObject:
   m_ObjectHideFlags: 0
@@ -2741,6 +2781,7 @@ MonoBehaviour:
   - {fileID: 361648432}
   - {fileID: 817449080}
   - {fileID: 636824701}
+  - {fileID: 893828096}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -3110,6 +3151,7 @@ Transform:
   - {fileID: 361648431}
   - {fileID: 817449079}
   - {fileID: 636824700}
+  - {fileID: 893828095}
   m_Father: {fileID: 436490306}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1540907393
@@ -3210,6 +3252,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <WinPanel>k__BackingField: {fileID: 1167588494}
   <LosePanel>k__BackingField: {fileID: 617073702}
+  _nextLevelButton: {fileID: 1931951951}
+  _mainMenuButtons:
+  - {fileID: 1639961332}
+  - {fileID: 1599597424}
 --- !u!1 &1596702129
 GameObject:
   m_ObjectHideFlags: 0

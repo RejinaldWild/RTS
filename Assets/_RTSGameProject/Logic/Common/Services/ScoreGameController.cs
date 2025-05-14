@@ -3,10 +3,11 @@ using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
 using Cysharp.Threading.Tasks;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class ScoreGameController
+    public class ScoreGameController: IInitializable, IDisposable, ITickable
     {
         private ScoreGameUI _scoreGameUI;
         private ScoreGameData _scoreGameData;
@@ -24,27 +25,27 @@ namespace _RTSGameProject.Logic.Common.Services
             _saveSystem = saveSystem;
         }
 
-        public async UniTask LoadData()
-        {
-            _scoreGameData = await _saveSystem.LoadAsync<ScoreGameData>();
-            _scoreGameUI.GiveScoreGameData(_scoreGameData);
-        }
-        
-        public void Subscribe()
+        public void Initialize()
         {
             _winLoseGame.OnWin += AddWinScore;
             _winLoseGame.OnLose += AddLoseScore;
         }
+
+        public void Tick()
+        {
+            _scoreGameUI.Show();
+        }
         
-        public void Unsubscribe()
+        public void Dispose()
         {
             _winLoseGame.OnWin -= AddWinScore;
             _winLoseGame.OnLose -= AddLoseScore;
         }
-
-        public void Update()
+        
+        public async UniTask LoadData()
         {
-            _scoreGameUI.Show();
+            _scoreGameData = await _saveSystem.LoadAsync<ScoreGameData>();
+            _scoreGameUI.GiveScoreGameData(_scoreGameData);
         }
 
         private void AddWinScore()
@@ -64,5 +65,7 @@ namespace _RTSGameProject.Logic.Common.Services
         {
             await _saveSystem.SaveAsync(_scoreGameData);
         }
+
+        
     }
 }

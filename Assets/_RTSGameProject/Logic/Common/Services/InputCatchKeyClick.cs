@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class InputCatchKeyClick
+    public class InputCatchKeyClick: ITickable
     {
         public event Action<Ray> OnLeftClickMouseButton;
         public event Action<Ray> OnLeftClickMouseButtonHold;
@@ -21,7 +22,7 @@ namespace _RTSGameProject.Logic.Common.Services
             _pauseGame = pauseGame;
         }
 
-        public void Update()
+        public void Tick()
         {
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
         

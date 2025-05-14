@@ -3,9 +3,7 @@ using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
-using _RTSGameProject.Logic.Common.View;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Installers
@@ -18,7 +16,7 @@ namespace _RTSGameProject.Logic.Installers
         public override void InstallBindings()
         {
             BindWinLose();
-            ScoreBind();
+            BindScore();
         }
 
         private void BindWinLose()
@@ -29,7 +27,7 @@ namespace _RTSGameProject.Logic.Installers
                 .AsSingle();
         }
 
-        private void ScoreBind()
+        private void BindScore()
         {
             Container
                 .Bind<ScoreGameUI>()
@@ -41,10 +39,10 @@ namespace _RTSGameProject.Logic.Installers
                 .Bind<SaveSystem>()
                 .AsSingle();
             Container
-                .Bind<WinLoseGame>()
+                .BindInterfacesAndSelfTo<WinLoseGame>()
                 .AsSingle();
             Container
-                .Bind<ScoreGameController>()
+                .BindInterfacesAndSelfTo<ScoreGameController>()
                 .AsSingle();
         }
     }

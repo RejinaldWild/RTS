@@ -22,24 +22,23 @@ namespace _RTSGameProject.Logic.Bootstrap
         private ScoreMenuController _scoreMenuController;
         private SaveSystem _saveSystem;
         
-        public Button StartButton => _startButton;
-        public Button LoadButton => _loadButton;
-        public Button DeleteSavesButton => _deleteSavesButton;
-        public Button QuitButton => _quitButton;
+        private Button StartButton => _startButton;
+        private Button LoadButton => _loadButton;
+        private Button DeleteSavesButton => _deleteSavesButton;
+        private Button QuitButton => _quitButton;
 
         [Inject]
-        public void Construct(IInstantiator diContainer, SaveSystem saveSystem)
+        public void Construct(ScoreMenuController scoreMenuController, SceneChanger sceneChanger, SaveSystem saveSystem)
         {
-            _diContainer = diContainer;
             _saveSystem = saveSystem;
-            _sceneChanger = _diContainer.Instantiate<SceneChanger>();
-            _scoreMenuController = _diContainer.Instantiate<ScoreMenuController>();
+            _sceneChanger = sceneChanger;
+            _scoreMenuController = scoreMenuController;
         }
         
         void Awake()
         {
             Subscribe();
-            if (_saveSystem.IsSaveExist<ScoreGameData>().ToString() != "False")
+            if (_saveSystem.IsSaveExist<ScoreGameData>())
             {
                 _scoreMenuController.LoadData();
             }
@@ -47,11 +46,6 @@ namespace _RTSGameProject.Logic.Bootstrap
             {
                 _sceneChanger.LoadStartData();
             }
-        }
-
-        private void Update()
-        {
-            _scoreMenuController.Update();
         }
 
         private void OnDestroy()
@@ -62,7 +56,6 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void Subscribe()
         {
-            _scoreMenuController.Subscribe();
             StartButton.onClick.AddListener(OnStartButtonClick);
             LoadButton.onClick.AddListener(OnLoadButtonClick);
             DeleteSavesButton.onClick.AddListener(OnDeleteButtonClick);
@@ -76,7 +69,7 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void OnLoadButtonClick()
         {
-            if (_saveSystem.IsSaveExist<ScoreGameData>().ToString() != "False")
+            if (_saveSystem.IsSaveExist<ScoreGameData>())
             {
                 _sceneChanger.ToLoadGame();
             }
@@ -98,7 +91,6 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void Unsubscribe()
         {
-            _scoreMenuController.Unsubscribe();
             StartButton.onClick.RemoveListener(OnStartButtonClick);
             LoadButton.onClick.RemoveListener(OnLoadButtonClick);
             DeleteSavesButton.onClick.RemoveListener(OnDeleteButtonClick);
