@@ -1,5 +1,4 @@
 using _RTSGameProject.Logic.Common.SaveLoad;
-using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
@@ -14,37 +13,31 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private Button _loadButton;
         [SerializeField] private Button _deleteSavesButton;
         [SerializeField] private Button _quitButton;
-        
         [SerializeField] private ScoreMenuUI _scoreMenuUI;
         
-        private SceneChanger _sceneChanger;
         private IInstantiator _diContainer;
+        private SceneChanger _sceneChanger;
         private ScoreMenuController _scoreMenuController;
-        private SaveSystem _saveSystem;
-        
-        private Button StartButton => _startButton;
-        private Button LoadButton => _loadButton;
-        private Button DeleteSavesButton => _deleteSavesButton;
-        private Button QuitButton => _quitButton;
+        private SaveScoreService _saveScoreService;
 
         [Inject]
-        public void Construct(ScoreMenuController scoreMenuController, SceneChanger sceneChanger, SaveSystem saveSystem)
+        public void Construct(ScoreMenuController scoreMenuController, SceneChanger sceneChanger, SaveScoreService saveScoreService)
         {
-            _saveSystem = saveSystem;
+            _saveScoreService = saveScoreService;
             _sceneChanger = sceneChanger;
             _scoreMenuController = scoreMenuController;
         }
         
-        void Awake()
+        private async void Awake()
         {
             Subscribe();
-            if (_saveSystem.IsSaveExist<ScoreGameData>())
+            if (_saveScoreService.IsSaveExist())
             {
-                _scoreMenuController.LoadData();
+                await _scoreMenuController.LoadData();
             }
             else
             {
-                _sceneChanger.LoadStartData();
+                await _sceneChanger.LoadStartData();
             }
         }
 
@@ -56,10 +49,10 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void Subscribe()
         {
-            StartButton.onClick.AddListener(OnStartButtonClick);
-            LoadButton.onClick.AddListener(OnLoadButtonClick);
-            DeleteSavesButton.onClick.AddListener(OnDeleteButtonClick);
-            QuitButton.onClick.AddListener(OnQuitButtonClick);
+            _startButton.onClick.AddListener(OnStartButtonClick);
+            _loadButton.onClick.AddListener(OnLoadButtonClick);
+            _deleteSavesButton.onClick.AddListener(OnDeleteButtonClick);
+            _quitButton.onClick.AddListener(OnQuitButtonClick);
         }
         
         private void OnStartButtonClick()
@@ -69,7 +62,7 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void OnLoadButtonClick()
         {
-            if (_saveSystem.IsSaveExist<ScoreGameData>())
+            if (_saveScoreService.IsSaveExist())
             {
                 _sceneChanger.ToLoadGame();
             }
@@ -79,9 +72,9 @@ namespace _RTSGameProject.Logic.Bootstrap
             }
         }
         
-        private void OnDeleteButtonClick()
+        private async void OnDeleteButtonClick()
         {
-            _saveSystem.DeleteAsync<ScoreGameData>();
+            await _saveScoreService.DeleteAsync();
         }
 
         private void OnQuitButtonClick()
@@ -91,10 +84,10 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void Unsubscribe()
         {
-            StartButton.onClick.RemoveListener(OnStartButtonClick);
-            LoadButton.onClick.RemoveListener(OnLoadButtonClick);
-            DeleteSavesButton.onClick.RemoveListener(OnDeleteButtonClick);
-            QuitButton.onClick.RemoveListener(OnQuitButtonClick);
+            _startButton.onClick.RemoveListener(OnStartButtonClick);
+            _loadButton.onClick.RemoveListener(OnLoadButtonClick);
+            _deleteSavesButton.onClick.RemoveListener(OnDeleteButtonClick);
+            _quitButton.onClick.RemoveListener(OnQuitButtonClick);
         }
     }
 }

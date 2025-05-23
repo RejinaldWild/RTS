@@ -20,7 +20,7 @@ namespace _RTSGameProject.Logic.Installers
                 .Bind<ScoreGameData>()
                 .AsSingle();
             Container
-                .Bind<SaveSystem>()
+                .Bind<SaveScoreService>()
                 .AsSingle();
             Container
                 .BindInterfacesAndSelfTo<ScoreMenuController>()

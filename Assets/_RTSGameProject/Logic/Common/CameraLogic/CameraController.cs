@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace _RTSGameProject.Logic.Common.Camera
+namespace _RTSGameProject.Logic.Common.CameraLogic
 {
     public class CameraController : MonoBehaviour
     {
@@ -76,7 +76,7 @@ namespace _RTSGameProject.Logic.Common.Camera
  
         private void HandleCameraMovement()
         {
-            // Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
+            // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             // RaycastHit hit;
             // Physics.Raycast(ray, out hit, Mathf.Infinity, _clickable);
             // if (hit.collider.TryGetComponent(out Unit unit) && unit.Team!=0)
@@ -202,7 +202,7 @@ namespace _RTSGameProject.Logic.Common.Camera
             if (Input.GetMouseButtonDown(2) && EventSystem.current.IsPointerOverGameObject() == false)
             {
                 Plane plane = new Plane(Vector3.up, Vector3.zero);
-                Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
  
                 float entry;
  
@@ -214,7 +214,7 @@ namespace _RTSGameProject.Logic.Common.Camera
             if (Input.GetMouseButton(2) && EventSystem.current.IsPointerOverGameObject() == false)
             {
                 Plane plane = new Plane(Vector3.up, Vector3.zero);
-                Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
  
                 float entry;
  

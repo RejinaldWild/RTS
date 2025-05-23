@@ -13,10 +13,10 @@ namespace _RTSGameProject.Logic.Common.Services
         public event Action OnEscPress;
         public event Action OnEscPressAgain; 
     
-        private UnityEngine.Camera _camera;
+        private Camera _camera;
         private PauseGame _pauseGame;
     
-        public InputCatchKeyClick(UnityEngine.Camera camera, PauseGame pauseGame)
+        public InputCatchKeyClick(Camera camera, PauseGame pauseGame)
         {
             _camera = camera;
             _pauseGame = pauseGame;

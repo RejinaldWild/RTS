@@ -1,10 +1,11 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using _RTSGameProject.Logic.Common.Score.Model;
+using Cysharp.Threading.Tasks;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
     public interface ISerializer
     {
-        public UniTask<string> ToJsonAsync<TData>(TData data);
-        public UniTask<TData> FromJsonAsync<TData>(string serializedData);
+        public UniTask<string> ToJsonAsync(ISaveData data);
+        public UniTask<ScoreGameData> FromJsonAsync(string serializedData);
     }
 }

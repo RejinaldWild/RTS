@@ -4,42 +4,42 @@ using Cysharp.Threading.Tasks;
 
 namespace _RTSGameProject.Logic.Common.SaveLoad
 {
-    public class SaveSystem : ISaveSystem
+    public class SaveScoreService : ISaveScoreService
     {
         private ISerializer _serializer;
         private IDataStorage _dataStorage;
         private IKeyProvider _keyProvider;
         
-        public SaveSystem(ISerializer serializer, IDataStorage dataStorage, IKeyProvider keyProvider)
+        public SaveScoreService(ISerializer serializer, IDataStorage dataStorage, IKeyProvider keyProvider)
         {
             _serializer = serializer;
             _dataStorage = dataStorage;
             _keyProvider = keyProvider;
         }
 
-        public bool IsSaveExist<TData>() where TData: ISaveData
+        public bool IsSaveExist()
         {
-            string dataKey = _keyProvider.Provide<TData>();
+            string dataKey = _keyProvider.Provide<ISaveData>();
             return _dataStorage.Exist(dataKey);
         }
         
-        public async UniTask SaveAsync<TData>(TData data) where TData: ISaveData
+        public async UniTask SaveAsync(ISaveData data)
         {
-            string dataKey = _keyProvider.Provide<TData>();
+            string dataKey = _keyProvider.Provide<ISaveData>();
             string serializedData = await _serializer.ToJsonAsync(data);
             await _dataStorage.WriteAsync(dataKey, serializedData);
         }
 
-        public async UniTask<TData> LoadAsync<TData>() where TData: ISaveData
+        public async UniTask<ScoreGameData> LoadAsync()
         {
-            string dataKey = _keyProvider.Provide<TData>();
+            string dataKey = _keyProvider.Provide<ISaveData>();
             string serializedData = await _dataStorage.ReadAsync(dataKey);
-            return await _serializer.FromJsonAsync<TData>(serializedData);
+            return await _serializer.FromJsonAsync(serializedData);
         }
 
-        public async UniTask DeleteAsync<TData>() where TData : ISaveData
+        public async UniTask DeleteAsync()
         {
-            string dataKey = _keyProvider.Provide<TData>();
+            string dataKey = _keyProvider.Provide<ISaveData>();
             await _dataStorage.DeleteAsync(dataKey);
         }
     }

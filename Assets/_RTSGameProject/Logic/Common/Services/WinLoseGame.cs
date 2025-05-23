@@ -10,7 +10,6 @@ namespace _RTSGameProject.Logic.Common.Services
         public event Action OnWin;
         public event Action OnLose;
 
-        private bool _isGameOver;
         private int _winCondition;
         private int _loseCondition;
         private readonly WinLoseWindow _winLoseWindow;
@@ -20,7 +19,6 @@ namespace _RTSGameProject.Logic.Common.Services
         public WinLoseGame(WinLoseWindow winLoseWindow, PauseGame pauseGame, 
             UnitsRepository unitsRepository, WinLoseConfig winLoseCondition)
         {
-            _isGameOver = false;
             _winLoseWindow = winLoseWindow;
             _unitsRepository = unitsRepository;
             _winCondition = winLoseCondition.WinConditionKillUnits;
@@ -51,7 +49,6 @@ namespace _RTSGameProject.Logic.Common.Services
                 _winLoseWindow.gameObject.SetActive(true);
                 _winLoseWindow.WinPanel.SetActive(true);
                 GameOver();
-                _isGameOver = false;
             }
         }
 
@@ -64,13 +61,11 @@ namespace _RTSGameProject.Logic.Common.Services
                 _winLoseWindow.gameObject.SetActive(true);
                 _winLoseWindow.LosePanel.SetActive(true);
                 GameOver();
-                _isGameOver = false;
             }
         }
 
         private void GameOver()
         {
-            _isGameOver = true;
             _pauseGame.Pause();
         }
     }

@@ -1,7 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using _RTSGameProject.Logic.Common.Services;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 
@@ -33,6 +34,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         private UnitAttackAct _attackAct;
         private UnitFindEnemy _unitFindEnemy;
         private UnitsRepository _unitsRepository;
+        private CancellationTokenSource _cancellationTokenSource;
         
         public void Construct(int teamId, UnitsRepository unitsRepository)
         {
@@ -50,19 +52,20 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             _attackAct = GetComponent<UnitAttackAct>();
             _unitFindEnemy = new UnitFindEnemy(DistanceToFindEnemy);
             _patrollMovement = new PatrollMovement();
+            _cancellationTokenSource = new CancellationTokenSource();
         }
     
         public void OnPaused()
         {
-            StopCoroutine(AttackCommand());
-            StopCoroutine(EndCommand());
-            StopCoroutine(EndPath());
+            _cancellationTokenSource?.Cancel();
             _unitMovement.Stop();
             _attackAct.Stop();
         }
         
         public void OnUnPaused()
         {
+            _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = new CancellationTokenSource();
             _unitMovement.Continue();
             _attackAct.Continue();
         }
@@ -70,7 +73,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         public void Move()
         {
             _unitMovement.Move(Position);
-            StartCoroutine(EndPath());
+            EndPathAsync().Forget();
         }
         
         public void MoveTo()
@@ -89,9 +92,9 @@ namespace _RTSGameProject.Logic.Common.Character.Model
 
         public void Attack()
         {
-            StartCoroutine(AttackCommand());
+            AttackCommandAsync().Forget();
             Debug.Log("Unit is attacking!");
-            StartCoroutine(EndCommand());
+            EndCommandAsync().Forget();
         }
 
         public void TakeDamage(float damage)
@@ -132,34 +135,39 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             return distanceToAttack >= distanceDiffToAttack;
         }
         
-        private IEnumerator EndPath()
+        private async UniTask EndPathAsync()
         {
-            while(IsCommandedToMove)
+            while(IsCommandedToMove && !_cancellationTokenSource.IsCancellationRequested)
             {
                 IsCommandedToMove = _unitMovement.EndPath(IsCommandedToMove);
-                yield return new WaitForSeconds(0.1f);
+                await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
             }
         }
         
-        private IEnumerator AttackCommand()
+        private async UniTask AttackCommandAsync()
         {
-            while(this != null && _enemy != null &&
+            while(this != null && _enemy != null && !_cancellationTokenSource.IsCancellationRequested &&
                   Mathf.Pow(_attackAct.DistanceToAttack, 2f) >= Vector3.SqrMagnitude(transform.position - _enemy.transform.position)) //?
             {
                 _attackAct.Execute(_enemy);
-                yield return new WaitForSeconds(0.5f);
+                await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
             }
             
         }
         
-        private IEnumerator EndCommand()
+        private async UniTask EndCommandAsync()
         {
-            while(IsCommandedToAttack)
+            while(IsCommandedToAttack && !_cancellationTokenSource.IsCancellationRequested)
             {
                 IsCommandedToAttack = _attackAct.EndCommand(IsCommandedToAttack,_enemy);
-                yield return new WaitForSeconds(0.1f);
+                await UniTask.Delay(TimeSpan.FromSeconds(0.1f));
             }
         }
 
+        private void OnDestroy()
+        {
+            _cancellationTokenSource?.Cancel();
+            _cancellationTokenSource?.Dispose();
+        }
     }
 }

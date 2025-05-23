@@ -11,7 +11,7 @@ namespace _RTSGameProject.Logic.Common.Selection
         private UnitsRepository _unitsRepository;
         private BuildingsRepository _buildingsRepository;
         private SelectionManager _selectionManager;
-        private UnityEngine.Camera _mainCamera;
+        private Camera _mainCamera;
         private Rect _selectionBox;
         private Vector2 _startPosition;
         private Vector2 _endPosition;
@@ -27,7 +27,7 @@ namespace _RTSGameProject.Logic.Common.Selection
         
         private void Awake()
         {
-            _mainCamera = UnityEngine.Camera.main;
+            _mainCamera = Camera.main;
             _startPosition = Vector2.zero;
             _endPosition = Vector2.zero;
             DrawVisual();

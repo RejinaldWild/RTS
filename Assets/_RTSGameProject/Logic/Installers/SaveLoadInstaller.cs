@@ -18,7 +18,7 @@ namespace _RTSGameProject.Logic.Installers
                 .AsSingle();
             Container
                 .Bind<IKeyProvider>()
-                .To<MapKeyProvider>()
+                .To<KeyProvider>()
                 .AsSingle();
             Container
                 .Bind<SaveDataBase>()

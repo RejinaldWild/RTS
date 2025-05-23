@@ -12,12 +12,12 @@ namespace _RTSGameProject.Logic.Common.View
         
         [SerializeField] private Button _nextLevelButton;
         [SerializeField] private Button[] _mainMenuButtons;
+        
+        private SceneChanger _sceneChanger;
 
         private Button NextLevelButton => _nextLevelButton;
         private Button[] MainMenuButtons => _mainMenuButtons;
         
-        private SceneChanger _sceneChanger;
-
         [Inject]
         public void Construct(SceneChanger sceneChanger)
         {

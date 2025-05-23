@@ -1,20 +1,15 @@
-﻿using System.Collections.Generic;
-
-namespace _RTSGameProject.Logic.Common.SaveLoad
+﻿namespace _RTSGameProject.Logic.Common.SaveLoad
 {
-    public sealed class MapKeyProvider : IKeyProvider
+    public sealed class KeyProvider : IKeyProvider
     {
         private SaveDataBase _saveDataBase;
 
-        public MapKeyProvider(SaveDataBase saveDataBase)
+        public KeyProvider(SaveDataBase saveDataBase)
         {
-            saveDataBase.Initialize(); // in EntryPoint or Zenject
             _saveDataBase = saveDataBase;
         }
         
-        public string Provide<TData>() => _saveDataBase.Map[typeof(TData)];
-
-        public IEnumerable<string> ProvideAll() => _saveDataBase.Map.Values;
+        public string Provide<TData>() => _saveDataBase.ScoreGameData;
     }
     
     

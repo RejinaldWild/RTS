@@ -8,10 +8,10 @@ namespace _RTSGameProject.Logic.Bootstrap
     {
         public override void InstallBindings()
         {
-            SaveSystemBind();
+            BindSaveSystem();
         }
-
-        private void SaveSystemBind()
+        
+        private void BindSaveSystem()
         {
             Container
                 .Bind<PlayerPrefsDataStorage>()
