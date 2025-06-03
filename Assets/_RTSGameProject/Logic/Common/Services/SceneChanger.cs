@@ -1,4 +1,4 @@
-using System;
+using System.Threading.Tasks;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
 using Cysharp.Threading.Tasks;
@@ -10,14 +10,11 @@ namespace _RTSGameProject.Logic.Common.Services
 {
     public class SceneChanger
     {
-        public event Action OnSceneLoad;
-        
-        private int _sceneIndex;
-        private ScoreGameData _scoreGameData;
-        
         private readonly int _firstLevelSceneIndex;
         private readonly int _mainMenuSceneIndex;
         private readonly SaveScoreService _saveScoreService;
+        
+        public ScoreGameData ScoreGameData { get; private set; }
         
         public int MainMenuSceneIndex => _mainMenuSceneIndex;
         
@@ -25,51 +22,31 @@ namespace _RTSGameProject.Logic.Common.Services
         {
             _mainMenuSceneIndex = 0;
             _firstLevelSceneIndex = 1;
-            _scoreGameData = scoreGameData;
+            ScoreGameData = scoreGameData;
             _saveScoreService = saveScoreService;
-            _sceneIndex = SceneManager.GetActiveScene().buildIndex;
         }
         
-        public async UniTask LoadStartData()
+        public async UniTask Initialize()
         {
-            if (_saveScoreService.IsSaveExist())
-            {
-                _scoreGameData = await _saveScoreService.LoadAsync();
-            }
-            _scoreGameData.SceneIndex = SceneManager.GetActiveScene().buildIndex;
+            ScoreGameData = await _saveScoreService.LoadAsync();
+            //_scoreGameData.OnScoreGameDataChange += OnScoreGameDataChanged;
         }
         
-        public void ToMainMenu()
+        public void Dispose()
         {
-            _scoreGameData.SceneIndex = _mainMenuSceneIndex;
-            SceneManager.LoadScene(sceneBuildIndex: _scoreGameData.SceneIndex);
+            //_scoreGameData.OnScoreGameDataChange -= OnScoreGameDataChanged;
         }
         
-        public void ToStartGame()
+        public async void ToStartGame()
         {
-            _scoreGameData.SceneIndex = _firstLevelSceneIndex;
-            SceneManager.LoadScene(sceneBuildIndex: _scoreGameData.SceneIndex);
+            ScoreGameData.ChangeScoreGameData(_firstLevelSceneIndex);
+            await _saveScoreService.SaveAsync(ScoreGameData);
+            SceneManager.LoadScene(sceneBuildIndex: ScoreGameData.SceneIndex);
         }
-
-        public void ToNextLevel()
+        
+        public void ToLoadGame()
         {
-            if (_scoreGameData.SceneIndex < SceneManager.sceneCountInBuildSettings-1)
-            {
-                _scoreGameData.SceneIndex = _sceneIndex+1;
-                SceneManager.LoadScene(_scoreGameData.SceneIndex);
-            }
-            else
-            {
-                _scoreGameData.SceneIndex = _mainMenuSceneIndex;
-                SceneManager.LoadScene(_scoreGameData.SceneIndex);
-            }
-        }
-
-        public async void ToLoadGame()
-        {
-            _scoreGameData = await _saveScoreService.LoadAsync();
-            SceneManager.LoadScene(_scoreGameData.SceneIndex);
-            OnSceneLoad?.Invoke();
+            SceneManager.LoadScene(ScoreGameData.SceneIndex);
         }
     
         public void ToQuitGame()
@@ -79,6 +56,32 @@ namespace _RTSGameProject.Logic.Common.Services
             #endif
             
             Application.Quit();
+        }
+        
+        public async void ToMainMenu()
+        {
+            await _saveScoreService.SaveAsync(ScoreGameData);
+            ScoreGameData.ChangeScoreGameData(_mainMenuSceneIndex);
+            SceneManager.LoadScene(sceneBuildIndex: ScoreGameData.SceneIndex);
+        }
+        
+        public async void ToNextLevel()
+        {
+            if (ScoreGameData.SceneIndex < SceneManager.sceneCountInBuildSettings-1)
+            {
+                await _saveScoreService.SaveAsync(ScoreGameData);
+                SceneManager.LoadScene(ScoreGameData.SceneIndex);
+            }
+            else
+            {
+                ScoreGameData.ChangeScoreGameData(MainMenuSceneIndex);
+                SceneManager.LoadScene(ScoreGameData.SceneIndex);
+            }
+        }
+        
+        private void OnScoreGameDataChanged(ScoreGameData scoreGameData)
+        {
+            ScoreGameData = scoreGameData;
         }
     }
 }

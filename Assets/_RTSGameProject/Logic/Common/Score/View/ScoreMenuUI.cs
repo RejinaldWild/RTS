@@ -7,11 +7,9 @@ namespace _RTSGameProject.Logic.Common.Score.View
 {
     public class ScoreMenuUI : MonoBehaviour
     {
-        [SerializeField] public TextMeshProUGUI scoreText;
+        [SerializeField] private TextMeshProUGUI _scoreText;
         
         private ScoreGameData _scoreGameData;
-        
-        public string Id { get; private set; }
         
         [Inject]
         public void Construct(ScoreGameData scoreGameData)
@@ -21,17 +19,12 @@ namespace _RTSGameProject.Logic.Common.Score.View
         
         private void Start()
         {
-            scoreText.text = $"Last score - Win: {_scoreGameData.WinScore} - Lose: {_scoreGameData.LoseScore}";
+            _scoreText.text = $"Last score - Win: {_scoreGameData.WinScore} - Lose: {_scoreGameData.LoseScore}";
         }
 
         public void Show()
         {
-            scoreText.text = $"Last score - Win: {_scoreGameData.WinScore} - Lose: {_scoreGameData.LoseScore}";
-        }
-
-        public void CreateId(string id)
-        {
-            Id = id;
+            _scoreText.text = $"Last score - Win: {_scoreGameData.WinScore} - Lose: {_scoreGameData.LoseScore}";
         }
 
         public void GiveScoreGameData(ScoreGameData scoreGameData)

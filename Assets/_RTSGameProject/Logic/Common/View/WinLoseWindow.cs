@@ -18,7 +18,6 @@ namespace _RTSGameProject.Logic.Common.View
         private Button NextLevelButton => _nextLevelButton;
         private Button[] MainMenuButtons => _mainMenuButtons;
         
-        [Inject]
         public void Construct(SceneChanger sceneChanger)
         {
             _sceneChanger = sceneChanger;

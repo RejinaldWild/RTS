@@ -15,43 +15,44 @@ namespace _RTSGameProject.Logic.Bootstrap
         private readonly HouseBuilding[] _buildings;
         private readonly ActorsRepository _actorsRepository;
         private readonly SceneChanger _sceneChanger;
-        private readonly ScoreGameController _scoreGameController;
         private readonly SaveScoreService _saveScoreService;
+        private readonly EnvironmentProvider _environmentProvider;
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
         
-        private IInstantiator _diContainer;
         private ScoreGameUI _scoreGameUI;
+        private ScoreGameController _scoreGameController;
 
         public EntryPointCore(SceneChanger sceneChanger,
-            ScoreGameUI scoreGameUI,
-            ScoreGameController scoreGameController,
-            ActorsRepository actorsRepository,
-            HouseBuilding[] buildings, SaveScoreService saveScoreService,
-            ILocalAssetLoader localAssetLoader)
+                            ActorsRepository actorsRepository,
+                            HouseBuilding[] buildings, 
+                            SaveScoreService saveScoreService,
+                            ScoreGameUIProvider scoreGameUIProvider,
+                            ScoreGameController scoreGameController,
+                            EnvironmentProvider environmentProvider)
         {
-            _scoreGameController = scoreGameController;
             _actorsRepository = actorsRepository;
             _buildings = buildings;
-            _saveScoreService = saveScoreService;
             _sceneChanger = sceneChanger;
-            _scoreGameUI = scoreGameUI;
-            _scoreGameUIProvider = localAssetLoader as ScoreGameUIProvider;
+            _saveScoreService = saveScoreService;
+            _scoreGameUIProvider = scoreGameUIProvider;
+            _scoreGameController = scoreGameController;
+            _environmentProvider = environmentProvider;
         }
 
         public async void Initialize()
         {
-            Subscribe();
+            await _environmentProvider.Load();
+            _scoreGameController.Initialize();
             if (_saveScoreService.IsSaveExist())
             {
-                _scoreGameUI = await _scoreGameUIProvider.Load();
-                await _scoreGameController.LoadData(_scoreGameUI);
-                //_scoreGameUI.ScoreGameData = await _saveScoreService.LoadAsync();
+                await _sceneChanger.Initialize();
+                _scoreGameController.LoadData(_sceneChanger.ScoreGameData);
             }
             else
             {
-                await _sceneChanger.LoadStartData();
-                await _scoreGameUIProvider.Load();
+                _scoreGameController.LoadStartData();
             }
+            Subscribe();
         }
 
         public void Tick()
@@ -64,8 +65,10 @@ namespace _RTSGameProject.Logic.Bootstrap
         
         public void Dispose()
         {
-            _scoreGameUIProvider.Unload();
+            _sceneChanger.Dispose();
             Unsubscribe();
+            _scoreGameUIProvider.Unload();
+            _environmentProvider.Unload();
         }
         
         private void Subscribe()

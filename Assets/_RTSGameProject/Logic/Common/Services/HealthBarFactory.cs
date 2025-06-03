@@ -1,6 +1,7 @@
 using System;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.View;
+using _RTSGameProject.Logic.LoadingAssets.Local;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -13,17 +14,20 @@ namespace _RTSGameProject.Logic.Common.Services
     {
         private HealthBarRepository _healthBarRepository;
         private Camera _mainCamera;
+        private HealthBarSliderProvider _healthBarSliderProvider;
         
         [Inject]
-        public HealthBarFactory(HealthBarRepository healthBarRepository, Camera mainCamera)
+        public HealthBarFactory(HealthBarRepository healthBarRepository, Camera mainCamera, HealthBarSliderProvider healthBarSliderProvider)
         {
             _healthBarRepository = healthBarRepository;
             _mainCamera = mainCamera;
+            _healthBarSliderProvider = healthBarSliderProvider;
         }
 
-        public void Create(Unit unit, Health healthModel)
+        public async void Create(Unit unit, Health healthModel)
         {
             HealthViewModel healthViewModel = new HealthViewModel(healthModel);
+            //HealthView instance = await _healthBarSliderProvider.Load(unit);
             HealthView instance = unit.GetComponentInChildren<HealthView>();
             instance.Construct(healthViewModel, _mainCamera);
             _healthBarRepository.Register(instance);
@@ -40,6 +44,7 @@ namespace _RTSGameProject.Logic.Common.Services
             
             void Unregister()
             {
+                //_healthBarSliderProvider.Unload();
                 Destroy(instance.gameObject);
                 _healthBarRepository.Unregister(instance);
                 disposable.Dispose();

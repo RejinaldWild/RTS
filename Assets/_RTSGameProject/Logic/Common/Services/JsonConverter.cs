@@ -14,7 +14,7 @@ namespace _RTSGameProject.Logic.Common.Services
 
         public UniTask<ScoreGameData> FromJsonAsync(string serializedData)
         {
-            var data = JsonConvert.DeserializeObject<ScoreGameData>(serializedData);
+            ScoreGameData data = JsonConvert.DeserializeObject<ScoreGameData>(serializedData);
             return UniTask.FromResult(data);
         }
     }

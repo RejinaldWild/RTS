@@ -14,56 +14,79 @@ namespace _RTSGameProject.Logic.Common.Services
         private readonly SaveScoreService _saveScoreService;
         
         private ScoreGameData _scoreGameData;
+        private SceneChanger _sceneChanger;
         private ScoreGameUI _scoreGameUI;
         private string _key;
-        
-        public ScoreGameController(ScoreGameUI scoreGameUI, ScoreGameData scoreGameData, 
-                                WinLoseGame winLoseGame, SaveScoreService saveScoreService)
+
+        public ScoreGameController(ScoreGameData scoreGameData, 
+                                    WinLoseGame winLoseGame,
+                                    SceneChanger sceneChanger,
+                                    SaveScoreService saveScoreService)
         {
-            _scoreGameUI = scoreGameUI;
-            _scoreGameUI.CreateId(Guid.NewGuid().ToString());
             _scoreGameData = scoreGameData;
             _winLoseGame = winLoseGame;
+            _sceneChanger = sceneChanger;
             _saveScoreService = saveScoreService;
         }
 
         public void Initialize()
         {
+            // _scoreGameData = await _saveScoreService.LoadAsync();
+            // _scoreGameData.OnScoreGameDataChange += OnScoreGameDataChanged;
+            
             _winLoseGame.OnWin += AddWinScore;
             _winLoseGame.OnLose += AddLoseScore;
         }
 
+        private void OnScoreGameDataChanged(ScoreGameData scoreGameData)
+        {
+            //_scoreGameData = scoreGameData;
+        }
+
         public void Tick()
         {
-            _scoreGameUI.Show();
+            if (_scoreGameUI!=null)
+            {
+                _scoreGameUI.Show();
+            }
         }
         
         public void Dispose()
         {
+            //_scoreGameData.OnScoreGameDataChange -= OnScoreGameDataChanged;
             _winLoseGame.OnWin -= AddWinScore;
             _winLoseGame.OnLose -= AddLoseScore;
         }
         
-        public async UniTask LoadData(ScoreGameUI scoreGameUI)
+        public void LoadStartData()
         {
-            _scoreGameUI = scoreGameUI;
-            _scoreGameData = await _saveScoreService.LoadAsync();
             _scoreGameUI.GiveScoreGameData(_scoreGameData);
+        }
+        
+        public void LoadData(ScoreGameData scoreGameData)
+        {
+            _scoreGameData = scoreGameData;
+            _scoreGameUI.GiveScoreGameData(scoreGameData);
+            //_scoreGameData = await _saveScoreService.LoadAsync();
         }
 
         private async void AddWinScore()
         {
-            _scoreGameData.WinScore++;
+            _scoreGameData.AddWinScore();
             if (_scoreGameData.SceneIndex < SceneManager.sceneCountInBuildSettings-1)
             {
-                _scoreGameData.SceneIndex++;
+                _scoreGameData.AddSceneIndex();
+            }
+            else
+            {
+                _scoreGameData.ChangeScoreGameData(0);
             }
             await SaveGameAsync();
         }
 
         private async void AddLoseScore()
         {
-            _scoreGameData.LoseScore++;
+            _scoreGameData.AddLoseScore();
             await SaveGameAsync();
         }
 
