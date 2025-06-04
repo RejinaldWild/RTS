@@ -1,4 +1,3 @@
-using System;
 using _RTSGameProject.Logic.Common.Score.Model;
 using TMPro;
 using UnityEngine;
@@ -8,37 +7,29 @@ namespace _RTSGameProject.Logic.Common.Score.View
 {
     public class ScoreGameUI : MonoBehaviour
     {
-        [SerializeField] public TextMeshProUGUI scoreText;
+        [SerializeField] private TextMeshProUGUI _scoreText;
         
-        public ScoreGameData ScoreGameData;
-        
-        public string Id { get; private set; }
+        private ScoreGameData _scoreGameData;
         
         [Inject]
         public void Construct(ScoreGameData scoreGameData)
         {
-            ScoreGameData = scoreGameData;
+            _scoreGameData = scoreGameData;
         }
         
         private void Start()
         {
-            Id = Guid.NewGuid().ToString();
-            scoreText.text = "Score - Win: 0 - Lose: 0";
+            _scoreText.text = "Score - Win: 0 - Lose: 0";
         }
 
         public void Show()
         {
-            scoreText.text = $"Score - Win: {ScoreGameData.WinScore} - Lose: {ScoreGameData.LoseScore}";
+            _scoreText.text = $"Score - Win: {_scoreGameData.WinScore} - Lose: {_scoreGameData.LoseScore}";
         }
         
-        public void CreateId(string id)
-        {
-            Id = id;
-        }
-
         public void GiveScoreGameData(ScoreGameData scoreGameData)
         {
-            ScoreGameData = scoreGameData;
+            _scoreGameData = scoreGameData;
         }
     }
 }

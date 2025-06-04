@@ -17,13 +17,13 @@ namespace _RTSGameProject.Logic.Installers
                 .Bind<ScoreMenuUI>()
                 .FromInstance(_scoreMenuUI);
             Container
-                .Bind<ScoreGameData>()
-                .AsSingle();
-            Container
                 .Bind<SaveScoreService>()
                 .AsSingle();
             Container
                 .BindInterfacesAndSelfTo<ScoreMenuController>()
+                .AsSingle();
+            Container
+                .Bind<ScoreGameData>()
                 .AsSingle();
         }
     }

@@ -5,13 +5,13 @@ using UnityEngine.AddressableAssets;
 
 namespace _RTSGameProject.Logic.LoadingAssets.Local
 {
-    public abstract class LocalAssetLoading: ILocalAssetLoader
+    public abstract class LocalAssetEnvironmentLoading
     {
         private GameObject _cachedObject;
 
-        public async UniTask<T> LoadLocalAsset<T>(string assetId, Canvas canvas)
+        public async UniTask<T> LoadLocalAsset<T>(string assetId)
         {
-            var handle = Addressables.InstantiateAsync(assetId, canvas.transform);
+            var handle = Addressables.InstantiateAsync(assetId);
             _cachedObject = await handle.Task;
             
             if (_cachedObject.TryGetComponent(out T assetObject)==false)
@@ -24,9 +24,10 @@ namespace _RTSGameProject.Logic.LoadingAssets.Local
         
         public void UnloadLocalAsset()
         {
-            if(_cachedObject!=null) 
+            if(_cachedObject==null)
                 return;
             
+            Addressables.ReleaseInstance(_cachedObject);
             _cachedObject = null;
         }
     }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Selection;
-using _RTSGameProject.Logic.Common.View;
 using UnityEngine;
 using Zenject;
 
@@ -16,14 +15,12 @@ namespace _RTSGameProject.Logic.Common.Services
         public List<Unit> AllUnits;
         private SelectionManager _selectionManager;
         private PauseGame _pauseGame;
-        private WinLoseWindow _winLoseWindow;
         
-        public UnitsRepository(SelectionManager selectionManager, PauseGame pauseGame, WinLoseWindow winLoseWindow)
+        public UnitsRepository(SelectionManager selectionManager, PauseGame pauseGame)
         {
             AllUnits = new List<Unit>();
             _selectionManager = selectionManager;
             _pauseGame = pauseGame;
-            _winLoseWindow = winLoseWindow;
         }
 
         public void Initialize()
@@ -45,7 +42,7 @@ namespace _RTSGameProject.Logic.Common.Services
                     return true;
                 }
             }
-
+            
             return false;
         }
 
@@ -89,25 +86,9 @@ namespace _RTSGameProject.Logic.Common.Services
         
         private void OnPaused()
         {
-            if (_winLoseWindow.WinPanel.activeSelf)
+            foreach (Unit unit in AllUnits)
             {
-                foreach (Unit unit in AllUnits)
-                {
-                    if (unit.Team == 1)
-                    {
-                        unit.GetComponent<Renderer>().material.color = Color.gray;
-                    }
-                }
-            }
-            if (_winLoseWindow.LosePanel.activeSelf)
-            {
-                foreach (Unit unit in AllUnits)
-                {
-                    if (unit.Team == 0)
-                    {
-                        unit.GetComponent<Renderer>().material.color = Color.gray;
-                    }
-                }
+                unit.GetComponent<Renderer>().material.color = Color.gray;
             }
         }
     }

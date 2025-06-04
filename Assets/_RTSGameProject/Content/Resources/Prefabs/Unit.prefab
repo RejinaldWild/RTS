@@ -31,8 +31,8 @@ RectTransform:
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 6330773683288937014}
   - {fileID: 8995464249044126811}
-  - {fileID: 1474326703804192040}
   m_Father: {fileID: 2922033970491739472}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -262,6 +262,7 @@ MonoBehaviour:
   - {fileID: 3567711420994671123, guid: 079d186213e645a409e6bcfadc1a430a, type: 3}
   - {fileID: 7422977048250811487, guid: 5ac6652b83a60eb4695562214f315199, type: 3}
   <DistanceToFindEnemy>k__BackingField: 6
+  <Position>k__BackingField: {x: 0, y: 0, z: 0}
   Health: {fileID: 2317824650960321388}
   _enemy: {fileID: 0}
   Id: 51ebb1d8-c1d6-4eaa-89d9-1b707e8a954f
@@ -296,6 +297,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Max: 10
+  _position:
+    value: {x: 0, y: 0, z: 0}
 --- !u!114 &8961159229944015862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -680,7 +683,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.000000059604645, y: 0, z: -0.0000039041042}
---- !u!1001 &1300319548536528240
+--- !u!1001 &5883135914142538350
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -808,9 +811,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2c4196a726330b429cf60a07c7adcee, type: 3}
---- !u!224 &1474326703804192040 stripped
+--- !u!224 &6330773683288937014 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 467941076726646872, guid: b2c4196a726330b429cf60a07c7adcee,
     type: 3}
-  m_PrefabInstance: {fileID: 1300319548536528240}
+  m_PrefabInstance: {fileID: 5883135914142538350}
   m_PrefabAsset: {fileID: 0}

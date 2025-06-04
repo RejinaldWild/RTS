@@ -1,7 +1,4 @@
 using System;
-using _RTSGameProject.Logic.Common.Character.Model;
-using _RTSGameProject.Logic.Common.View;
-using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Services
 {

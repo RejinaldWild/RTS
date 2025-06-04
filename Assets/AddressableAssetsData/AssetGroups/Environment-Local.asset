@@ -10,25 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Environment-Local
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Environment-Local
   m_Data:
     m_SerializedData: []
-  m_GUID: bcd6d70a88a81fc4ea02cadb79b50f0b
+  m_GUID: 688f211cbbefaac44909a7bf88bc516b
   m_SerializeEntries:
-  - m_GUID: e1e7583f9808aa64e956e25e627f66d0
-    m_Address: ScoreGameUI
+  - m_GUID: 903ae1b3382946443a81e5605d62522e
+    m_Address: TerrainGroundLevel1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7ebdc193d506316458f75b80d4fa41e9
-    m_Address: WinLoseWindow
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b2c4196a726330b429cf60a07c7adcee
-    m_Address: HealthBarSlider
+  - m_GUID: ec8ece3f8e1632643979c5db5d3e0009
+    m_Address: TerrainGroundLevel2
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -36,5 +31,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: df325ba2abc28fc49b122909ce90219e, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 3e84881582293214d92cd74acc119517, type: 2}
-    - {fileID: 11400000, guid: 6edde82f26bff2441a58116ba952a237, type: 2}
+    - {fileID: 11400000, guid: d05ca14ff15c4e042ae7269b7ca15f49, type: 2}
+    - {fileID: 11400000, guid: 60d4730ac2aabf048b13acf2deb85d38, type: 2}

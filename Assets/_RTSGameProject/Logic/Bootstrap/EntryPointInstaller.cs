@@ -1,4 +1,5 @@
 using _RTSGameProject.Logic.Common.SaveLoad;
+using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Services;
 using Zenject;
 
@@ -8,10 +9,10 @@ namespace _RTSGameProject.Logic.Bootstrap
     {
         public override void InstallBindings()
         {
-            BindSaveSystem();
+            BindSaveService();
         }
         
-        private void BindSaveSystem()
+        private void BindSaveService()
         {
             Container
                 .Bind<PlayerPrefsDataStorage>()

@@ -1,6 +1,7 @@
 ﻿using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.Common.View;
+using _RTSGameProject.Logic.LoadingAssets.Local;
 using _RTSGameProject.Logic.StateMachine.Core;
 using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
@@ -28,6 +29,9 @@ namespace _RTSGameProject.Logic.Installers
         private void BindUnitFactory()
         {
             _states = new IState[] { _idleState, _attackState,_moveState,_moveToEnemy, _patrolling };
+            Container
+                .Bind<HealthBarSliderProvider>()
+                .AsSingle();
             Container
                 .BindFactory<HealthView, HealthBarFactory>()
                 .FromComponentInNewPrefab(_healthView)

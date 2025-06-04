@@ -1,6 +1,7 @@
 using System;
 using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.View;
+using _RTSGameProject.Logic.LoadingAssets.Local;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
@@ -9,25 +10,27 @@ namespace _RTSGameProject.Logic.Common.Services
     {
         public event Action OnWin;
         public event Action OnLose;
-
+        
         private int _winCondition;
         private int _loseCondition;
-        private readonly WinLoseWindow _winLoseWindow;
+        private WinLoseWindow _winLoseWindow;
+        private WinLoseWindowProvider _winLoseWindowProvider;
         private readonly UnitsRepository _unitsRepository;
         private readonly PauseGame _pauseGame;
     
-        public WinLoseGame(WinLoseWindow winLoseWindow, PauseGame pauseGame, 
+        public WinLoseGame(PauseGame pauseGame, WinLoseWindowProvider winLoseWindowProvider,
             UnitsRepository unitsRepository, WinLoseConfig winLoseCondition)
         {
-            _winLoseWindow = winLoseWindow;
             _unitsRepository = unitsRepository;
             _winCondition = winLoseCondition.WinConditionKillUnits;
             _loseCondition = winLoseCondition.LoseConditionKillUnits;
             _pauseGame = pauseGame;
+            _winLoseWindowProvider = winLoseWindowProvider;
         }
 
-        public void Initialize()
+        public async void Initialize()
         {
+            _winLoseWindow = await _winLoseWindowProvider.Load();
             _unitsRepository.OnUnitKill += UnitKilled;
             _unitsRepository.OnEnemyKill += EnemyKilled;
             _winLoseWindow.Subscribe();
@@ -38,6 +41,7 @@ namespace _RTSGameProject.Logic.Common.Services
             _unitsRepository.OnUnitKill -= UnitKilled;
             _unitsRepository.OnEnemyKill -= EnemyKilled;
             _winLoseWindow.Unsubscribe();
+            _winLoseWindowProvider.Unload();
         }
 
         private void EnemyKilled()
@@ -63,7 +67,7 @@ namespace _RTSGameProject.Logic.Common.Services
                 GameOver();
             }
         }
-
+        
         private void GameOver()
         {
             _pauseGame.Pause();

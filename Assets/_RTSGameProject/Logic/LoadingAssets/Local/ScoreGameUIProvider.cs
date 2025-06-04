@@ -12,6 +12,7 @@ namespace _RTSGameProject.Logic.LoadingAssets.Local
         {
             _canvas = canvas;
         }
+        
         public async UniTask<ScoreGameUI> Load()
         {
             var asset = await LoadLocalAsset<ScoreGameUI>("ScoreGameUI", _canvas);

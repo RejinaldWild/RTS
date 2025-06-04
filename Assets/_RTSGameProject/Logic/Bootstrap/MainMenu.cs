@@ -15,7 +15,6 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private Button _quitButton;
         [SerializeField] private ScoreMenuUI _scoreMenuUI;
         
-        private IInstantiator _diContainer;
         private SceneChanger _sceneChanger;
         private ScoreMenuController _scoreMenuController;
         private SaveScoreService _saveScoreService;
@@ -28,23 +27,24 @@ namespace _RTSGameProject.Logic.Bootstrap
             _scoreMenuController = scoreMenuController;
         }
         
-        private async void Awake()
+        private void Awake()
         {
             Subscribe();
             if (_saveScoreService.IsSaveExist())
             {
-                await _scoreMenuController.LoadData();
+                _sceneChanger.Initialize();
+                _scoreMenuController.GetDataToShowLoadedScore(_sceneChanger.ScoreGameData);
             }
             else
             {
-                await _sceneChanger.LoadStartData();
+                _scoreMenuController.GetDataToShowStartScore();
             }
         }
 
         private void OnDestroy()
         {
+            _sceneChanger.Dispose();
             Unsubscribe();
-            StopAllCoroutines();
         }
 
         private void Subscribe()

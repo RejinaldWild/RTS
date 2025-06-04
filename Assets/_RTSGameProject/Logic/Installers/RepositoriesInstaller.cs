@@ -16,7 +16,6 @@ namespace _RTSGameProject.Logic.Installers
         public override void InstallBindings()
         {
             BindPause();
-            BindWinLoseWindow();
             BindSelection();
             BindUnits();
             BindActors();
@@ -28,14 +27,6 @@ namespace _RTSGameProject.Logic.Installers
         {
             Container
                 .BindInterfacesAndSelfTo<UnitsRepository>()
-                .AsSingle();
-        }
-        
-        private void BindWinLoseWindow()
-        {
-            Container
-                .Bind<WinLoseWindow>()
-                .FromInstance(_winLoseWindow)
                 .AsSingle();
         }
         

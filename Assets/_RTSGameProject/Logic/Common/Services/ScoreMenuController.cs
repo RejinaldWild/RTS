@@ -1,54 +1,61 @@
-using System;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
-using Cysharp.Threading.Tasks;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class ScoreMenuController: IInitializable, IDisposable, ITickable
+    public class ScoreMenuController: ITickable
     {
         private readonly ScoreMenuUI _scoreMenuUI;
-        private readonly WinLoseGame _winLoseGame;
-        private readonly SceneChanger _sceneChanger;
         private readonly SaveScoreService _saveScoreService;
-        private ScoreGameData _scoreGameData;
-        
-        public ScoreMenuController(ScoreMenuUI scoreMenuUI, ScoreGameData scoreGameData, SceneChanger sceneChanger, SaveScoreService saveScoreService)
+        private readonly ScoreGameData _scoreGameData;
+
+        public ScoreMenuController(ScoreMenuUI scoreMenuUI,
+                                    ScoreGameData scoreGameData,
+                                    SaveScoreService saveScoreService)
         {
             _scoreMenuUI = scoreMenuUI;
-            _scoreGameData = scoreGameData;
-            _scoreMenuUI.CreateId(Guid.NewGuid().ToString());
-            _sceneChanger = sceneChanger;
             _saveScoreService = saveScoreService;
+            _scoreGameData = scoreGameData;
         }
         
-        public void Initialize()
-        {
-            _sceneChanger.OnSceneLoad += OnSceneChangerLoaded;
-        }
+        // public async void Initialize()
+        // {
+        //     _scoreGameData = await _saveScoreService.LoadAsync();
+        //     _scoreGameData.OnScoreGameDataChange += OnScoreGameDataChanged;
+        //     _sceneChanger.OnSceneLoad += OnSceneChangerLoaded;
+        // }
+
+        // private void OnScoreGameDataChanged(ScoreGameData scoreGameData)
+        // {
+        //     _scoreGameData = scoreGameData;
+        // }
 
         public void Tick()
         {
             _scoreMenuUI.Show();
         }
         
-        public async UniTask LoadData()
+        public void GetDataToShowStartScore()
         {
-            _scoreGameData = await _saveScoreService.LoadAsync();
-            _scoreGameData.SceneIndex = _sceneChanger.MainMenuSceneIndex;
             _scoreMenuUI.GiveScoreGameData(_scoreGameData);
         }
         
-        public void Dispose()
+        public void GetDataToShowLoadedScore(ScoreGameData scoreGameData)
         {
-            _sceneChanger.OnSceneLoad -= OnSceneChangerLoaded;
+            _scoreMenuUI.GiveScoreGameData(scoreGameData);
         }
         
-        private async void OnSceneChangerLoaded()
-        {
-            await _saveScoreService.LoadAsync();
-        }
+        // public void Dispose()
+        // {
+        //     _scoreGameData.OnScoreGameDataChange -= OnScoreGameDataChanged;
+        //     _sceneChanger.OnSceneLoad -= OnSceneChangerLoaded;
+        // }
+        
+        // private async void OnSceneChangerLoaded()
+        // {
+        //     await _saveScoreService.LoadAsync();
+        // }
     }
 }
