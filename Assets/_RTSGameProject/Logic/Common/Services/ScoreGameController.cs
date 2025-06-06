@@ -2,45 +2,40 @@ using System;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
+using _RTSGameProject.Logic.LoadingAssets.Local;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class ScoreGameController: IInitializable, IDisposable, ITickable
+    public class ScoreGameController: IDisposable, ITickable
     {
         private readonly WinLoseGame _winLoseGame;
+        private readonly ScoreGameUIProvider _scoreGameUIProvider;
         private readonly SaveScoreService _saveScoreService;
         
-        private ScoreGameData _scoreGameData;
-        private SceneChanger _sceneChanger;
         private ScoreGameUI _scoreGameUI;
         private string _key;
 
-        public ScoreGameController(ScoreGameData scoreGameData, 
-                                    WinLoseGame winLoseGame,
-                                    SceneChanger sceneChanger,
+        public ScoreGameData ScoreGameData { get; set; }
+        
+        public ScoreGameController(WinLoseGame winLoseGame,
+                                    ScoreGameUIProvider scoreGameUIProvider,
                                     SaveScoreService saveScoreService)
         {
-            _scoreGameData = scoreGameData;
             _winLoseGame = winLoseGame;
-            _sceneChanger = sceneChanger;
+            _scoreGameUIProvider = scoreGameUIProvider;
             _saveScoreService = saveScoreService;
         }
 
-        public void Initialize()
+        public async UniTask InitializeLoadDataAsync()
         {
-            // _scoreGameData = await _saveScoreService.LoadAsync();
             // _scoreGameData.OnScoreGameDataChange += OnScoreGameDataChanged;
-            
+            _scoreGameUI = await _scoreGameUIProvider.Load();
+            ScoreGameData = await _saveScoreService.LoadAsync();
             _winLoseGame.OnWin += AddWinScore;
             _winLoseGame.OnLose += AddLoseScore;
-        }
-
-        private void OnScoreGameDataChanged(ScoreGameData scoreGameData)
-        {
-            //_scoreGameData = scoreGameData;
         }
 
         public void Tick()
@@ -58,41 +53,39 @@ namespace _RTSGameProject.Logic.Common.Services
             _winLoseGame.OnLose -= AddLoseScore;
         }
         
-        public void LoadStartData()
+        public void InitializeScoreGameData()
         {
-            _scoreGameUI.GiveScoreGameData(_scoreGameData);
+            ScoreGameData = new ScoreGameData();
         }
         
-        public void LoadData(ScoreGameData scoreGameData)
+        public void GetDataToShowScore(ScoreGameData scoreGameData)
         {
-            _scoreGameData = scoreGameData;
             _scoreGameUI.GiveScoreGameData(scoreGameData);
-            //_scoreGameData = await _saveScoreService.LoadAsync();
         }
 
         private async void AddWinScore()
         {
-            _scoreGameData.AddWinScore();
-            if (_scoreGameData.SceneIndex < SceneManager.sceneCountInBuildSettings-1)
+            ScoreGameData.AddWinScore();
+            if (ScoreGameData.SceneIndex < SceneManager.sceneCountInBuildSettings)
             {
-                _scoreGameData.AddSceneIndex();
+                ScoreGameData.AddSceneIndex();
             }
             else
             {
-                _scoreGameData.ChangeScoreGameData(0);
+                ScoreGameData.ChangeScoreGameData(ScoreGameData);
             }
             await SaveGameAsync();
         }
 
         private async void AddLoseScore()
         {
-            _scoreGameData.AddLoseScore();
+            ScoreGameData.AddLoseScore();
             await SaveGameAsync();
         }
 
         private async UniTask SaveGameAsync()
         {
-            await _saveScoreService.SaveAsync(_scoreGameData);
+            await _saveScoreService.SaveAsync(ScoreGameData);
         }
     }
 }

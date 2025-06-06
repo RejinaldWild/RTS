@@ -22,9 +22,6 @@ namespace _RTSGameProject.Logic.Installers
             Container
                 .BindInterfacesAndSelfTo<ScoreMenuController>()
                 .AsSingle();
-            Container
-                .Bind<ScoreGameData>()
-                .AsSingle();
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.View;
 using _RTSGameProject.Logic.LoadingAssets.Local;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -24,11 +25,10 @@ namespace _RTSGameProject.Logic.Common.Services
             _healthBarSliderProvider = healthBarSliderProvider;
         }
 
-        public async void Create(Unit unit, Health healthModel)
+        public async UniTask Create(Unit unit, Health healthModel)
         {
             HealthViewModel healthViewModel = new HealthViewModel(healthModel);
-            //HealthView instance = await _healthBarSliderProvider.Load(unit);
-            HealthView instance = unit.GetComponentInChildren<HealthView>();
+            HealthView instance = await _healthBarSliderProvider.Load(unit);
             instance.Construct(healthViewModel, _mainCamera);
             _healthBarRepository.Register(instance);
 
@@ -44,7 +44,7 @@ namespace _RTSGameProject.Logic.Common.Services
             
             void Unregister()
             {
-                //_healthBarSliderProvider.Unload();
+                _healthBarSliderProvider.Unload();
                 Destroy(instance.gameObject);
                 _healthBarRepository.Unregister(instance);
                 disposable.Dispose();

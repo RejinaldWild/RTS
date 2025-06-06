@@ -11,20 +11,14 @@ public class EntryP : IInitializable, ITickable, IDisposable
     private ScoreGameData _scoreGameData;
     private JsonConverter _serializer;
     private PlayerPrefsDataStorage _dataStorage;
-    private KeyProvider _keyProvider;
-    private SaveDataBase _saveData;
 
     public EntryP(JsonConverter jsonConverter, 
-                    ScoreGameData scoreGameData, 
-                    IKeyProvider keyProvider, 
-                    SaveDataBase saveData,
+                    ScoreGameData scoreGameData,
                     PlayerPrefsDataStorage dataStorage,
                     SaveScoreService saveScoreService)
     {
         _jsonConverter = jsonConverter;
         _scoreGameData = scoreGameData;
-        _keyProvider = keyProvider as KeyProvider;
-        _saveData = saveData;
         _dataStorage = dataStorage;
         _saveScoreService = saveScoreService;
     }

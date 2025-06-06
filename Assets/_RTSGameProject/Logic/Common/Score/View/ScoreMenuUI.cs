@@ -1,21 +1,14 @@
 using _RTSGameProject.Logic.Common.Score.Model;
 using TMPro;
 using UnityEngine;
-using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Score.View
 {
     public class ScoreMenuUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _scoreText;
-        
+
         private ScoreGameData _scoreGameData;
-        
-        [Inject]
-        public void Construct(ScoreGameData scoreGameData)
-        {
-            _scoreGameData = scoreGameData;
-        }
         
         private void Start()
         {

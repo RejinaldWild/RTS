@@ -5,7 +5,7 @@ namespace _RTSGameProject.Logic.Common.SaveLoad
 {
     public interface ISaveScoreService
     {
-        UniTask SaveAsync(ISaveData data);
+        UniTask SaveAsync(ScoreGameData data);
         UniTask<ScoreGameData> LoadAsync();
     }
 }

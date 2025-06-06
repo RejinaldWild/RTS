@@ -23,9 +23,9 @@ namespace _RTSGameProject.Logic.Common.AI
             PauseGame = pauseGame;
         }
 
-        public void Create(int teamId, Vector3 position)
+        public async void Create(int teamId, Vector3 position)
         {
-            Unit unit = UnitsFactory.Create(teamId, position);
+            Unit unit = await UnitsFactory.Create(teamId, position);
             IAiActor aiActor = CreateAiActor(unit,PauseGame);
 
             IDisposable disposable = null;

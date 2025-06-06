@@ -3,13 +3,13 @@
 namespace _RTSGameProject.Logic.Common.Score.Model
 {
     [Serializable]
-    public class ScoreGameData: ISaveData
+    public class ScoreGameData
     {
         public event Action OnScoreGameDataChange;
         
-        public int WinScore { get; private set; }
-        public int LoseScore { get; private set; }
-        public int SceneIndex { get; private set; }
+        public int WinScore { get; set; }
+        public int LoseScore { get; set; }
+        public int SceneIndex { get; set; }
 
         public void AddWinScore()
         {
@@ -29,9 +29,11 @@ namespace _RTSGameProject.Logic.Common.Score.Model
             OnScoreGameDataChange?.Invoke();
         }
 
-        public void ChangeScoreGameData(int sceneIndex)
+        public void ChangeScoreGameData(ScoreGameData scoreGameData)
         {
-            SceneIndex = sceneIndex;
+            WinScore = scoreGameData.WinScore;
+            LoseScore = scoreGameData.LoseScore;
+            SceneIndex = scoreGameData.SceneIndex;
             OnScoreGameDataChange?.Invoke();
         }
     }

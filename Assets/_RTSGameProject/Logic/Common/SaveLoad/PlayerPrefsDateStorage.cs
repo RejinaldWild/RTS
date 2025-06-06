@@ -1,3 +1,4 @@
+using _RTSGameProject.Logic.Common.Score.Model;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -7,11 +8,11 @@ namespace _RTSGameProject.Logic.Common.SaveLoad
     {
         public UniTask<string> ReadAsync(string key)
         {
-            string serilizedData = PlayerPrefs.GetString(key);
-            return UniTask.FromResult(serilizedData);
+            string serializedData = PlayerPrefs.GetString(key);
+            return UniTask.FromResult(serializedData);
         }
         
-        public UniTask WriteAsync(string key, string serializedData)
+        public UniTask WriteAsync(string key,string serializedData)
         {
             PlayerPrefs.SetString(key, serializedData);
             return UniTask.CompletedTask;

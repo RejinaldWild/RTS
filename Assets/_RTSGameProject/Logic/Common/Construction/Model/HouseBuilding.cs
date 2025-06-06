@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using _RTSGameProject.Logic.Common.AI;
 using _RTSGameProject.Logic.Common.Character.Model;
+using _RTSGameProject.Logic.Common.Construction.View;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.LoadingAssets.Local;
 using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
 using Zenject;
@@ -21,7 +23,7 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
         [field: SerializeField] public int Team { get; set; }
         
         [Inject]
-        public void Construct(StateMachineAiFactory aiFactory, PauseGame pauseGame, PanelController panelController)
+        public void Construct(PanelController panelController, StateMachineAiFactory aiFactory, PauseGame pauseGame)
         {
             _startSpawnPoint = SpawnPoints[0];
             _rallyPoint = _startSpawnPoint.position;
@@ -30,7 +32,7 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
             _pauseGame = pauseGame;
         }
         
-        private void Start()
+        public void Initialize()
         {
             _panelController.ShowUIPanel(false);
         }

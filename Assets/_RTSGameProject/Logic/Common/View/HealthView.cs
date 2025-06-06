@@ -19,10 +19,6 @@ namespace _RTSGameProject.Logic.Common.View
         {
             _mainCamera = mainCamera;
             _viewModel = viewModel;
-        }
-        
-        private void Start()
-        {
             Subscribe();
         }
 

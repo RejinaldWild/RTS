@@ -20,25 +20,27 @@ namespace _RTSGameProject.Logic.Bootstrap
         private SaveScoreService _saveScoreService;
 
         [Inject]
-        public void Construct(ScoreMenuController scoreMenuController, SceneChanger sceneChanger, SaveScoreService saveScoreService)
+        public void Construct(SaveScoreService saveScoreService, ScoreMenuController scoreMenuController, SceneChanger sceneChanger)
         {
-            _saveScoreService = saveScoreService;
             _sceneChanger = sceneChanger;
             _scoreMenuController = scoreMenuController;
+            _saveScoreService = saveScoreService;
         }
         
-        private void Awake()
+        private async void Awake()
         {
             Subscribe();
             if (_saveScoreService.IsSaveExist())
             {
-                _sceneChanger.Initialize();
-                _scoreMenuController.GetDataToShowLoadedScore(_sceneChanger.ScoreGameData);
+                await _scoreMenuController.LoadDataAsync();
+                _scoreMenuController.GetDataToShowScore(_scoreMenuController.ScoreGameData);
             }
             else
             {
-                _scoreMenuController.GetDataToShowStartScore();
+                _scoreMenuController.InitializeScoreGameData();
+                _scoreMenuController.GetDataToShowScore(_scoreMenuController.ScoreGameData);
             }
+            
         }
 
         private void OnDestroy()
@@ -62,19 +64,12 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void OnLoadButtonClick()
         {
-            if (_saveScoreService.IsSaveExist())
-            {
-                _sceneChanger.ToLoadGame();
-            }
-            else
-            {
-                Debug.Log("You do not have any saves to load");
-            }
+            _sceneChanger.ToLoadGame();
         }
         
         private async void OnDeleteButtonClick()
         {
-            await _saveScoreService.DeleteAsync();
+            await _scoreMenuController.DeleteSaves();
         }
 
         private void OnQuitButtonClick()

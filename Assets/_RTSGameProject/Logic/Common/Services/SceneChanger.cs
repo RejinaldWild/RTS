@@ -1,7 +1,5 @@
-using System.Threading.Tasks;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
-using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -13,23 +11,13 @@ namespace _RTSGameProject.Logic.Common.Services
         private readonly int _firstLevelSceneIndex;
         private readonly int _mainMenuSceneIndex;
         private readonly SaveScoreService _saveScoreService;
+        public ScoreGameData ScoreGameData { get; set; }
         
-        public ScoreGameData ScoreGameData { get; private set; }
-        
-        public int MainMenuSceneIndex => _mainMenuSceneIndex;
-        
-        public SceneChanger(ScoreGameData scoreGameData, SaveScoreService saveScoreService)
+        public SceneChanger(SaveScoreService saveScoreService)
         {
             _mainMenuSceneIndex = 0;
             _firstLevelSceneIndex = 1;
-            ScoreGameData = scoreGameData;
             _saveScoreService = saveScoreService;
-        }
-        
-        public async UniTask Initialize()
-        {
-            ScoreGameData = await _saveScoreService.LoadAsync();
-            //_scoreGameData.OnScoreGameDataChange += OnScoreGameDataChanged;
         }
         
         public void Dispose()
@@ -39,14 +27,25 @@ namespace _RTSGameProject.Logic.Common.Services
         
         public async void ToStartGame()
         {
-            ScoreGameData.ChangeScoreGameData(_firstLevelSceneIndex);
+            ScoreGameData = new ScoreGameData
+            {
+                SceneIndex = _firstLevelSceneIndex
+            };
             await _saveScoreService.SaveAsync(ScoreGameData);
-            SceneManager.LoadScene(sceneBuildIndex: ScoreGameData.SceneIndex);
+            SceneManager.LoadScene(_firstLevelSceneIndex);
         }
         
-        public void ToLoadGame()
+        public async void ToLoadGame()
         {
-            SceneManager.LoadScene(ScoreGameData.SceneIndex);
+            if (_saveScoreService.IsSaveExist())
+            {
+                ScoreGameData = await _saveScoreService.LoadAsync();
+                SceneManager.LoadScene(ScoreGameData.SceneIndex);
+            }
+            else
+            {
+                Debug.Log("You do not have any saves to load");
+            }
         }
     
         public void ToQuitGame()
@@ -58,30 +57,26 @@ namespace _RTSGameProject.Logic.Common.Services
             Application.Quit();
         }
         
-        public async void ToMainMenu()
+        public void ToMainMenu()
         {
-            await _saveScoreService.SaveAsync(ScoreGameData);
-            ScoreGameData.ChangeScoreGameData(_mainMenuSceneIndex);
-            SceneManager.LoadScene(sceneBuildIndex: ScoreGameData.SceneIndex);
+            // ScoreGameData = await _saveScoreService.LoadAsync();
+            // _scoreGameController.ScoreGameData.ChangeScoreGameData(_scoreGameController.ScoreGameData);
+            SceneManager.LoadScene(sceneBuildIndex: _mainMenuSceneIndex);
         }
         
         public async void ToNextLevel()
         {
-            if (ScoreGameData.SceneIndex < SceneManager.sceneCountInBuildSettings-1)
+            ScoreGameData = await _saveScoreService.LoadAsync();
+            if (ScoreGameData.SceneIndex < SceneManager.sceneCountInBuildSettings)
             {
-                await _saveScoreService.SaveAsync(ScoreGameData);
                 SceneManager.LoadScene(ScoreGameData.SceneIndex);
             }
             else
             {
-                ScoreGameData.ChangeScoreGameData(MainMenuSceneIndex);
+                ScoreGameData.SceneIndex = _mainMenuSceneIndex;
+                await _saveScoreService.SaveAsync(ScoreGameData);
                 SceneManager.LoadScene(ScoreGameData.SceneIndex);
             }
-        }
-        
-        private void OnScoreGameDataChanged(ScoreGameData scoreGameData)
-        {
-            ScoreGameData = scoreGameData;
         }
     }
 }

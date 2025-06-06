@@ -1,5 +1,5 @@
 ﻿using _RTSGameProject.Logic.Common.Construction.Model;
-using _RTSGameProject.Logic.Common.Construction.View;
+using _RTSGameProject.Logic.LoadingAssets.Local;
 using UnityEngine;
 using Zenject;
 
@@ -7,7 +7,7 @@ namespace _RTSGameProject.Logic.Installers
 {
     public class UIPanelInstaller : MonoInstaller
     {
-        [SerializeField] private BuildPanel _buildPanel;
+        [SerializeField] private Canvas _buildingUIGroupCanvas;
         
         public override void InstallBindings()
         {
@@ -17,11 +17,10 @@ namespace _RTSGameProject.Logic.Installers
         public void BindBuildUIPanel()
         {
             Container
-                .Bind<BuildPanel>()
-                .FromInstance(_buildPanel)
+                .Bind<PanelController>()
                 .AsSingle();
             Container
-                .Bind<PanelController>()
+                .Bind<ProductionPanelProvider>()
                 .AsSingle();
         }
     }

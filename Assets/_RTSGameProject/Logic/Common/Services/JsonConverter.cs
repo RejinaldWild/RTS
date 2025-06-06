@@ -6,7 +6,7 @@ namespace _RTSGameProject.Logic.Common.Services
 {
     public class JsonConverter: ISerializer
     {
-        public UniTask<string> ToJsonAsync(ISaveData data)
+        public UniTask<string> ToJsonAsync(ScoreGameData data)
         {
             string json = JsonConvert.SerializeObject(data);
             return UniTask.FromResult(json);

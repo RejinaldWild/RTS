@@ -6,6 +6,7 @@ using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.LoadingAssets.Local;
+using Cysharp.Threading.Tasks.Triggers;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Bootstrap
@@ -18,6 +19,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         private readonly SaveScoreService _saveScoreService;
         private readonly EnvironmentProvider _environmentProvider;
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
+        private readonly ProductionPanelProvider _productionPanelProvider;
         
         private ScoreGameUI _scoreGameUI;
         private ScoreGameController _scoreGameController;
@@ -28,6 +30,7 @@ namespace _RTSGameProject.Logic.Bootstrap
                             SaveScoreService saveScoreService,
                             ScoreGameUIProvider scoreGameUIProvider,
                             ScoreGameController scoreGameController,
+                            ProductionPanelProvider productionPanelProvider,
                             EnvironmentProvider environmentProvider)
         {
             _actorsRepository = actorsRepository;
@@ -36,23 +39,25 @@ namespace _RTSGameProject.Logic.Bootstrap
             _saveScoreService = saveScoreService;
             _scoreGameUIProvider = scoreGameUIProvider;
             _scoreGameController = scoreGameController;
+            _productionPanelProvider = productionPanelProvider;
             _environmentProvider = environmentProvider;
         }
 
         public async void Initialize()
         {
             await _environmentProvider.Load();
-            _scoreGameController.Initialize();
+            await _productionPanelProvider.Load();
+            InitializeAndSubscribeBuildings();
             if (_saveScoreService.IsSaveExist())
             {
-                await _sceneChanger.Initialize();
-                _scoreGameController.LoadData(_sceneChanger.ScoreGameData);
+                await _scoreGameController.InitializeLoadDataAsync();
+                _scoreGameController.GetDataToShowScore(_scoreGameController.ScoreGameData);
             }
             else
             {
-                _scoreGameController.LoadStartData();
+                _scoreGameController.InitializeScoreGameData();
+                _scoreGameController.GetDataToShowScore(_scoreGameController.ScoreGameData);
             }
-            Subscribe();
         }
 
         public void Tick()
@@ -66,20 +71,21 @@ namespace _RTSGameProject.Logic.Bootstrap
         public void Dispose()
         {
             _sceneChanger.Dispose();
-            Unsubscribe();
+            UnsubscribeBuildings();
             _scoreGameUIProvider.Unload();
             _environmentProvider.Unload();
         }
         
-        private void Subscribe()
+        private void InitializeAndSubscribeBuildings()
         {
             foreach (HouseBuilding building in _buildings)
             {
+                building.Initialize();
                 building.Subscribe();
             }
         }
         
-        private void Unsubscribe()
+        private void UnsubscribeBuildings()
         {
             foreach (HouseBuilding building in _buildings)
             {

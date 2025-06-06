@@ -41,9 +41,6 @@ namespace _RTSGameProject.Logic.Installers
                 .Bind<ScoreGameUIProvider>()
                 .AsSingle();
             Container
-                .Bind<ScoreGameData>()
-                .AsSingle();
-            Container
                 .Bind<SaveScoreService>()
                 .AsSingle();
             Container

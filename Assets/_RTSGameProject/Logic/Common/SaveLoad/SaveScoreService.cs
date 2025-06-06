@@ -8,39 +8,39 @@ namespace _RTSGameProject.Logic.Common.SaveLoad
     {
         private ISerializer _serializer;
         private IDataStorage _dataStorage;
-        private IKeyProvider _keyProvider;
         
-        public SaveScoreService(ISerializer serializer, IDataStorage dataStorage, IKeyProvider keyProvider)
+        public SaveScoreService(ISerializer serializer, IDataStorage dataStorage)
         {
             _serializer = serializer;
             _dataStorage = dataStorage;
-            _keyProvider = keyProvider;
         }
 
         public bool IsSaveExist()
         {
-            string dataKey = _keyProvider.Provide<ISaveData>();
-            return _dataStorage.Exist(dataKey);
+            string str = ConvertToString();
+            return _dataStorage.Exist(str);
         }
         
-        public async UniTask SaveAsync(ISaveData data)
+        public async UniTask SaveAsync(ScoreGameData data)
         {
-            string dataKey = _keyProvider.Provide<ISaveData>();
             string serializedData = await _serializer.ToJsonAsync(data);
-            await _dataStorage.WriteAsync(dataKey, serializedData);
+            await _dataStorage.WriteAsync(ConvertToString(), serializedData);
         }
 
         public async UniTask<ScoreGameData> LoadAsync()
         {
-            string dataKey = _keyProvider.Provide<ISaveData>();
-            string serializedData = await _dataStorage.ReadAsync(dataKey);
+            string serializedData = await _dataStorage.ReadAsync(ConvertToString());
             return await _serializer.FromJsonAsync(serializedData);
         }
 
         public async UniTask DeleteAsync()
         {
-            string dataKey = _keyProvider.Provide<ISaveData>();
-            await _dataStorage.DeleteAsync(dataKey);
+            await _dataStorage.DeleteAsync(ConvertToString());
+        }
+
+        private string ConvertToString()
+        {
+            return nameof(ScoreGameData);
         }
     }
 }

@@ -4,26 +4,26 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
 {
     public class PanelController
     {
-        private BuildPanel _buildPanel;
-        
-        public PanelController(BuildPanel buildPanel)
+        private ProductionPanel _productionPanel;
+
+        public void Initialize(ProductionPanel productionPanel)
         {
-            _buildPanel = buildPanel;
+            _productionPanel = productionPanel;
         }
 
         public void ShowUIPanel(bool flagShow)
         {
-            _buildPanel.ToggleUI(flagShow);
+            _productionPanel.ToggleUI(flagShow);
         }
         
         public void Subscribe(HouseBuilding building)
         {
-            _buildPanel.OnClick += building.SpawnUnit;
+            _productionPanel.OnClick += building.SpawnUnit;
         }
         
         public void Unsubscribe(HouseBuilding building)
         {
-            _buildPanel.OnClick -= building.SpawnUnit;
+            _productionPanel.OnClick -= building.SpawnUnit;
         }
     }
 }

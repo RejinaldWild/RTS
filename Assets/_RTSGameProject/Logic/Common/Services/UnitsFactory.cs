@@ -3,6 +3,7 @@ using static UnityEngine.Object;
 using static UnityEngine.Resources;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.View;
+using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -23,13 +24,13 @@ namespace _RTSGameProject.Logic.Common.Services
             _pauseGame = pauseGame;
         }
 
-        internal Unit Create(int teamId, Vector3 position)
+        internal async UniTask<Unit> Create(int teamId, Vector3 position)
         {
             Unit resource = Load<Unit>("Prefabs/Unit");
             Unit instance = Instantiate<Unit>(resource, position, Quaternion.identity);
             
             instance.Construct(teamId, _unitsRepository);
-            _healthBarFactory.Create(instance, instance.GetComponent<Health>());
+            await _healthBarFactory.Create(instance, instance.GetComponent<Health>());
             _pauseGame.OnPause += instance.OnPaused;
             _pauseGame.OnUnPause += instance.OnUnPaused;
             _unitsRepository.Register(instance);

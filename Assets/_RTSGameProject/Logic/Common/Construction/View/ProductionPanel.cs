@@ -6,7 +6,7 @@ using UnityEngine.UI;
 namespace _RTSGameProject.Logic.Common.Construction.View
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public class BuildPanel : MonoBehaviour
+    public class ProductionPanel : MonoBehaviour
     {
         public event UnityAction OnClick;
         
