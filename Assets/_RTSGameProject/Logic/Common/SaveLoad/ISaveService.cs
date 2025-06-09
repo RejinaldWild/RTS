@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 
 namespace _RTSGameProject.Logic.Common.SaveLoad
 {
-    public interface ISaveScoreService
+    public interface ISaveService
     {
         UniTask SaveAsync(ScoreGameData data);
         UniTask<ScoreGameData> LoadAsync();

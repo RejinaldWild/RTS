@@ -13,7 +13,7 @@ namespace _RTSGameProject.Logic.Common.Services
     {
         private readonly WinLoseGame _winLoseGame;
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
-        private readonly SaveScoreService _saveScoreService;
+        private readonly SaveService _saveService;
         
         private ScoreGameUI _scoreGameUI;
         private string _key;
@@ -22,18 +22,17 @@ namespace _RTSGameProject.Logic.Common.Services
         
         public ScoreGameController(WinLoseGame winLoseGame,
                                     ScoreGameUIProvider scoreGameUIProvider,
-                                    SaveScoreService saveScoreService)
+                                    SaveService saveService)
         {
             _winLoseGame = winLoseGame;
             _scoreGameUIProvider = scoreGameUIProvider;
-            _saveScoreService = saveScoreService;
+            _saveService = saveService;
         }
 
         public async UniTask InitializeLoadDataAsync()
         {
-            // _scoreGameData.OnScoreGameDataChange += OnScoreGameDataChanged;
             _scoreGameUI = await _scoreGameUIProvider.Load();
-            ScoreGameData = await _saveScoreService.LoadAsync();
+            ScoreGameData = await _saveService.LoadAsync();
             _winLoseGame.OnWin += AddWinScore;
             _winLoseGame.OnLose += AddLoseScore;
         }
@@ -48,7 +47,6 @@ namespace _RTSGameProject.Logic.Common.Services
         
         public void Dispose()
         {
-            //_scoreGameData.OnScoreGameDataChange -= OnScoreGameDataChanged;
             _winLoseGame.OnWin -= AddWinScore;
             _winLoseGame.OnLose -= AddLoseScore;
         }
@@ -85,7 +83,7 @@ namespace _RTSGameProject.Logic.Common.Services
 
         private async UniTask SaveGameAsync()
         {
-            await _saveScoreService.SaveAsync(ScoreGameData);
+            await _saveService.SaveAsync(ScoreGameData);
         }
     }
 }

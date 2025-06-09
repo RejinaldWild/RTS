@@ -60,8 +60,6 @@ namespace _RTSGameProject.Logic.Common.Services
                     closestEnemy = forUnit;
                 }
             }
-
-            //Assert.IsNotNull(closestEnemy);
             
             return closestEnemy;
         }

@@ -12,7 +12,7 @@ namespace _RTSGameProject.Logic.LoadingAssets.Local
         
         public ProductionPanelProvider(Canvas canvas, PanelController panelController)
         {
-            _canvas = canvas.GetComponentsInChildren<Canvas>()[2];//?
+            _canvas = canvas.GetComponentsInChildren<Canvas>()[2];
             _panelController = panelController;
         }
         

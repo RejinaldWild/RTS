@@ -1,4 +1,3 @@
-using _RTSGameProject.Logic.Common.Score.Model;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 

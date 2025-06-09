@@ -1,4 +1,3 @@
-using System;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
@@ -7,17 +6,17 @@ using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class ScoreMenuController: ITickable, IDisposable
+    public class ScoreMenuController: ITickable
     {
         private readonly ScoreMenuUI _scoreMenuUI;
-        private readonly SaveScoreService _saveScoreService;
+        private readonly SaveService _saveService;
         public ScoreGameData ScoreGameData { get; set; }
 
         public ScoreMenuController(ScoreMenuUI scoreMenuUI,
-                                    SaveScoreService saveScoreService)
+                                    SaveService saveService)
         {
             _scoreMenuUI = scoreMenuUI;
-            _saveScoreService = saveScoreService;
+            _saveService = saveService;
         }
 
         public void InitializeScoreGameData()
@@ -27,10 +26,7 @@ namespace _RTSGameProject.Logic.Common.Services
         
         public async UniTask LoadDataAsync()
         {
-            ScoreGameData = await _saveScoreService.LoadAsync();
-            
-            // _scoreGameData.OnScoreGameDataChange += OnScoreGameDataChanged;
-            // _sceneChanger.OnSceneLoad += OnSceneChangerLoaded;
+            ScoreGameData = await _saveService.LoadAsync();
         }
 
         public void Tick()
@@ -45,14 +41,8 @@ namespace _RTSGameProject.Logic.Common.Services
         
         public async UniTask DeleteSaves()
         {
-            await _saveScoreService.DeleteAsync();
+            await _saveService.DeleteAsync();
             _scoreMenuUI.GiveScoreGameData(new ScoreGameData());
-        }
-        
-        public void Dispose()
-        {
-            // _scoreGameData.OnScoreGameDataChange -= OnScoreGameDataChanged;
-            // _sceneChanger.OnSceneLoad -= OnSceneChangerLoaded;
         }
     }
 }

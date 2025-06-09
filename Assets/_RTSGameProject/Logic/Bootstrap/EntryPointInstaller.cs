@@ -16,12 +16,10 @@ namespace _RTSGameProject.Logic.Bootstrap
         {
             Container
                 .Bind<PlayerPrefsDataStorage>()
-                .AsSingle()
-                .NonLazy();
+                .AsSingle();
             Container
                 .Bind<JsonConverter>()
-                .AsSingle()
-                .NonLazy();
+                .AsSingle();
         }
     }
 }

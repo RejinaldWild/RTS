@@ -17,20 +17,20 @@ namespace _RTSGameProject.Logic.Bootstrap
         
         private SceneChanger _sceneChanger;
         private ScoreMenuController _scoreMenuController;
-        private SaveScoreService _saveScoreService;
+        private SaveService _saveService;
 
         [Inject]
-        public void Construct(SaveScoreService saveScoreService, ScoreMenuController scoreMenuController, SceneChanger sceneChanger)
+        public void Construct(SaveService saveService, ScoreMenuController scoreMenuController, SceneChanger sceneChanger)
         {
             _sceneChanger = sceneChanger;
             _scoreMenuController = scoreMenuController;
-            _saveScoreService = saveScoreService;
+            _saveService = saveService;
         }
         
         private async void Awake()
         {
             Subscribe();
-            if (_saveScoreService.IsSaveExist())
+            if (_saveService.IsSaveExist())
             {
                 await _scoreMenuController.LoadDataAsync();
                 _scoreMenuController.GetDataToShowScore(_scoreMenuController.ScoreGameData);
@@ -45,7 +45,6 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void OnDestroy()
         {
-            _sceneChanger.Dispose();
             Unsubscribe();
         }
 

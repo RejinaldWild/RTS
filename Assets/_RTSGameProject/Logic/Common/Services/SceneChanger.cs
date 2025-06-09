@@ -10,19 +10,14 @@ namespace _RTSGameProject.Logic.Common.Services
     {
         private readonly int _firstLevelSceneIndex;
         private readonly int _mainMenuSceneIndex;
-        private readonly SaveScoreService _saveScoreService;
+        private readonly SaveService _saveService;
         public ScoreGameData ScoreGameData { get; set; }
         
-        public SceneChanger(SaveScoreService saveScoreService)
+        public SceneChanger(SaveService saveService)
         {
             _mainMenuSceneIndex = 0;
             _firstLevelSceneIndex = 1;
-            _saveScoreService = saveScoreService;
-        }
-        
-        public void Dispose()
-        {
-            //_scoreGameData.OnScoreGameDataChange -= OnScoreGameDataChanged;
+            _saveService = saveService;
         }
         
         public async void ToStartGame()
@@ -31,15 +26,15 @@ namespace _RTSGameProject.Logic.Common.Services
             {
                 SceneIndex = _firstLevelSceneIndex
             };
-            await _saveScoreService.SaveAsync(ScoreGameData);
+            await _saveService.SaveAsync(ScoreGameData);
             SceneManager.LoadScene(_firstLevelSceneIndex);
         }
         
         public async void ToLoadGame()
         {
-            if (_saveScoreService.IsSaveExist())
+            if (_saveService.IsSaveExist())
             {
-                ScoreGameData = await _saveScoreService.LoadAsync();
+                ScoreGameData = await _saveService.LoadAsync();
                 SceneManager.LoadScene(ScoreGameData.SceneIndex);
             }
             else
@@ -59,14 +54,12 @@ namespace _RTSGameProject.Logic.Common.Services
         
         public void ToMainMenu()
         {
-            // ScoreGameData = await _saveScoreService.LoadAsync();
-            // _scoreGameController.ScoreGameData.ChangeScoreGameData(_scoreGameController.ScoreGameData);
             SceneManager.LoadScene(sceneBuildIndex: _mainMenuSceneIndex);
         }
         
         public async void ToNextLevel()
         {
-            ScoreGameData = await _saveScoreService.LoadAsync();
+            ScoreGameData = await _saveService.LoadAsync();
             if (ScoreGameData.SceneIndex < SceneManager.sceneCountInBuildSettings)
             {
                 SceneManager.LoadScene(ScoreGameData.SceneIndex);
@@ -74,7 +67,7 @@ namespace _RTSGameProject.Logic.Common.Services
             else
             {
                 ScoreGameData.SceneIndex = _mainMenuSceneIndex;
-                await _saveScoreService.SaveAsync(ScoreGameData);
+                await _saveService.SaveAsync(ScoreGameData);
                 SceneManager.LoadScene(ScoreGameData.SceneIndex);
             }
         }

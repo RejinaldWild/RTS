@@ -4,12 +4,14 @@ using Cysharp.Threading.Tasks;
 
 namespace _RTSGameProject.Logic.Common.SaveLoad
 {
-    public class SaveScoreService : ISaveScoreService
+    public class SaveService : ISaveService
     {
-        private ISerializer _serializer;
-        private IDataStorage _dataStorage;
+        private const string SCORE_GAME_DATA = "ScoreGameData";
         
-        public SaveScoreService(ISerializer serializer, IDataStorage dataStorage)
+        private readonly ISerializer _serializer;
+        private readonly IDataStorage _dataStorage;
+        
+        public SaveService(ISerializer serializer, IDataStorage dataStorage)
         {
             _serializer = serializer;
             _dataStorage = dataStorage;
@@ -17,30 +19,25 @@ namespace _RTSGameProject.Logic.Common.SaveLoad
 
         public bool IsSaveExist()
         {
-            string str = ConvertToString();
-            return _dataStorage.Exist(str);
+            string scoreGameData = SCORE_GAME_DATA;
+            return _dataStorage.Exist(scoreGameData);
         }
         
         public async UniTask SaveAsync(ScoreGameData data)
         {
             string serializedData = await _serializer.ToJsonAsync(data);
-            await _dataStorage.WriteAsync(ConvertToString(), serializedData);
+            await _dataStorage.WriteAsync(SCORE_GAME_DATA, serializedData);
         }
 
         public async UniTask<ScoreGameData> LoadAsync()
         {
-            string serializedData = await _dataStorage.ReadAsync(ConvertToString());
+            string serializedData = await _dataStorage.ReadAsync(SCORE_GAME_DATA);
             return await _serializer.FromJsonAsync(serializedData);
         }
 
         public async UniTask DeleteAsync()
         {
-            await _dataStorage.DeleteAsync(ConvertToString());
-        }
-
-        private string ConvertToString()
-        {
-            return nameof(ScoreGameData);
+            await _dataStorage.DeleteAsync(SCORE_GAME_DATA);
         }
     }
 }

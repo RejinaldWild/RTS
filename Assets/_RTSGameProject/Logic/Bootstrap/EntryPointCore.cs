@@ -16,7 +16,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         private readonly HouseBuilding[] _buildings;
         private readonly ActorsRepository _actorsRepository;
         private readonly SceneChanger _sceneChanger;
-        private readonly SaveScoreService _saveScoreService;
+        private readonly SaveService _saveService;
         private readonly EnvironmentProvider _environmentProvider;
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
         private readonly ProductionPanelProvider _productionPanelProvider;
@@ -27,7 +27,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         public EntryPointCore(SceneChanger sceneChanger,
                             ActorsRepository actorsRepository,
                             HouseBuilding[] buildings, 
-                            SaveScoreService saveScoreService,
+                            SaveService saveService,
                             ScoreGameUIProvider scoreGameUIProvider,
                             ScoreGameController scoreGameController,
                             ProductionPanelProvider productionPanelProvider,
@@ -36,7 +36,7 @@ namespace _RTSGameProject.Logic.Bootstrap
             _actorsRepository = actorsRepository;
             _buildings = buildings;
             _sceneChanger = sceneChanger;
-            _saveScoreService = saveScoreService;
+            _saveService = saveService;
             _scoreGameUIProvider = scoreGameUIProvider;
             _scoreGameController = scoreGameController;
             _productionPanelProvider = productionPanelProvider;
@@ -48,7 +48,7 @@ namespace _RTSGameProject.Logic.Bootstrap
             await _environmentProvider.Load();
             await _productionPanelProvider.Load();
             InitializeAndSubscribeBuildings();
-            if (_saveScoreService.IsSaveExist())
+            if (_saveService.IsSaveExist())
             {
                 await _scoreGameController.InitializeLoadDataAsync();
                 _scoreGameController.GetDataToShowScore(_scoreGameController.ScoreGameData);
@@ -70,10 +70,10 @@ namespace _RTSGameProject.Logic.Bootstrap
         
         public void Dispose()
         {
-            _sceneChanger.Dispose();
-            UnsubscribeBuildings();
+            _productionPanelProvider.Unload();
             _scoreGameUIProvider.Unload();
             _environmentProvider.Unload();
+            UnsubscribeBuildings();
         }
         
         private void InitializeAndSubscribeBuildings()
