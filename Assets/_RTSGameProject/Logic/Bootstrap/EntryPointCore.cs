@@ -16,7 +16,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         private readonly HouseBuilding[] _buildings;
         private readonly ActorsRepository _actorsRepository;
         private readonly SceneChanger _sceneChanger;
-        private readonly SaveService _saveService;
+        private readonly ISaveService _saveService;
         private readonly EnvironmentProvider _environmentProvider;
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
         private readonly ProductionPanelProvider _productionPanelProvider;
@@ -27,7 +27,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         public EntryPointCore(SceneChanger sceneChanger,
                             ActorsRepository actorsRepository,
                             HouseBuilding[] buildings, 
-                            SaveService saveService,
+                            ISaveService saveService,
                             ScoreGameUIProvider scoreGameUIProvider,
                             ScoreGameController scoreGameController,
                             ProductionPanelProvider productionPanelProvider,

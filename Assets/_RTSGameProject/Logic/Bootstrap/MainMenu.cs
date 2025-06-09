@@ -17,10 +17,10 @@ namespace _RTSGameProject.Logic.Bootstrap
         
         private SceneChanger _sceneChanger;
         private ScoreMenuController _scoreMenuController;
-        private SaveService _saveService;
+        private ISaveService _saveService;
 
         [Inject]
-        public void Construct(SaveService saveService, ScoreMenuController scoreMenuController, SceneChanger sceneChanger)
+        public void Construct(ISaveService saveService, ScoreMenuController scoreMenuController, SceneChanger sceneChanger)
         {
             _sceneChanger = sceneChanger;
             _scoreMenuController = scoreMenuController;

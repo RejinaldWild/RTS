@@ -17,7 +17,7 @@ namespace _RTSGameProject.Logic.Installers
                 .Bind<ScoreMenuUI>()
                 .FromInstance(_scoreMenuUI);
             Container
-                .Bind<SaveService>()
+                .Bind<ISaveService>().To<SaveService>()
                 .AsSingle();
             Container
                 .BindInterfacesAndSelfTo<ScoreMenuController>()

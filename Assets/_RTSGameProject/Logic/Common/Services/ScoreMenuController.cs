@@ -9,11 +9,11 @@ namespace _RTSGameProject.Logic.Common.Services
     public class ScoreMenuController: ITickable
     {
         private readonly ScoreMenuUI _scoreMenuUI;
-        private readonly SaveService _saveService;
+        private readonly ISaveService _saveService;
         public ScoreGameData ScoreGameData { get; set; }
 
         public ScoreMenuController(ScoreMenuUI scoreMenuUI,
-                                    SaveService saveService)
+                                    ISaveService saveService)
         {
             _scoreMenuUI = scoreMenuUI;
             _saveService = saveService;

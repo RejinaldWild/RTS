@@ -13,7 +13,7 @@ namespace _RTSGameProject.Logic.Common.Services
     {
         private readonly WinLoseGame _winLoseGame;
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
-        private readonly SaveService _saveService;
+        private readonly ISaveService _saveService;
         
         private ScoreGameUI _scoreGameUI;
         private string _key;
@@ -22,7 +22,7 @@ namespace _RTSGameProject.Logic.Common.Services
         
         public ScoreGameController(WinLoseGame winLoseGame,
                                     ScoreGameUIProvider scoreGameUIProvider,
-                                    SaveService saveService)
+                                    ISaveService saveService)
         {
             _winLoseGame = winLoseGame;
             _scoreGameUIProvider = scoreGameUIProvider;

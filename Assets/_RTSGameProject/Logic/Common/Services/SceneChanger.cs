@@ -10,10 +10,10 @@ namespace _RTSGameProject.Logic.Common.Services
     {
         private readonly int _firstLevelSceneIndex;
         private readonly int _mainMenuSceneIndex;
-        private readonly SaveService _saveService;
+        private readonly ISaveService _saveService;
         public ScoreGameData ScoreGameData { get; set; }
         
-        public SceneChanger(SaveService saveService)
+        public SceneChanger(ISaveService saveService)
         {
             _mainMenuSceneIndex = 0;
             _firstLevelSceneIndex = 1;
