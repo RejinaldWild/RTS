@@ -46,6 +46,29 @@ namespace _RTSGameProject.Logic.Common.AI
             }
         }
         
+        public async void CreateExpUnit(int teamId, Vector3 position)
+        {
+            Unit unit = await UnitsFactory.CreateExpUnit(teamId, position);
+            IAiActor aiActor = CreateAiActor(unit,PauseGame);
+
+            IDisposable disposable = null;
+            disposable = unit.IsAlive.Subscribe(isAlive =>
+            {
+                if (!isAlive)
+                {
+                    DisposeAi();
+                }
+            });
+            
+            ActorsRepository.Register(aiActor);
+            
+            void DisposeAi()
+            {
+                ActorsRepository.Unregister(aiActor);
+                disposable.Dispose();
+            }
+        }
+        
         protected abstract IAiActor CreateAiActor(Unit unit, PauseGame pauseGame);
     }
 }

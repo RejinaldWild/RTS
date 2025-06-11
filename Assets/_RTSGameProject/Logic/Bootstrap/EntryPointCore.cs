@@ -6,7 +6,7 @@ using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.LoadingAssets.Local;
-using Cysharp.Threading.Tasks.Triggers;
+using _RTSGameProject.Logic.SDK;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Bootstrap
@@ -15,36 +15,37 @@ namespace _RTSGameProject.Logic.Bootstrap
     {
         private readonly HouseBuilding[] _buildings;
         private readonly ActorsRepository _actorsRepository;
-        private readonly SceneChanger _sceneChanger;
         private readonly ISaveService _saveService;
         private readonly EnvironmentProvider _environmentProvider;
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
         private readonly ProductionPanelProvider _productionPanelProvider;
+        private readonly ScoreGameController _scoreGameController;
+        private readonly ISDK _analyticService;
         
         private ScoreGameUI _scoreGameUI;
-        private ScoreGameController _scoreGameController;
 
-        public EntryPointCore(SceneChanger sceneChanger,
-                            ActorsRepository actorsRepository,
+        public EntryPointCore(ActorsRepository actorsRepository,
                             HouseBuilding[] buildings, 
                             ISaveService saveService,
                             ScoreGameUIProvider scoreGameUIProvider,
                             ScoreGameController scoreGameController,
                             ProductionPanelProvider productionPanelProvider,
-                            EnvironmentProvider environmentProvider)
+                            EnvironmentProvider environmentProvider,
+                            ISDK analyticService)
         {
             _actorsRepository = actorsRepository;
             _buildings = buildings;
-            _sceneChanger = sceneChanger;
             _saveService = saveService;
             _scoreGameUIProvider = scoreGameUIProvider;
             _scoreGameController = scoreGameController;
             _productionPanelProvider = productionPanelProvider;
             _environmentProvider = environmentProvider;
+            _analyticService = analyticService;
         }
 
         public async void Initialize()
         {
+            _analyticService.Initialize();
             await _environmentProvider.Load();
             await _productionPanelProvider.Load();
             InitializeAndSubscribeBuildings();

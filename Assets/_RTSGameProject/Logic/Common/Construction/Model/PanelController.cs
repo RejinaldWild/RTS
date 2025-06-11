@@ -18,12 +18,14 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
         
         public void Subscribe(HouseBuilding building)
         {
-            _productionPanel.OnClick += building.SpawnUnit;
+            _productionPanel.OnClickUnit += building.SpawnUnit;
+            _productionPanel.OnClickExpUnit += building.SpawnExpUnit;
         }
         
         public void Unsubscribe(HouseBuilding building)
         {
-            _productionPanel.OnClick -= building.SpawnUnit;
+            _productionPanel.OnClickUnit -= building.SpawnUnit;
+            _productionPanel.OnClickExpUnit -= building.SpawnExpUnit;
         }
     }
 }

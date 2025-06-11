@@ -2,6 +2,7 @@ using System;
 using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.View;
 using _RTSGameProject.Logic.LoadingAssets.Local;
+using _RTSGameProject.Logic.SDK;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
@@ -13,15 +14,20 @@ namespace _RTSGameProject.Logic.Common.Services
         
         private int _winCondition;
         private int _loseCondition;
+        private int _quantityOfEnemiesKilled;
+        private int _quantityOfUnitsCasualties;
         private WinLoseWindow _winLoseWindow;
         private WinLoseWindowProvider _winLoseWindowProvider;
+        
         private readonly UnitsRepository _unitsRepository;
         private readonly PauseGame _pauseGame;
+        private readonly ISDK _analyticService;
     
         public WinLoseGame(PauseGame pauseGame, WinLoseWindowProvider winLoseWindowProvider,
-            UnitsRepository unitsRepository, WinLoseConfig winLoseCondition)
+            UnitsRepository unitsRepository, WinLoseConfig winLoseCondition, ISDK analyticService)
         {
             _unitsRepository = unitsRepository;
+            _analyticService = analyticService;
             _winCondition = winLoseCondition.WinConditionKillUnits;
             _loseCondition = winLoseCondition.LoseConditionKillUnits;
             _pauseGame = pauseGame;
@@ -47,6 +53,8 @@ namespace _RTSGameProject.Logic.Common.Services
         private void EnemyKilled()
         {
             _winCondition -= 1;
+            _quantityOfEnemiesKilled++;
+            _analyticService.EnemyKilled(_quantityOfEnemiesKilled);
             if (_winCondition <= 0)
             {
                 OnWin?.Invoke();
@@ -59,6 +67,8 @@ namespace _RTSGameProject.Logic.Common.Services
         private void UnitKilled()
         {
             _loseCondition -= 1;
+            _quantityOfUnitsCasualties++;
+            _analyticService.UnitKilled(_quantityOfUnitsCasualties);
             if (_loseCondition <= 0)
             {
                 OnLose?.Invoke();

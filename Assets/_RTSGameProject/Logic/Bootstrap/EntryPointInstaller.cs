@@ -1,6 +1,7 @@
 using _RTSGameProject.Logic.Common.SaveLoad;
-using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.SDK;
+using _RTSGameProject.Logic.SDK.Firebase;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Bootstrap
@@ -10,6 +11,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         public override void InstallBindings()
         {
             BindSaveService();
+            BindFirebase();
         }
         
         private void BindSaveService()
@@ -19,6 +21,16 @@ namespace _RTSGameProject.Logic.Bootstrap
                 .AsSingle();
             Container
                 .Bind<JsonConverter>()
+                .AsSingle();
+        }
+
+        private void BindFirebase()
+        {
+            Container
+                .Bind<ISDK>().To<FirebaseInitializer>()
+                .AsSingle();
+            Container
+                .Bind<FirebaseEventer>()
                 .AsSingle();
         }
     }

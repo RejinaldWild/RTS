@@ -4,6 +4,7 @@ using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Construction.View;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.LoadingAssets.Local;
+using _RTSGameProject.Logic.SDK;
 using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
 using Zenject;
@@ -23,12 +24,15 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
         [field: SerializeField] public int Team { get; set; }
         
         [Inject]
-        public void Construct(PanelController panelController, StateMachineAiFactory aiFactory, PauseGame pauseGame)
+        public void Construct(ISDK analyticService,
+                                PanelController panelController, 
+                                StateMachineAiFactory aiFactory,
+                                PauseGame pauseGame)
         {
             _startSpawnPoint = SpawnPoints[0];
             _rallyPoint = _startSpawnPoint.position;
             _panelController = panelController;
-            _spawner = new Spawner(aiFactory);
+            _spawner = new Spawner(aiFactory,analyticService);
             _pauseGame = pauseGame;
         }
         
@@ -58,6 +62,18 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
             {
                 _spawner.Spawn(Team, _startSpawnPoint.position);
                 _spawner.Spawn(1, new Vector3(34.8f,0.5f,20.75f));
+            }
+        }
+        
+        public void SpawnExpUnit()
+        {
+            if (_rallyPoint != _startSpawnPoint.position)
+            {
+                _spawner.SpawnExpensiveUnit(Team, _rallyPoint);
+            }
+            else
+            {
+                _spawner.SpawnExpensiveUnit(Team, _startSpawnPoint.position);
             }
         }
 

@@ -1,6 +1,7 @@
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.SDK;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -18,13 +19,15 @@ namespace _RTSGameProject.Logic.Bootstrap
         private SceneChanger _sceneChanger;
         private ScoreMenuController _scoreMenuController;
         private ISaveService _saveService;
+        private ISDK _analyticService;
 
         [Inject]
-        public void Construct(ISaveService saveService, ScoreMenuController scoreMenuController, SceneChanger sceneChanger)
+        public void Construct(ISDK analyticService, ISaveService saveService, ScoreMenuController scoreMenuController, SceneChanger sceneChanger)
         {
             _sceneChanger = sceneChanger;
             _scoreMenuController = scoreMenuController;
             _saveService = saveService;
+            _analyticService = analyticService;
         }
         
         private async void Awake()
@@ -34,11 +37,13 @@ namespace _RTSGameProject.Logic.Bootstrap
             {
                 await _scoreMenuController.LoadDataAsync();
                 _scoreMenuController.GetDataToShowScore(_scoreMenuController.ScoreGameData);
+                _analyticService.Initialize();
             }
             else
             {
                 _scoreMenuController.InitializeScoreGameData();
                 _scoreMenuController.GetDataToShowScore(_scoreMenuController.ScoreGameData);
+                _analyticService.Initialize();
             }
             
         }
@@ -46,6 +51,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         private void OnDestroy()
         {
             Unsubscribe();
+            _analyticService.Dispose();
         }
 
         private void Subscribe()

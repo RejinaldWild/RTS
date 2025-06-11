@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "20132728993",
+    "project_id": "rtsdev-4ceed",
+    "storage_bucket": "rtsdev-4ceed.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:20132728993:android:7c3395b01263d4c07520e0",
+        "android_client_info": {
+          "package_name": "com.rtsdev.rtsgame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-gTu7mKYihojYYiRg2b1fiTbfN0Qebjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

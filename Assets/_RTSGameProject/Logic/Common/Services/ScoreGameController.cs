@@ -3,6 +3,7 @@ using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.LoadingAssets.Local;
+using _RTSGameProject.Logic.SDK;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -14,6 +15,7 @@ namespace _RTSGameProject.Logic.Common.Services
         private readonly WinLoseGame _winLoseGame;
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
         private readonly ISaveService _saveService;
+        private readonly ISDK _analyticService;
         
         private ScoreGameUI _scoreGameUI;
         private string _key;
@@ -22,11 +24,13 @@ namespace _RTSGameProject.Logic.Common.Services
         
         public ScoreGameController(WinLoseGame winLoseGame,
                                     ScoreGameUIProvider scoreGameUIProvider,
-                                    ISaveService saveService)
+                                    ISaveService saveService,
+                                    ISDK analyticService)
         {
             _winLoseGame = winLoseGame;
             _scoreGameUIProvider = scoreGameUIProvider;
             _saveService = saveService;
+            _analyticService = analyticService;
         }
 
         public async UniTask InitializeLoadDataAsync()
@@ -73,12 +77,14 @@ namespace _RTSGameProject.Logic.Common.Services
                 ScoreGameData.ChangeScoreGameData(ScoreGameData);
             }
             await SaveGameAsync();
+            _analyticService.WonLevel(ScoreGameData.WinScore);
         }
 
         private async void AddLoseScore()
         {
             ScoreGameData.AddLoseScore();
             await SaveGameAsync();
+            _analyticService.LostLevel(ScoreGameData.LoseScore);
         }
 
         private async UniTask SaveGameAsync()

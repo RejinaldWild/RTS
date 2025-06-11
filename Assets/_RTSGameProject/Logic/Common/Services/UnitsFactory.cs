@@ -56,5 +56,38 @@ namespace _RTSGameProject.Logic.Common.Services
             }
 
         }
+        
+        internal async UniTask<Unit> CreateExpUnit(int teamId, Vector3 position)
+        {
+            Unit resource = Load<Unit>("Prefabs/UnitExp");
+            Unit instance = Instantiate<Unit>(resource, position, Quaternion.identity);
+            
+            instance.Construct(teamId, _unitsRepository);
+            await _healthBarFactory.Create(instance, instance.GetComponent<Health>());
+            _pauseGame.OnPause += instance.OnPaused;
+            _pauseGame.OnUnPause += instance.OnUnPaused;
+            _unitsRepository.Register(instance);
+            
+            IDisposable disposable = null;
+            disposable = instance.IsAlive.Subscribe(isAlive =>
+            {
+                if (!isAlive)
+                {
+                    Dispose();
+                }
+            });
+
+            return instance;
+
+            void Dispose()
+            {
+                _unitsRepository.Unregister(instance);
+                _pauseGame.OnPause -= instance.OnPaused;
+                _pauseGame.OnUnPause -= instance.OnUnPaused;
+                Destroy(instance.gameObject);
+                disposable.Dispose();
+            }
+
+        }
     }
 }
