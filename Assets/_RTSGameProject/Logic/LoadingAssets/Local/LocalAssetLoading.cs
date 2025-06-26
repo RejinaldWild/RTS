@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 
 namespace _RTSGameProject.Logic.LoadingAssets.Local
 {
-    public abstract class LocalAssetLoading: ILocalAssetLoader
+    public abstract class LocalAssetLoading
     {
         private GameObject _cachedObject;
 

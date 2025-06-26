@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Threading.Tasks;
-using _RTSGameProject.Logic.Common.Score.Model;
 using Firebase;
+using Firebase.Analytics;
 using Firebase.Extensions;
 using UnityEngine;
+using Zenject;
 
-namespace _RTSGameProject.Logic.SDK.Firebase
+namespace _RTSGameProject.Logic.Analytic.Firebase
 {
-    public class FirebaseInitializer: ISDK
+    public class FirebaseAnalyticService: IAnalyticService, IInitializable, IDisposable
     {
-        private readonly FirebaseEventer _firebaseEventer;
-
-        public FirebaseInitializer(FirebaseEventer firebaseEventer)
-        {
-            _firebaseEventer = firebaseEventer;
-        }
-        
         public void Initialize()
         {
             FirebaseApp
@@ -25,37 +19,37 @@ namespace _RTSGameProject.Logic.SDK.Firebase
 
         public void Dispose()
         {
-            _firebaseEventer.StopApplication();
+            FirebaseAnalytics.LogEvent("StopApp" , new Parameter("StopApplication", 0));
         }
         
-        public void BuiltUnit(int data)
+        public void SendBuildUnit(int data)
         {
-            _firebaseEventer.BuiltUnit(data);
+            FirebaseAnalytics.LogEvent("BuiltUnits" , new Parameter("BuiltUnitsFromHouse", data));
         }
 
-        public void BuiltExpensiveUnit(int data)
+        public void SendBuildExpensiveUnit(int data)
         {
-            _firebaseEventer.BuiltExpensiveUnit(data);
+            FirebaseAnalytics.LogEvent("BuiltExpUnits" , new Parameter("BuiltExpensiveUnits", data));
         }
 
-        public void WonLevel(int data)
+        public void SendWinLevelEvent(int data)
         {
-            _firebaseEventer.WonLevel(data);
+            FirebaseAnalytics.LogEvent("Wins" , new Parameter("WinScore", data));
         }
 
-        public void LostLevel(int data)
+        public void SendLoseLevel(int data)
         {
-            _firebaseEventer.LostLevel(data);
+            FirebaseAnalytics.LogEvent("Loses" , new Parameter("LoseScore", data));
         }
 
-        public void EnemyKilled(int data)
+        public void SendKillEnemy(int data)
         {
-            _firebaseEventer.EnemyKilled(data);
+            FirebaseAnalytics.LogEvent("Kills" , new Parameter("KilledEnemies", data));
         }
 
-        public void UnitKilled(int data)
+        public void SendKillUnit(int data)
         {
-            _firebaseEventer.UnitKilled(data);
+            FirebaseAnalytics.LogEvent("Casualties" , new Parameter("UnitCasualties", data));
         }
 
         private void OnDependencyStatusReceived(Task<DependencyStatus> task)
@@ -74,7 +68,7 @@ namespace _RTSGameProject.Logic.SDK.Firebase
                 }
                 
                 Debug.Log($"All dependencies resolved successfully!");
-                _firebaseEventer.StartApplication();
+                FirebaseAnalytics.LogEvent("StartApp" , new Parameter("StartApplication", 1));
             }
             catch (Exception ex)
             {

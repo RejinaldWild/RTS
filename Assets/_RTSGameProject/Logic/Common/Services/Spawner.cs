@@ -1,5 +1,5 @@
-﻿using _RTSGameProject.Logic.Common.AI;
-using _RTSGameProject.Logic.SDK;
+﻿using _RTSGameProject.Logic.Analytic;
+using _RTSGameProject.Logic.Common.AI;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,14 +9,14 @@ namespace _RTSGameProject.Logic.Common.Services
     {
         private UnitsRepository _unitsRepository;
         private AiFactory _aiFactory;
-        private ISDK _analyticService;
+        private IAnalyticService _analyticService;
         private int _tryFindPoint = 30;
         private int _spawnUnitCount = 0;
         private int _spawnExpUnitCount = 0;
         private float _radius = 0.5f;
         private float _maxDistance = 1f;
 
-        public Spawner(AiFactory aiFactory, ISDK analyticService)
+        public Spawner(AiFactory aiFactory, IAnalyticService analyticService)
         {
             _aiFactory = aiFactory;
             _analyticService = analyticService;
@@ -28,7 +28,7 @@ namespace _RTSGameProject.Logic.Common.Services
             if (teamId == 0)
             {
                 _spawnUnitCount++;
-                _analyticService.BuiltUnit(_spawnUnitCount);
+                _analyticService.SendBuildUnit(_spawnUnitCount);
                 _aiFactory.Create(teamId, spawnPosition);
             }
             if(teamId == 1)
@@ -41,7 +41,7 @@ namespace _RTSGameProject.Logic.Common.Services
             if (team == 0)
             {
                 _spawnExpUnitCount++;
-                _analyticService.BuiltExpensiveUnit(_spawnExpUnitCount);
+                _analyticService.SendBuildExpensiveUnit(_spawnExpUnitCount);
                 _aiFactory.CreateExpUnit(team, spawnPosition);
             }
         }

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: WinLoseConfigScene01
   m_EditorClassIdentifier: 
   _winConditionKillUnits: 2
-  _loseConditionKillUnits: 5
+  _loseConditionKillUnits: 3

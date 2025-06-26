@@ -23,6 +23,12 @@ namespace _RTSGameProject.Logic.Common.Score.Model
             OnScoreGameDataChange?.Invoke();
         }
 
+        public void RemoveLoseScore()
+        {
+            LoseScore--;
+            OnScoreGameDataChange?.Invoke();
+        }
+        
         public void AddSceneIndex()
         {
             SceneIndex++;

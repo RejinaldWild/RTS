@@ -1,3 +1,4 @@
+using System;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
 using UnityEditor;
@@ -8,9 +9,14 @@ namespace _RTSGameProject.Logic.Common.Services
 {
     public class SceneChanger
     {
+        public event Action OnRewardedAdWatch;
+        public event Action OnContinueToPlay;
+        public event Action OnMainMenuClick;
+        
         private readonly int _firstLevelSceneIndex;
         private readonly int _mainMenuSceneIndex;
         private readonly ISaveService _saveService;
+        
         public ScoreGameData ScoreGameData { get; set; }
         
         public SceneChanger(ISaveService saveService)
@@ -54,6 +60,7 @@ namespace _RTSGameProject.Logic.Common.Services
         
         public void ToMainMenu()
         {
+            OnMainMenuClick?.Invoke();
             SceneManager.LoadScene(sceneBuildIndex: _mainMenuSceneIndex);
         }
         
@@ -70,6 +77,16 @@ namespace _RTSGameProject.Logic.Common.Services
                 await _saveService.SaveAsync(ScoreGameData);
                 SceneManager.LoadScene(ScoreGameData.SceneIndex);
             }
+        }
+
+        public void ToReward()
+        {
+            OnRewardedAdWatch?.Invoke();
+        }
+
+        public void ToContinueToPlay()
+        {
+            OnContinueToPlay?.Invoke();
         }
     }
 }

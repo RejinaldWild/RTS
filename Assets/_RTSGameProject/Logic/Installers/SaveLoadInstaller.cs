@@ -16,13 +16,6 @@ namespace _RTSGameProject.Logic.Installers
                 .Bind<IDataStorage>()
                 .To<PlayerPrefsDataStorage>()
                 .AsSingle();
-            // Container
-            //     .Bind<IKeyProvider>()
-            //     .To<KeyProvider>()
-            //     .AsSingle();
-            // Container
-            //     .Bind<SaveDataBase>()
-            //     .AsSingle();
         }
     }
 }

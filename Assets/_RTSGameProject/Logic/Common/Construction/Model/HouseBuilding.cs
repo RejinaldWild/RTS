@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using _RTSGameProject.Logic.Common.AI;
+using _RTSGameProject.Logic.Analytic;
 using _RTSGameProject.Logic.Common.Character.Model;
-using _RTSGameProject.Logic.Common.Construction.View;
 using _RTSGameProject.Logic.Common.Services;
-using _RTSGameProject.Logic.LoadingAssets.Local;
-using _RTSGameProject.Logic.SDK;
 using _RTSGameProject.Logic.StateMachine.Implementation;
 using UnityEngine;
 using Zenject;
@@ -24,7 +21,7 @@ namespace _RTSGameProject.Logic.Common.Construction.Model
         [field: SerializeField] public int Team { get; set; }
         
         [Inject]
-        public void Construct(ISDK analyticService,
+        public void Construct(IAnalyticService analyticService,
                                 PanelController panelController, 
                                 StateMachineAiFactory aiFactory,
                                 PauseGame pauseGame)

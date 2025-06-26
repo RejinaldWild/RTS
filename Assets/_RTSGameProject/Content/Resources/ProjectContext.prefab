@@ -74,3 +74,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a18ad8db1c046ee47a9a9cf302617ef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _androidAdsId: 5878501
+  _iosAdsId: 5878500
+  _isTestingAds: 1

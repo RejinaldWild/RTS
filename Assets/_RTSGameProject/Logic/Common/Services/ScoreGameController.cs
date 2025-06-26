@@ -1,9 +1,9 @@
 using System;
+using _RTSGameProject.Logic.Analytic;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.LoadingAssets.Local;
-using _RTSGameProject.Logic.SDK;
 using Cysharp.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -15,7 +15,7 @@ namespace _RTSGameProject.Logic.Common.Services
         private readonly WinLoseGame _winLoseGame;
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
         private readonly ISaveService _saveService;
-        private readonly ISDK _analyticService;
+        private readonly IAnalyticService _analyticService;
         
         private ScoreGameUI _scoreGameUI;
         private string _key;
@@ -25,7 +25,7 @@ namespace _RTSGameProject.Logic.Common.Services
         public ScoreGameController(WinLoseGame winLoseGame,
                                     ScoreGameUIProvider scoreGameUIProvider,
                                     ISaveService saveService,
-                                    ISDK analyticService)
+                                    IAnalyticService analyticService)
         {
             _winLoseGame = winLoseGame;
             _scoreGameUIProvider = scoreGameUIProvider;
@@ -39,6 +39,7 @@ namespace _RTSGameProject.Logic.Common.Services
             ScoreGameData = await _saveService.LoadAsync();
             _winLoseGame.OnWin += AddWinScore;
             _winLoseGame.OnLose += AddLoseScore;
+            _winLoseGame.OnRemoveLose += RemoveLoseScore;
         }
 
         public void Tick()
@@ -53,6 +54,7 @@ namespace _RTSGameProject.Logic.Common.Services
         {
             _winLoseGame.OnWin -= AddWinScore;
             _winLoseGame.OnLose -= AddLoseScore;
+            _winLoseGame.OnRemoveLose -= RemoveLoseScore;
         }
         
         public void InitializeScoreGameData()
@@ -77,16 +79,23 @@ namespace _RTSGameProject.Logic.Common.Services
                 ScoreGameData.ChangeScoreGameData(ScoreGameData);
             }
             await SaveGameAsync();
-            _analyticService.WonLevel(ScoreGameData.WinScore);
+            _analyticService.SendWinLevelEvent(ScoreGameData.WinScore);
         }
 
         private async void AddLoseScore()
         {
             ScoreGameData.AddLoseScore();
             await SaveGameAsync();
-            _analyticService.LostLevel(ScoreGameData.LoseScore);
+            _analyticService.SendLoseLevel(ScoreGameData.LoseScore);
         }
 
+        private async void RemoveLoseScore()
+        {
+            ScoreGameData.RemoveLoseScore();
+            await SaveGameAsync();
+            _analyticService.SendLoseLevel(ScoreGameData.LoseScore);
+        }
+        
         private async UniTask SaveGameAsync()
         {
             await _saveService.SaveAsync(ScoreGameData);

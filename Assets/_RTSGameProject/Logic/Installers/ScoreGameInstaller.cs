@@ -1,7 +1,5 @@
 ﻿using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.SaveLoad;
-using _RTSGameProject.Logic.Common.Score.Model;
-using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.LoadingAssets.Local;
 using UnityEngine;

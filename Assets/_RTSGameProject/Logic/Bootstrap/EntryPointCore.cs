@@ -6,7 +6,6 @@ using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.LoadingAssets.Local;
-using _RTSGameProject.Logic.SDK;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Bootstrap
@@ -20,7 +19,6 @@ namespace _RTSGameProject.Logic.Bootstrap
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
         private readonly ProductionPanelProvider _productionPanelProvider;
         private readonly ScoreGameController _scoreGameController;
-        private readonly ISDK _analyticService;
         
         private ScoreGameUI _scoreGameUI;
 
@@ -30,8 +28,7 @@ namespace _RTSGameProject.Logic.Bootstrap
                             ScoreGameUIProvider scoreGameUIProvider,
                             ScoreGameController scoreGameController,
                             ProductionPanelProvider productionPanelProvider,
-                            EnvironmentProvider environmentProvider,
-                            ISDK analyticService)
+                            EnvironmentProvider environmentProvider)
         {
             _actorsRepository = actorsRepository;
             _buildings = buildings;
@@ -40,12 +37,10 @@ namespace _RTSGameProject.Logic.Bootstrap
             _scoreGameController = scoreGameController;
             _productionPanelProvider = productionPanelProvider;
             _environmentProvider = environmentProvider;
-            _analyticService = analyticService;
         }
 
         public async void Initialize()
         {
-            _analyticService.Initialize();
             await _environmentProvider.Load();
             await _productionPanelProvider.Load();
             InitializeAndSubscribeBuildings();
