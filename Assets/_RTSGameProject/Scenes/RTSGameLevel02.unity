@@ -1721,7 +1721,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efa3f162f7b04c0293938404fc295f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _winLoseConfig: {fileID: 11400000, guid: c04203ebe7cc68141887366b4fe8a537, type: 2}
   _canvas: {fileID: 135551983}
 --- !u!1001 &1221602522
 PrefabInstance:
@@ -1850,7 +1849,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ec78ff75b1d41b4aa57a2a38cb45b4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buildingUIGroupCanvas: {fileID: 0}
+  _buildingUIGroupCanvas: {fileID: 1021805130}
 --- !u!1 &1503730472
 GameObject:
   m_ObjectHideFlags: 0

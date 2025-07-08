@@ -1,5 +1,6 @@
 using _RTSGameProject.Logic.Ads.UnityAds;
 using _RTSGameProject.Logic.Analytic.Firebase;
+using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Services;
 using Zenject;
@@ -40,6 +41,9 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void BindFirebase()
         {
+            Container
+                .BindInterfacesAndSelfTo<FirebaseRemoteConfigProvider>()
+                .AsSingle();
             Container
                 .BindInterfacesAndSelfTo<FirebaseAnalyticService>()
                 .AsSingle();

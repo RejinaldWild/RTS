@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using _RTSGameProject.Logic.Ads;
 using _RTSGameProject.Logic.Analytic;
 using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.View;
 using _RTSGameProject.Logic.LoadingAssets.Local;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
@@ -26,12 +28,13 @@ namespace _RTSGameProject.Logic.Common.Services
         private readonly PauseGame _pauseGame;
         private readonly IAnalyticService _analyticService;
         private readonly IAdsService _adsService;
+        private readonly FirebaseRemoteConfigProvider _firebaseRemoteConfigProvider;
     
         public WinLoseGame(PauseGame pauseGame,
                             WinLoseWindowProvider winLoseWindowProvider,
-                            UnitsRepository unitsRepository, 
-                            WinLoseConfig winLoseCondition,
+                            UnitsRepository unitsRepository,
                             SceneChanger sceneChanger,
+                            FirebaseRemoteConfigProvider firebaseRemoteConfigProvider,
                             IAnalyticService analyticService,
                             IAdsService adsService)
         {
@@ -39,8 +42,7 @@ namespace _RTSGameProject.Logic.Common.Services
             _analyticService = analyticService;
             _adsService = adsService;
             _sceneChanger = sceneChanger;
-            _winCondition = winLoseCondition.WinConditionKillUnits;
-            _loseCondition = winLoseCondition.LoseConditionKillUnits;
+            _firebaseRemoteConfigProvider = firebaseRemoteConfigProvider;
             _pauseGame = pauseGame;
             _winLoseWindowProvider = winLoseWindowProvider;
         }
@@ -48,6 +50,18 @@ namespace _RTSGameProject.Logic.Common.Services
         public async void Initialize()
         {
             _winLoseWindow = await _winLoseWindowProvider.Load();
+            
+            foreach (KeyValuePair<string,LevelConfig> level in _firebaseRemoteConfigProvider.WinLoseConfig.Levels)
+            {
+                if (level.Key == $"Level{SceneManager.GetActiveScene().buildIndex}")
+                {
+                    LevelConfig levelConfig = level.Value;
+                    _winCondition = levelConfig.WinCondition;
+                    _loseCondition = levelConfig.LoseCondition;
+                    break;
+                }
+            }
+            
             _unitsRepository.OnUnitKill += UnitKilled;
             _unitsRepository.OnEnemyKill += EnemyKilled;
             _sceneChanger.OnRewardedAdWatch += OnRewardedAdWatched;
@@ -77,6 +91,7 @@ namespace _RTSGameProject.Logic.Common.Services
                 OnWin?.Invoke();
                 _winLoseWindow.gameObject.SetActive(true);
                 _winLoseWindow.WinPanel.SetActive(true);
+                _winLoseWindow.LosePanel.SetActive(false);
                 GameOver();
             }
         }
@@ -89,6 +104,7 @@ namespace _RTSGameProject.Logic.Common.Services
             {
                 _winLoseWindow.gameObject.SetActive(true);
                 _winLoseWindow.LosePanel.SetActive(true);
+                _winLoseWindow.WinPanel.SetActive(false);
                 _winLoseWindow.ContinueButton.gameObject.SetActive(false);
                 OnLose?.Invoke();
                 _pauseGame.Pause();
@@ -115,7 +131,7 @@ namespace _RTSGameProject.Logic.Common.Services
         private void OnContinueToPlayed()
         {
             OnRemoveLose?.Invoke();
-            _pauseGame.UnPause();
+            _pauseGame.UnPause(); // back colours
             _winLoseWindow.gameObject.SetActive(false);
             _winLoseWindow.LosePanel.SetActive(false);
             _quantityOfUnitsCasualties = 0;

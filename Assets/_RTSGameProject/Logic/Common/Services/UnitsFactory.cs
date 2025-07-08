@@ -2,8 +2,10 @@
 using static UnityEngine.Object;
 using static UnityEngine.Resources;
 using _RTSGameProject.Logic.Common.Character.Model;
+using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.View;
 using Cysharp.Threading.Tasks;
+using Firebase.RemoteConfig;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -13,27 +15,35 @@ namespace _RTSGameProject.Logic.Common.Services
 {
     public class UnitsFactory : PlaceholderFactory<Unit>
     {
-        private UnitsRepository _unitsRepository;
-        private HealthBarFactory _healthBarFactory;
-        private PauseGame _pauseGame;
+        private readonly UnitsRepository _unitsRepository;
+        private readonly HealthBarFactory _healthBarFactory;
+        private readonly PauseGame _pauseGame;
+        private readonly FirebaseRemoteConfigProvider _firebaseRemoteConfigProvider;
         
-        public UnitsFactory(UnitsRepository unitsRepository, HealthBarFactory healthBarFactory, PauseGame pauseGame)
+        public UnitsFactory(UnitsRepository unitsRepository, 
+            HealthBarFactory healthBarFactory, 
+            PauseGame pauseGame, 
+            FirebaseRemoteConfigProvider firebaseRemoteConfigProvider)
         {
             _unitsRepository = unitsRepository;
             _healthBarFactory = healthBarFactory;
             _pauseGame = pauseGame;
+            _firebaseRemoteConfigProvider = firebaseRemoteConfigProvider;
         }
 
         internal async UniTask<Unit> Create(int teamId, Vector3 position)
         {
             Unit resource = Load<Unit>("Prefabs/Unit");
             Unit instance = Instantiate<Unit>(resource, position, Quaternion.identity);
-            
-            instance.Construct(teamId, _unitsRepository);
-            await _healthBarFactory.Create(instance, instance.GetComponent<Health>());
-            _pauseGame.OnPause += instance.OnPaused;
-            _pauseGame.OnUnPause += instance.OnUnPaused;
-            _unitsRepository.Register(instance);
+            if (_firebaseRemoteConfigProvider.UnitConfig.ParamConfigs.ContainsKey("Unit"))
+            {
+                ParamConfig config =_firebaseRemoteConfigProvider.UnitConfig.ParamConfigs["Unit"];
+                instance.Construct(teamId, _unitsRepository, config);
+                await _healthBarFactory.Create(instance, instance.GetComponent<Health>());
+                _pauseGame.OnPause += instance.OnPaused;
+                _pauseGame.OnUnPause += instance.OnUnPaused;
+                _unitsRepository.Register(instance);
+            };
             
             IDisposable disposable = null;
             disposable = instance.IsAlive.Subscribe(isAlive =>
@@ -61,12 +71,15 @@ namespace _RTSGameProject.Logic.Common.Services
         {
             Unit resource = Load<Unit>("Prefabs/UnitExp");
             Unit instance = Instantiate<Unit>(resource, position, Quaternion.identity);
-            
-            instance.Construct(teamId, _unitsRepository);
-            await _healthBarFactory.Create(instance, instance.GetComponent<Health>());
-            _pauseGame.OnPause += instance.OnPaused;
-            _pauseGame.OnUnPause += instance.OnUnPaused;
-            _unitsRepository.Register(instance);
+            if (_firebaseRemoteConfigProvider.UnitConfig.ParamConfigs.ContainsKey("Unit"))
+            {
+                ParamConfig config =_firebaseRemoteConfigProvider.UnitConfig.ParamConfigs["UnitExp"];
+                instance.Construct(teamId, _unitsRepository,config);
+                await _healthBarFactory.Create(instance, instance.GetComponent<Health>());
+                _pauseGame.OnPause += instance.OnPaused;
+                _pauseGame.OnUnPause += instance.OnUnPaused;
+                _unitsRepository.Register(instance);
+            }
             
             IDisposable disposable = null;
             disposable = instance.IsAlive.Subscribe(isAlive =>

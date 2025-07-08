@@ -14,19 +14,27 @@
       "dependencies": {}
     },
     "com.google.firebase.analytics": {
-      "version": "file:Firebase/com.google.firebase.analytics-12.9.0.tgz",
+      "version": "file:Firebase/com.google.firebase.analytics-12.10.1.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
-        "com.google.firebase.app": "12.9.0"
+        "com.google.firebase.app": "12.10.1"
       }
     },
     "com.google.firebase.app": {
-      "version": "file:Firebase/com.google.firebase.app-12.9.0.tgz",
+      "version": "file:Firebase/com.google.firebase.app-12.10.1.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
         "com.google.external-dependency-manager": "1.2.186"
+      }
+    },
+    "com.google.firebase.remote-config": {
+      "version": "file:Firebase/com.google.firebase.remote-config-12.10.1.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.google.firebase.app": "12.10.1"
       }
     },
     "com.unity.addressables": {

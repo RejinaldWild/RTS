@@ -1,3 +1,4 @@
+using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
 using UnityEngine.AI;
@@ -15,6 +16,12 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         [SerializeField] private UnitAttackAct _unitAttackAct;
         private bool InCooldown => _currentCooldown >0.1f;
 
+        public void Construct(ParamConfig paramConfig)
+        {
+            _updatePathCooldown = paramConfig.UpdatePathCooldown;
+            _currentCooldown = paramConfig.CurrentPathCooldown;
+        }
+        
         private void Update()
         {
             _currentCooldown = Mathf.Max(_currentCooldown - Time.deltaTime, 0f);

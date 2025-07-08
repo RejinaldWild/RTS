@@ -363,10 +363,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Team>k__BackingField: 0
-  _productionConfig: {fileID: 11400000, guid: 8b6e23ce57071da44b1748ddf081a21e, type: 2}
   _unitPrefabs: {fileID: 3040500599371112830, guid: 912f0a747b19f8d49b256156888406c7,
     type: 3}
-  _unitExpPrefab: {fileID: 861323948136109436, guid: 3b3d5d5c1053a1a448608636b5d9178f,
+  _unitExpPrefab: {fileID: 1009737307638944894, guid: c1009a5563e13ad44beeaa0255174580,
     type: 3}
   _canvasGroup: {fileID: 3428339574849600365}
   _buttonUnit: {fileID: 4852463200805824736}

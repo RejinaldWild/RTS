@@ -1,4 +1,5 @@
-﻿using _RTSGameProject.Logic.Common.Services;
+﻿using _RTSGameProject.Logic.Common.Config;
+using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Character.Model
@@ -8,9 +9,9 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         private UnitsRepository _unitsRepository;
         private float _distance;
         
-        public UnitFindEnemy (float distance)
+        public UnitFindEnemy (ParamConfig paramConfig)
         {
-            _distance = distance;
+            _distance = paramConfig.DistanceToFindEnemy;
         }
         
         public void FindEnemy(Unit unit, UnitsRepository unitsRepository)

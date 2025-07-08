@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using _RTSGameProject.Logic.Common.Services;
 using Firebase;
 using Firebase.Analytics;
 using Firebase.Extensions;
@@ -10,13 +11,21 @@ namespace _RTSGameProject.Logic.Analytic.Firebase
 {
     public class FirebaseAnalyticService: IAnalyticService, IInitializable, IDisposable
     {
+        private FirebaseRemoteConfigProvider _firebaseRemoteConfig;
+        
+        public FirebaseAnalyticService(FirebaseRemoteConfigProvider firebaseRemoteConfig)
+        {
+            _firebaseRemoteConfig = firebaseRemoteConfig;
+        }
+        
         public void Initialize()
         {
             FirebaseApp
                 .CheckAndFixDependenciesAsync()
                 .ContinueWithOnMainThread(OnDependencyStatusReceived);
+            
         }
-
+        
         public void Dispose()
         {
             FirebaseAnalytics.LogEvent("StopApp" , new Parameter("StopApplication", 0));
@@ -49,7 +58,7 @@ namespace _RTSGameProject.Logic.Analytic.Firebase
 
         public void SendKillUnit(int data)
         {
-            FirebaseAnalytics.LogEvent("Casualties" , new Parameter("UnitCasualties", data));
+            FirebaseAnalytics.LogEvent("Casualties", new Parameter("UnitCasualties", data));
         }
 
         private void OnDependencyStatusReceived(Task<DependencyStatus> task)
@@ -66,7 +75,8 @@ namespace _RTSGameProject.Logic.Analytic.Firebase
                 {
                     throw new Exception($"Couldn't resolve all Firebase dependencies:{status}");
                 }
-                
+
+                _firebaseRemoteConfig.FetchDataAsync();
                 Debug.Log($"All dependencies resolved successfully!");
                 FirebaseAnalytics.LogEvent("StartApp" , new Parameter("StartApplication", 1));
             }

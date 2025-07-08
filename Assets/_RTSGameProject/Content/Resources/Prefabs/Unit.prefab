@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7add1cd70d5b43b997e1fdb28c8acf91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Max: 10
+  Max: 9
   _position:
     value: {x: 0, y: 0, z: 0}
 --- !u!114 &8961159229944015862

@@ -1,4 +1,5 @@
 ﻿using System;
+using _RTSGameProject.Logic.Common.Config;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Character.Model
@@ -16,6 +17,13 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         
         private bool _isCloseToEnemy;
         private float _pauseCooldown;
+        
+        public void Construct(ParamConfig paramConfig)
+        {
+            DistanceToAttack = paramConfig.DistanceToAttack;
+            _currentCooldown = paramConfig.CurrentAttackCooldown;
+            _damage = paramConfig.Damage;
+        }
         
         private void Start()
         {
@@ -35,7 +43,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             if (distanceToEnemy<=attackDistance && !InCooldown)
             {
                 enemy.TakeDamage(_damage);
-                _currentCooldown = _cooldown;
+                _currentCooldown = _cooldown; //?
             }
             else
             {

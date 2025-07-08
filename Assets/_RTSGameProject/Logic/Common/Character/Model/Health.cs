@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using _RTSGameProject.Logic.Common.Config;
 using UniRx;
 using UnityEngine;
 
@@ -15,6 +16,11 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         private ReactiveProperty<float> _current;
         [SerializeField] private ReactiveProperty<Vector3> _position;
 
+        public void Construct(ParamConfig paramConfig)
+        {
+            Max = paramConfig.MaxHealth;
+        }
+        
         private void Awake()
         {
             _current = new ReactiveProperty<float>(Max);

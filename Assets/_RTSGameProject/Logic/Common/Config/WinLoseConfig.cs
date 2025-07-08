@@ -1,14 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace _RTSGameProject.Logic.Common.Config
 {
-    [CreateAssetMenu(fileName = "WinLoseConfig", menuName = "Config/WinLoseConfig")]
-    public class WinLoseConfig: ScriptableObject
+    public class WinLoseConfig
     {
-        [SerializeField] private int _winConditionKillUnits;
-        [SerializeField] private int _loseConditionKillUnits;
-        
-        public int WinConditionKillUnits => _winConditionKillUnits;
-        public int LoseConditionKillUnits => _loseConditionKillUnits;
+        public Dictionary<string,LevelConfig> Levels { get; set; }
     }
 }

@@ -9,7 +9,6 @@ namespace _RTSGameProject.Logic.Installers
 {
     public class ScoreGameInstaller : MonoInstaller
     {
-        [SerializeField] private WinLoseConfig _winLoseConfig;
         [SerializeField] private Canvas _canvas;
         
         public override void InstallBindings()
@@ -20,10 +19,6 @@ namespace _RTSGameProject.Logic.Installers
 
         private void BindWinLose()
         {
-            Container
-                .Bind<WinLoseConfig>()
-                .FromInstance(_winLoseConfig)
-                .AsSingle();
             Container
                 .Bind<WinLoseWindowProvider>()
                 .AsSingle();

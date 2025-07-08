@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.Services;
 using Cysharp.Threading.Tasks;
 using UniRx;
@@ -34,22 +35,23 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         private UnitFindEnemy _unitFindEnemy;
         private UnitsRepository _unitsRepository;
         private CancellationTokenSource _cancellationTokenSource;
+        private ParamConfig _paramConfig;
         
-        public void Construct(int teamId, UnitsRepository unitsRepository)
+        public void Construct(int teamId, UnitsRepository unitsRepository, ParamConfig paramConfig)
         {
             Team = teamId;
             Health = GetComponent<Health>();
             _unitsRepository = unitsRepository;
-        }
-        
-        private void Awake()
-        {
+            _paramConfig = paramConfig;
             Id = Guid.NewGuid().ToString();
             Position = transform.position;
             Health = GetComponent<Health>();
+            Health.Construct(_paramConfig);
             _unitMovement = GetComponent<UnitMovement>();
+            _unitMovement.Construct(_paramConfig);
             _attackAct = GetComponent<UnitAttackAct>();
-            _unitFindEnemy = new UnitFindEnemy(DistanceToFindEnemy);
+            _attackAct.Construct(_paramConfig);
+            _unitFindEnemy = new UnitFindEnemy(_paramConfig);
             _patrollMovement = new PatrollMovement();
             _cancellationTokenSource = new CancellationTokenSource();
         }
