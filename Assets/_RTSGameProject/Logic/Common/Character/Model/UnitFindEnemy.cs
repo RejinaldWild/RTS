@@ -1,6 +1,5 @@
 ﻿using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.Services;
-using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Character.Model
 {

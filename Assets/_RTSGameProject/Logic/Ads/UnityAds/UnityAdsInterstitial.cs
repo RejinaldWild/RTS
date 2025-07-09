@@ -22,7 +22,6 @@ namespace _RTSGameProject.Logic.Ads.UnityAds
         public void ShowAdvertisement()
         {
             Advertisement.Show(_interstitialAdId, this);
-            LoadAdvertisement();
         }
 
         public void OnUnityAdsAdLoaded(string placementId)

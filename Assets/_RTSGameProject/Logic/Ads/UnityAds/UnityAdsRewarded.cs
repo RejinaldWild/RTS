@@ -6,11 +6,12 @@ namespace _RTSGameProject.Logic.Ads.UnityAds
 {
     public class UnityAdsRewarded: IUnityAdsLoadListener, IUnityAdsShowListener
     {
-        public event Action OnRewardedAdFullyWatch;
+        public event Action OnFullyWatch;
         
         private const string ANDROID_AD_ID = "Rewarded_Android";
         private const string IOS_AD_ID = "Rewarded_iOS";
         private string _rewardedAdId;
+        private Action _onRewardedCallback;
         
         public void Initialize()
         {
@@ -22,10 +23,10 @@ namespace _RTSGameProject.Logic.Ads.UnityAds
             Advertisement.Load(_rewardedAdId, this);
         }
 
-        public void ShowAdvertisement()
+        public void ShowAdvertisement(Action onRewardedCallback)
         {
+            _onRewardedCallback = onRewardedCallback;
             Advertisement.Show(_rewardedAdId, this);
-            LoadAdvertisement();
         }
 
         public void OnUnityAdsAdLoaded(string placementId)
@@ -48,7 +49,9 @@ namespace _RTSGameProject.Logic.Ads.UnityAds
         {
             if (placementId == _rewardedAdId && showCompletionState == UnityAdsShowCompletionState.COMPLETED)
             {
-                OnRewardedAdFullyWatch?.Invoke();
+                OnFullyWatch?.Invoke();
+                _onRewardedCallback?.Invoke();
+                _onRewardedCallback = null;
                 Debug.Log("Ads are fully watched");
             }
         }

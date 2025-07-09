@@ -29,7 +29,7 @@ namespace _RTSGameProject.Logic.Common.View
         public void Subscribe()
         {
             NextLevelButton.onClick.AddListener(_sceneChanger.ToNextLevel);
-            WatchAdButton.onClick.AddListener(_sceneChanger.ToReward);
+            WatchAdButton.onClick.AddListener(_sceneChanger.ToWatchRewardAd);
             ContinueButton.onClick.AddListener(_sceneChanger.ToContinueToPlay); 
             foreach (Button mainMenuButton in MainMenuButtons)
             {
@@ -40,7 +40,7 @@ namespace _RTSGameProject.Logic.Common.View
         public void Unsubscribe()
         {
             NextLevelButton.onClick.RemoveListener(_sceneChanger.ToNextLevel);
-            WatchAdButton.onClick.RemoveListener(_sceneChanger.ToReward);
+            WatchAdButton.onClick.RemoveListener(_sceneChanger.ToWatchRewardAd);
             ContinueButton.onClick.RemoveListener(_sceneChanger.ToContinueToPlay);
             foreach (Button mainMenuButton in MainMenuButtons)
             {

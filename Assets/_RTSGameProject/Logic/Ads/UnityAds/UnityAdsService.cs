@@ -5,7 +5,7 @@ using Zenject;
 
 namespace _RTSGameProject.Logic.Ads.UnityAds
 {
-    public class UnityAdsService: IAdsService, IUnityAdsInitializationListener, IInitializable, IDisposable
+    public class UnityAdsService: IAdsService, IUnityAdsInitializationListener, IInitializable
     {
         private const string ANDROID_ADS_ID = "5880775";
         private const string IOS_ADS_ID = "5880774";
@@ -13,7 +13,6 @@ namespace _RTSGameProject.Logic.Ads.UnityAds
         private bool _isTesting = true;
         private UnityAdsInterstitial _interstitial;
         private UnityAdsRewarded _rewarded;
-        
         public bool RewardedFullyWatched { get; set; }
 
         public UnityAdsService(UnityAdsInterstitial unityAdsInterstitial, UnityAdsRewarded unityAdsRewarded)
@@ -34,15 +33,10 @@ namespace _RTSGameProject.Logic.Ads.UnityAds
             _rewarded.Initialize();
             _interstitial.LoadAdvertisement();
             _rewarded.LoadAdvertisement();
-            _rewarded.OnRewardedAdFullyWatch += OnRewardedAdFullyWatched;
+            _rewarded.OnFullyWatch += OnFullyWatched;
             RewardedFullyWatched = false;
         }
 
-        public void Dispose()
-        {
-            _rewarded.OnRewardedAdFullyWatch -= OnRewardedAdFullyWatched;
-        }
-        
         public void LoadInterstitial()
         {
             _interstitial.LoadAdvertisement();
@@ -58,11 +52,10 @@ namespace _RTSGameProject.Logic.Ads.UnityAds
             _rewarded.LoadAdvertisement();
         }
 
-        public void ShowRewarded()
+        public void ShowRewarded(Action onRewardedCallback)
         {
             RewardedFullyWatched = false;
-            _rewarded.ShowAdvertisement();
-            RewardedFullyWatched = true;
+            _rewarded.ShowAdvertisement(onRewardedCallback);
         }
 
         public void OnInitializationComplete()
@@ -75,10 +68,9 @@ namespace _RTSGameProject.Logic.Ads.UnityAds
             Debug.Log("Ads initialization have failed");
         }
         
-        private void OnRewardedAdFullyWatched()
+        private void OnFullyWatched()
         {
             RewardedFullyWatched = true;
         }
-
     }
 }

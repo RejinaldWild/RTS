@@ -64,7 +64,7 @@ namespace _RTSGameProject.Logic.Common.Services
             
             _unitsRepository.OnUnitKill += UnitKilled;
             _unitsRepository.OnEnemyKill += EnemyKilled;
-            _sceneChanger.OnRewardedAdWatch += OnRewardedAdWatched;
+            _sceneChanger.OnWatchAdReward += OnWatchAdRewarded;
             _sceneChanger.OnContinueToPlay += OnContinueToPlayed;
             _sceneChanger.OnMainMenuClick += OnMainMenuClicked;
             _winLoseWindow.Subscribe();
@@ -74,7 +74,7 @@ namespace _RTSGameProject.Logic.Common.Services
         {
             _unitsRepository.OnUnitKill -= UnitKilled;
             _unitsRepository.OnEnemyKill -= EnemyKilled;
-            _sceneChanger.OnRewardedAdWatch -= OnRewardedAdWatched;
+            _sceneChanger.OnWatchAdReward -= OnWatchAdRewarded;
             _sceneChanger.OnContinueToPlay -= OnContinueToPlayed;
             _sceneChanger.OnMainMenuClick -= OnMainMenuClicked;
             _winLoseWindow.Unsubscribe();
@@ -112,20 +112,22 @@ namespace _RTSGameProject.Logic.Common.Services
             _analyticService.SendKillUnit(_quantityOfUnitsCasualties);
         }
         
-        private void OnRewardedAdWatched()
+        private void OnWatchAdRewarded()
         {
-            _adsService.ShowRewarded();
-            
-            if (!_adsService.RewardedFullyWatched)
+            _adsService.ShowRewarded(() =>
             {
-                _winLoseWindow.WatchAdButton.gameObject.SetActive(true);
-                _winLoseWindow.ContinueButton.gameObject.SetActive(false);
-            }
-            else
-            {
-                _winLoseWindow.WatchAdButton.gameObject.SetActive(false);
-                _winLoseWindow.ContinueButton.gameObject.SetActive(true);
-            }
+                if (!_adsService.RewardedFullyWatched)
+                {
+                    _winLoseWindow.WatchAdButton.gameObject.SetActive(true);
+                    _winLoseWindow.ContinueButton.gameObject.SetActive(false);
+                }
+                else
+                {
+                    _winLoseWindow.WatchAdButton.gameObject.SetActive(false);
+                    _winLoseWindow.ContinueButton.gameObject.SetActive(true);
+                }
+            });
+            _adsService.LoadRewarded();
         }
         
         private void OnContinueToPlayed()
@@ -141,6 +143,7 @@ namespace _RTSGameProject.Logic.Common.Services
         private void OnMainMenuClicked()
         {
             _adsService.ShowInterstitial();
+            _adsService.LoadInterstitial();
             GameOver();
         }
         

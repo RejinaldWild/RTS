@@ -9,7 +9,7 @@ namespace _RTSGameProject.Logic.Common.Services
 {
     public class SceneChanger
     {
-        public event Action OnRewardedAdWatch;
+        public event Action OnWatchAdReward;
         public event Action OnContinueToPlay;
         public event Action OnMainMenuClick;
         
@@ -79,9 +79,9 @@ namespace _RTSGameProject.Logic.Common.Services
             }
         }
 
-        public void ToReward()
+        public void ToWatchRewardAd()
         {
-            OnRewardedAdWatch?.Invoke();
+            OnWatchAdReward?.Invoke();
         }
 
         public void ToContinueToPlay()
