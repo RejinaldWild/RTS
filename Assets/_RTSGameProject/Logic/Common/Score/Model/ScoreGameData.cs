@@ -9,6 +9,7 @@ namespace _RTSGameProject.Logic.Common.Score.Model
         public int WinScore { get; set; }
         public int LoseScore { get; set; }
         public int SceneIndex { get; set; }
+        public bool IsRemovedAds { get; set; }
 
         public void AddWinScore()
         {
@@ -30,6 +31,11 @@ namespace _RTSGameProject.Logic.Common.Score.Model
             SceneIndex++;
         }
 
+        public void RemoveAds()
+        {
+            IsRemovedAds = true;
+        }
+        
         public void ChangeScoreGameData(ScoreGameData scoreGameData)
         {
             WinScore = scoreGameData.WinScore;

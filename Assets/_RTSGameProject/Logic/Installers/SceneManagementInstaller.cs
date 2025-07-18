@@ -4,18 +4,18 @@ using Zenject;
 
 namespace _RTSGameProject.Logic.Installers
 {
-    public class SceneManagmentInstaller : MonoInstaller
+    public class SceneManagementInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
-            BindSceneChanger();
+            BindMainMenuSceneChanger();
             BindEnviromentProvider();
         }
 
-        private void BindSceneChanger()
+        private void BindMainMenuSceneChanger()
         {
             Container
-                .Bind<SceneChanger>()
+                .BindInterfacesAndSelfTo<WindowSceneChanger>()
                 .AsSingle();
         }
 

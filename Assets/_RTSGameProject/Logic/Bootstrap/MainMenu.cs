@@ -1,4 +1,3 @@
-using _RTSGameProject.Logic.Analytic;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
@@ -14,18 +13,21 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private Button _loadButton;
         [SerializeField] private Button _deleteSavesButton;
         [SerializeField] private Button _quitButton;
+        [SerializeField] private Button _noAdsButton;
         [SerializeField] private ScoreMenuUI _scoreMenuUI;
         
-        private SceneChanger _sceneChanger;
+        private MainMenuSceneChanger _mainMenuSceneChanger;
         private ScoreMenuController _scoreMenuController;
+        private PurchaseService _purchaseService;
         private ISaveService _saveService;
 
         [Inject]
-        public void Construct(ISaveService saveService, ScoreMenuController scoreMenuController, SceneChanger sceneChanger)
+        public void Construct(ISaveService saveService,PurchaseService purchaseService, ScoreMenuController scoreMenuController, MainMenuSceneChanger mainMenuSceneChanger)
         {
-            _sceneChanger = sceneChanger;
+            _mainMenuSceneChanger = mainMenuSceneChanger;
             _scoreMenuController = scoreMenuController;
             _saveService = saveService;
+            _purchaseService = purchaseService;
         }
         
         private async void Awake()
@@ -55,16 +57,17 @@ namespace _RTSGameProject.Logic.Bootstrap
             _loadButton.onClick.AddListener(OnLoadButtonClick);
             _deleteSavesButton.onClick.AddListener(OnDeleteButtonClick);
             _quitButton.onClick.AddListener(OnQuitButtonClick);
+            _noAdsButton.onClick.AddListener(OnNoAdsButtonClick);
         }
         
         private void OnStartButtonClick()
         {
-            _sceneChanger.ToStartGame();
+            _mainMenuSceneChanger.ToStartGame();
         }
 
         private void OnLoadButtonClick()
         {
-            _sceneChanger.ToLoadGame();
+            _mainMenuSceneChanger.ToLoadGame();
         }
         
         private async void OnDeleteButtonClick()
@@ -74,7 +77,12 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void OnQuitButtonClick()
         {
-            _sceneChanger.ToQuitGame();
+            _mainMenuSceneChanger.ToQuitGame();
+        }
+        
+        private void OnNoAdsButtonClick()
+        {
+            _purchaseService.Payment();
         }
 
         private void Unsubscribe()
@@ -83,6 +91,8 @@ namespace _RTSGameProject.Logic.Bootstrap
             _loadButton.onClick.RemoveListener(OnLoadButtonClick);
             _deleteSavesButton.onClick.RemoveListener(OnDeleteButtonClick);
             _quitButton.onClick.RemoveListener(OnQuitButtonClick);
+            _noAdsButton.onClick.RemoveListener(OnNoAdsButtonClick);
         }
+
     }
 }

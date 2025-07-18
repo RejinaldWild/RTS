@@ -665,7 +665,7 @@ GameObject:
   - component: {fileID: 467904968}
   - component: {fileID: 467904969}
   m_Layer: 0
-  m_Name: SceneManagment
+  m_Name: SceneManagement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1936,7 +1936,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efa3f162f7b04c0293938404fc295f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _winLoseConfig: {fileID: 11400000, guid: 1f8e842954e1a4d4bbbdc70e67f38f47, type: 2}
   _canvas: {fileID: 187420072}
 --- !u!1 &1852505869
 GameObject:

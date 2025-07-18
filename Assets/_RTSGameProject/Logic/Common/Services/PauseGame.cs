@@ -8,7 +8,7 @@ namespace _RTSGameProject.Logic.Common.Services
         public event Action OnUnPause;
         
         public bool OnPaused { get; private set; }
-
+        
         public void Pause()
         {
             OnPause?.Invoke();

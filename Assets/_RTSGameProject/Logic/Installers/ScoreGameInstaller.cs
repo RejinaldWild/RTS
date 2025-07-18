@@ -1,6 +1,4 @@
-﻿using _RTSGameProject.Logic.Common.Config;
-using _RTSGameProject.Logic.Common.SaveLoad;
-using _RTSGameProject.Logic.Common.Services;
+﻿using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.LoadingAssets.Local;
 using UnityEngine;
 using Zenject;
@@ -34,7 +32,7 @@ namespace _RTSGameProject.Logic.Installers
                 .Bind<ScoreGameUIProvider>()
                 .AsSingle();
             Container
-                .Bind<ISaveService>().To<SaveService>()
+                .BindInterfacesAndSelfTo<WinLoseActions>()
                 .AsSingle();
             Container
                 .BindInterfacesAndSelfTo<WinLoseGame>()

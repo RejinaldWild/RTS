@@ -1,3 +1,4 @@
+using System;
 using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,37 +15,42 @@ namespace _RTSGameProject.Logic.Common.View
         [SerializeField] private Button _continueButton;
         [SerializeField] private Button[] _mainMenuButtons;
         
-        private SceneChanger _sceneChanger;
+        private IWinLoseActions _action;
 
         public Button ContinueButton => _continueButton;
         public Button WatchAdButton => _watchAdButton;
         private Button NextLevelButton => _nextLevelButton;
         private Button[] MainMenuButtons => _mainMenuButtons;
         
-        public void Construct(SceneChanger sceneChanger)
+        private Action _toNextLevel;
+        private Action _toWatchRewardAd;
+        private Action _toContinueToPlay;
+        private Action _toMainMenu;
+        
+        public void Construct(IWinLoseActions action)
         {
-            _sceneChanger = sceneChanger;
+            _action = action;
         }
         
         public void Subscribe()
         {
-            NextLevelButton.onClick.AddListener(_sceneChanger.ToNextLevel);
-            WatchAdButton.onClick.AddListener(_sceneChanger.ToWatchRewardAd);
-            ContinueButton.onClick.AddListener(_sceneChanger.ToContinueToPlay); 
+            NextLevelButton.onClick.AddListener(_action.ToNextLevel);
+            WatchAdButton.onClick.AddListener(_action.ToWatchRewardAd);
+            ContinueButton.onClick.AddListener(_action.ToContinueToPlay); 
             foreach (Button mainMenuButton in MainMenuButtons)
             {
-                mainMenuButton.onClick.AddListener(_sceneChanger.ToMainMenu);
+                mainMenuButton.onClick.AddListener(_action.ToMainMenu);
             }
         }
 
         public void Unsubscribe()
         {
-            NextLevelButton.onClick.RemoveListener(_sceneChanger.ToNextLevel);
-            WatchAdButton.onClick.RemoveListener(_sceneChanger.ToWatchRewardAd);
-            ContinueButton.onClick.RemoveListener(_sceneChanger.ToContinueToPlay);
+            NextLevelButton.onClick.RemoveListener(_action.ToNextLevel);
+            WatchAdButton.onClick.RemoveListener(_action.ToWatchRewardAd);
+            ContinueButton.onClick.RemoveListener(_action.ToContinueToPlay);
             foreach (Button mainMenuButton in MainMenuButtons)
             {
-                mainMenuButton.onClick.RemoveListener(_sceneChanger.ToMainMenu);
+                mainMenuButton.onClick.RemoveListener(_action.ToMainMenu);
             }
         }
     }

@@ -26,11 +26,13 @@ namespace _RTSGameProject.Logic.Common.Services
         public void Initialize()
         {
             _pauseGame.OnPause += OnPaused;
+            _pauseGame.OnUnPause += OnUnPaused;
         }
-
+        
         public void Dispose()
         {
             _pauseGame.OnPause -= OnPaused;
+            _pauseGame.OnUnPause -= OnUnPaused;
         }
         
         public bool HasEnemy(Unit forUnit)
@@ -87,6 +89,22 @@ namespace _RTSGameProject.Logic.Common.Services
             foreach (Unit unit in AllUnits)
             {
                 unit.GetComponent<Renderer>().material.color = Color.gray;
+            }
+        }
+        
+        private void OnUnPaused()
+        {
+            foreach (Unit unit in AllUnits)
+            {
+                if (unit.Team == 0)
+                {
+                    unit.GetComponent<Renderer>().material.color = Color.blue;
+                }
+
+                if (unit.Team == 1)
+                {
+                    unit.GetComponent<Renderer>().material.color = Color.red;
+                }
             }
         }
     }

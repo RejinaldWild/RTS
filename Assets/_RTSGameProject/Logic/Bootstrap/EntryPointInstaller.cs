@@ -1,8 +1,8 @@
 using _RTSGameProject.Logic.Ads.UnityAds;
 using _RTSGameProject.Logic.Analytic.Firebase;
-using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.Shop.Model;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Bootstrap
@@ -14,6 +14,17 @@ namespace _RTSGameProject.Logic.Bootstrap
             BindSaveService();
             BindFirebase();
             BindAds();
+            BindInAppPurchase();
+        }
+
+        private void BindInAppPurchase()
+        {
+            Container
+                .Bind<NonConsumableItem>()
+                .AsSingle();
+            Container
+                .BindInterfacesAndSelfTo<PurchaseService>()
+                .AsSingle();
         }
 
         private void BindAds()
@@ -32,10 +43,13 @@ namespace _RTSGameProject.Logic.Bootstrap
         private void BindSaveService()
         {
             Container
-                .Bind<PlayerPrefsDataStorage>()
+                .BindInterfacesAndSelfTo<PlayerPrefsDataStorage>()
                 .AsSingle();
             Container
-                .Bind<JsonConverter>()
+                .BindInterfacesAndSelfTo<JsonConverter>()
+                .AsSingle();
+            Container
+                .BindInterfacesAndSelfTo<SaveService>()
                 .AsSingle();
         }
 
@@ -48,7 +62,5 @@ namespace _RTSGameProject.Logic.Bootstrap
                 .BindInterfacesAndSelfTo<FirebaseAnalyticService>()
                 .AsSingle();
         }
-        
-        
     }
 }

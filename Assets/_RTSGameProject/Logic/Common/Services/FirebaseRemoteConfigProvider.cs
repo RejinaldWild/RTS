@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class FirebaseRemoteConfigProvider
+    public class FirebaseRemoteConfigProvider: IRemoteConfigProvider
     {
-        public WinLoseConfig WinLoseConfig { get;private set; }
-        public UnitConfig UnitConfig { get;private set; }
+        public WinLoseConfig WinLoseConfig { get; set; }
+        public UnitConfig UnitConfig { get; set; }
         
         public Task FetchDataAsync()
         {
@@ -19,15 +19,13 @@ namespace _RTSGameProject.Logic.Common.Services
             return fetchTask.ContinueWithOnMainThread(FetchComplete);
         }
 
-        public void GetValues()
+        private void GetValues()
         {
-            WinLoseConfig = JsonConvert.DeserializeObject<WinLoseConfig>
-                (FirebaseRemoteConfig.DefaultInstance.GetValue("WinLoseConfig").StringValue);
-            Debug.Log(WinLoseConfig);
+            string winLoseConfig = FirebaseRemoteConfig.DefaultInstance.GetValue("WinLoseConfig").StringValue;
+            WinLoseConfig = JsonConvert.DeserializeObject<WinLoseConfig>(winLoseConfig);
             
-            UnitConfig = JsonConvert.DeserializeObject<UnitConfig>
-                (FirebaseRemoteConfig.DefaultInstance.GetValue("UnitConfig").StringValue);
-            Debug.Log(UnitConfig);
+            string unitConfig = FirebaseRemoteConfig.DefaultInstance.GetValue("UnitConfig").StringValue;
+            UnitConfig = JsonConvert.DeserializeObject<UnitConfig>(unitConfig);
         }
         
         private void FetchComplete(Task fetchTask)

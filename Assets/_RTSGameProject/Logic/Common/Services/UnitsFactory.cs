@@ -16,26 +16,26 @@ namespace _RTSGameProject.Logic.Common.Services
         private readonly UnitsRepository _unitsRepository;
         private readonly HealthBarFactory _healthBarFactory;
         private readonly PauseGame _pauseGame;
-        private readonly FirebaseRemoteConfigProvider _firebaseRemoteConfigProvider;
+        private readonly IRemoteConfigProvider _remoteConfigProvider;
         
         public UnitsFactory(UnitsRepository unitsRepository, 
             HealthBarFactory healthBarFactory, 
             PauseGame pauseGame, 
-            FirebaseRemoteConfigProvider firebaseRemoteConfigProvider)
+            IRemoteConfigProvider remoteConfigProvider)
         {
             _unitsRepository = unitsRepository;
             _healthBarFactory = healthBarFactory;
             _pauseGame = pauseGame;
-            _firebaseRemoteConfigProvider = firebaseRemoteConfigProvider;
+            _remoteConfigProvider = remoteConfigProvider;
         }
 
         internal async UniTask<Unit> Create(int teamId, Vector3 position)
         {
             Unit resource = Load<Unit>("Prefabs/Unit");
             Unit instance = Instantiate<Unit>(resource, position, Quaternion.identity);
-            if (_firebaseRemoteConfigProvider.UnitConfig.ParamConfigs.ContainsKey("Unit"))
+            if (_remoteConfigProvider.UnitConfig.ParamConfigs.ContainsKey("Unit"))
             {
-                ParamConfig config =_firebaseRemoteConfigProvider.UnitConfig.ParamConfigs["Unit"];
+                ParamConfig config =_remoteConfigProvider.UnitConfig.ParamConfigs["Unit"];
                 instance.Construct(teamId, _unitsRepository, config);
                 await _healthBarFactory.Create(instance, instance.GetComponent<Health>());
                 _pauseGame.OnPause += instance.OnPaused;
@@ -69,9 +69,9 @@ namespace _RTSGameProject.Logic.Common.Services
         {
             Unit resource = Load<Unit>("Prefabs/UnitExp");
             Unit instance = Instantiate<Unit>(resource, position, Quaternion.identity);
-            if (_firebaseRemoteConfigProvider.UnitConfig.ParamConfigs.ContainsKey("Unit"))
+            if (_remoteConfigProvider.UnitConfig.ParamConfigs.ContainsKey("Unit"))
             {
-                ParamConfig config =_firebaseRemoteConfigProvider.UnitConfig.ParamConfigs["UnitExp"];
+                ParamConfig config =_remoteConfigProvider.UnitConfig.ParamConfigs["UnitExp"];
                 instance.Construct(teamId, _unitsRepository,config);
                 await _healthBarFactory.Create(instance, instance.GetComponent<Health>());
                 _pauseGame.OnPause += instance.OnPaused;

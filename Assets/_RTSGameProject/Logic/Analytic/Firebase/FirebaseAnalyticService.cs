@@ -11,11 +11,11 @@ namespace _RTSGameProject.Logic.Analytic.Firebase
 {
     public class FirebaseAnalyticService: IAnalyticService, IInitializable, IDisposable
     {
-        private FirebaseRemoteConfigProvider _firebaseRemoteConfig;
+        private readonly IRemoteConfigProvider _remoteConfigProvider;
         
-        public FirebaseAnalyticService(FirebaseRemoteConfigProvider firebaseRemoteConfig)
+        public FirebaseAnalyticService(IRemoteConfigProvider remoteConfigProvider)
         {
-            _firebaseRemoteConfig = firebaseRemoteConfig;
+            _remoteConfigProvider = remoteConfigProvider;
         }
         
         public void Initialize()
@@ -76,7 +76,7 @@ namespace _RTSGameProject.Logic.Analytic.Firebase
                     throw new Exception($"Couldn't resolve all Firebase dependencies:{status}");
                 }
 
-                _firebaseRemoteConfig.FetchDataAsync();
+                _remoteConfigProvider.FetchDataAsync();
                 Debug.Log($"All dependencies resolved successfully!");
                 FirebaseAnalytics.LogEvent("StartApp" , new Parameter("StartApplication", 1));
             }

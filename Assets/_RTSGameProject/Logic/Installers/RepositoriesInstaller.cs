@@ -33,7 +33,7 @@ namespace _RTSGameProject.Logic.Installers
         private void BindPause()
         {
             Container
-                .Bind<PauseGame>()
+                .BindInterfacesAndSelfTo<PauseGame>()
                 .AsSingle();
         }
         

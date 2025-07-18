@@ -15,43 +15,45 @@ namespace _RTSGameProject.Logic.Common.Services
         public event Action OnWin;
         public event Action OnLose;
         public event Action OnRemoveLose;
+        public event Action OnNextLevel;
+        public event Action OnMainMenuClick;
         
         private int _winCondition;
         private int _loseCondition;
         private int _quantityOfEnemiesKilled;
         private int _quantityOfUnitsCasualties;
-        private WinLoseWindow _winLoseWindow;
-        private WinLoseWindowProvider _winLoseWindowProvider;
-        private SceneChanger _sceneChanger;
         
+        private readonly WinLoseWindowProvider _winLoseWindowProvider;
         private readonly UnitsRepository _unitsRepository;
         private readonly PauseGame _pauseGame;
         private readonly IAnalyticService _analyticService;
         private readonly IAdsService _adsService;
-        private readonly FirebaseRemoteConfigProvider _firebaseRemoteConfigProvider;
+        private readonly IRemoteConfigProvider _remoteConfigProvider;
+        
+        public WinLoseWindow WinLoseWindowProp { get; private set; }
     
         public WinLoseGame(PauseGame pauseGame,
                             WinLoseWindowProvider winLoseWindowProvider,
                             UnitsRepository unitsRepository,
-                            SceneChanger sceneChanger,
-                            FirebaseRemoteConfigProvider firebaseRemoteConfigProvider,
+                            IRemoteConfigProvider remoteConfigProvider,
                             IAnalyticService analyticService,
                             IAdsService adsService)
         {
             _unitsRepository = unitsRepository;
             _analyticService = analyticService;
             _adsService = adsService;
-            _sceneChanger = sceneChanger;
-            _firebaseRemoteConfigProvider = firebaseRemoteConfigProvider;
+            _remoteConfigProvider = remoteConfigProvider;
             _pauseGame = pauseGame;
             _winLoseWindowProvider = winLoseWindowProvider;
         }
 
         public async void Initialize()
         {
-            _winLoseWindow = await _winLoseWindowProvider.Load();
+            WinLoseWindowProp = await _winLoseWindowProvider.Load();
+            var winLoseActions = new WinLoseActions(this);
+            WinLoseWindowProp.Construct(winLoseActions);
             
-            foreach (KeyValuePair<string,LevelConfig> level in _firebaseRemoteConfigProvider.WinLoseConfig.Levels)
+            foreach (KeyValuePair<string,LevelConfig> level in _remoteConfigProvider.WinLoseConfig.Levels)
             {
                 if (level.Key == $"Level{SceneManager.GetActiveScene().buildIndex}")
                 {
@@ -64,20 +66,14 @@ namespace _RTSGameProject.Logic.Common.Services
             
             _unitsRepository.OnUnitKill += UnitKilled;
             _unitsRepository.OnEnemyKill += EnemyKilled;
-            _sceneChanger.OnWatchAdReward += OnWatchAdRewarded;
-            _sceneChanger.OnContinueToPlay += OnContinueToPlayed;
-            _sceneChanger.OnMainMenuClick += OnMainMenuClicked;
-            _winLoseWindow.Subscribe();
+            WinLoseWindowProp.Subscribe();
         }
 
         public void Dispose()
         {
             _unitsRepository.OnUnitKill -= UnitKilled;
             _unitsRepository.OnEnemyKill -= EnemyKilled;
-            _sceneChanger.OnWatchAdReward -= OnWatchAdRewarded;
-            _sceneChanger.OnContinueToPlay -= OnContinueToPlayed;
-            _sceneChanger.OnMainMenuClick -= OnMainMenuClicked;
-            _winLoseWindow.Unsubscribe();
+            WinLoseWindowProp.Unsubscribe();
             _winLoseWindowProvider.Unload();
         }
 
@@ -89,9 +85,9 @@ namespace _RTSGameProject.Logic.Common.Services
             if (_winCondition <= 0)
             {
                 OnWin?.Invoke();
-                _winLoseWindow.gameObject.SetActive(true);
-                _winLoseWindow.WinPanel.SetActive(true);
-                _winLoseWindow.LosePanel.SetActive(false);
+                WinLoseWindowProp.gameObject.SetActive(true);
+                WinLoseWindowProp.WinPanel.SetActive(true);
+                WinLoseWindowProp.LosePanel.SetActive(false);
                 GameOver();
             }
         }
@@ -102,54 +98,63 @@ namespace _RTSGameProject.Logic.Common.Services
             _quantityOfUnitsCasualties++;
             if (_loseCondition <= 0)
             {
-                _winLoseWindow.gameObject.SetActive(true);
-                _winLoseWindow.LosePanel.SetActive(true);
-                _winLoseWindow.WinPanel.SetActive(false);
-                _winLoseWindow.ContinueButton.gameObject.SetActive(false);
+                WinLoseWindowProp.gameObject.SetActive(true);
+                WinLoseWindowProp.LosePanel.SetActive(true);
+                WinLoseWindowProp.WinPanel.SetActive(false);
+                WinLoseWindowProp.ContinueButton.gameObject.SetActive(false);
                 OnLose?.Invoke();
                 _pauseGame.Pause();
             }
             _analyticService.SendKillUnit(_quantityOfUnitsCasualties);
         }
         
-        private void OnWatchAdRewarded()
+        public void ToWatchRewardAd()
         {
             _adsService.ShowRewarded(() =>
             {
                 if (!_adsService.RewardedFullyWatched)
                 {
-                    _winLoseWindow.WatchAdButton.gameObject.SetActive(true);
-                    _winLoseWindow.ContinueButton.gameObject.SetActive(false);
+                    WinLoseWindowProp.WatchAdButton.gameObject.SetActive(true);
+                    WinLoseWindowProp.ContinueButton.gameObject.SetActive(false);
                 }
                 else
                 {
-                    _winLoseWindow.WatchAdButton.gameObject.SetActive(false);
-                    _winLoseWindow.ContinueButton.gameObject.SetActive(true);
+                    WinLoseWindowProp.WatchAdButton.gameObject.SetActive(false);
+                    WinLoseWindowProp.ContinueButton.gameObject.SetActive(true);
                 }
             });
             _adsService.LoadRewarded();
         }
         
-        private void OnContinueToPlayed()
+        public void ToContinueToPlay()
         {
             OnRemoveLose?.Invoke();
-            _pauseGame.UnPause(); // back colours
-            _winLoseWindow.gameObject.SetActive(false);
-            _winLoseWindow.LosePanel.SetActive(false);
+            WinLoseWindowProp.gameObject.SetActive(false);
+            WinLoseWindowProp.LosePanel.SetActive(false);
+            _pauseGame.UnPause();
             _quantityOfUnitsCasualties = 0;
             _loseCondition = 0;
-        }
-
-        private void OnMainMenuClicked()
-        {
-            _adsService.ShowInterstitial();
-            _adsService.LoadInterstitial();
-            GameOver();
         }
         
         private void GameOver()
         {
             _pauseGame.Pause();
+        }
+
+        public void ToNextLevel()
+        {
+            OnNextLevel?.Invoke();
+        }
+
+        public void ToMainMenu()
+        {
+            if (!_adsService.IsPaidForRemovingAds)
+            {
+                _adsService.ShowInterstitial();
+                _adsService.LoadInterstitial();
+            }
+            GameOver();
+            OnMainMenuClick?.Invoke();
         }
     }
 }

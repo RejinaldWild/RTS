@@ -8,19 +8,16 @@ namespace _RTSGameProject.Logic.LoadingAssets.Local
     public class WinLoseWindowProvider : LocalAssetLoading
     {
         private readonly Canvas _canvas;
-        private SceneChanger _sceneChanger;
+        private WinLoseGame _winLoseGame;
         
-        public WinLoseWindowProvider(Canvas canvas, SceneChanger sceneChanger)
+        public WinLoseWindowProvider(Canvas canvas)
         {
             _canvas = canvas;
-            _sceneChanger = sceneChanger;
         }
         
         public async UniTask<WinLoseWindow> Load()
         {
-            var asset = await LoadLocalAsset<WinLoseWindow>("WinLoseWindow", _canvas);
-            asset.Construct(_sceneChanger);
-            return asset;
+            return await LoadLocalAsset<WinLoseWindow>("WinLoseWindow", _canvas);;
         }
 
         public void Unload()
