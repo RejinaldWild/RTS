@@ -15,8 +15,6 @@ namespace _RTSGameProject.Logic.Common.Services
         public event Action OnWin;
         public event Action OnLose;
         public event Action OnRemoveLose;
-        public event Action OnNextLevel;
-        public event Action OnMainMenuClick;
         
         private int _winCondition;
         private int _loseCondition;
@@ -26,6 +24,7 @@ namespace _RTSGameProject.Logic.Common.Services
         private readonly WinLoseWindowProvider _winLoseWindowProvider;
         private readonly UnitsRepository _unitsRepository;
         private readonly PauseGame _pauseGame;
+        private readonly ISceneChanger _sceneChanger;
         private readonly IAnalyticService _analyticService;
         private readonly IAdsService _adsService;
         private readonly IRemoteConfigProvider _remoteConfigProvider;
@@ -35,11 +34,13 @@ namespace _RTSGameProject.Logic.Common.Services
         public WinLoseGame(PauseGame pauseGame,
                             WinLoseWindowProvider winLoseWindowProvider,
                             UnitsRepository unitsRepository,
+                            ISceneChanger sceneChanger,
                             IRemoteConfigProvider remoteConfigProvider,
                             IAnalyticService analyticService,
                             IAdsService adsService)
         {
             _unitsRepository = unitsRepository;
+            _sceneChanger = sceneChanger;
             _analyticService = analyticService;
             _adsService = adsService;
             _remoteConfigProvider = remoteConfigProvider;
@@ -143,7 +144,7 @@ namespace _RTSGameProject.Logic.Common.Services
 
         public void ToNextLevel()
         {
-            OnNextLevel?.Invoke();
+            _sceneChanger.ToNextLevel();
         }
 
         public void ToMainMenu()
@@ -154,7 +155,7 @@ namespace _RTSGameProject.Logic.Common.Services
                 _adsService.LoadInterstitial();
             }
             GameOver();
-            OnMainMenuClick?.Invoke();
+            _sceneChanger.ToMainMenu();
         }
     }
 }

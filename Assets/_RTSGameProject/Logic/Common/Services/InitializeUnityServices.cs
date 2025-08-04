@@ -1,5 +1,4 @@
-﻿using System;
-using Unity.Services.Core;
+﻿using Unity.Services.Core;
 using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Services

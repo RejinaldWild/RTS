@@ -14,29 +14,29 @@ namespace _RTSGameProject.Logic.Bootstrap
     {
         private readonly HouseBuilding[] _buildings;
         private readonly ActorsRepository _actorsRepository;
-        private readonly ISaveService _saveService;
         private readonly EnvironmentProvider _environmentProvider;
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
         private readonly ProductionPanelProvider _productionPanelProvider;
         private readonly ScoreGameController _scoreGameController;
+        private readonly ISaveService _saveService;
         
         private ScoreGameUI _scoreGameUI;
 
         public EntryPointCore(ActorsRepository actorsRepository,
-                            HouseBuilding[] buildings, 
-                            ISaveService saveService,
+                            HouseBuilding[] buildings,
                             ScoreGameUIProvider scoreGameUIProvider,
                             ScoreGameController scoreGameController,
                             ProductionPanelProvider productionPanelProvider,
-                            EnvironmentProvider environmentProvider)
+                            EnvironmentProvider environmentProvider,
+                            ISaveService saveService)
         {
             _actorsRepository = actorsRepository;
             _buildings = buildings;
-            _saveService = saveService;
             _scoreGameUIProvider = scoreGameUIProvider;
             _scoreGameController = scoreGameController;
             _productionPanelProvider = productionPanelProvider;
             _environmentProvider = environmentProvider;
+            _saveService = saveService;
         }
 
         public async void Initialize()
@@ -44,7 +44,7 @@ namespace _RTSGameProject.Logic.Bootstrap
             await _environmentProvider.Load();
             await _productionPanelProvider.Load();
             InitializeAndSubscribeBuildings();
-            if (_saveService.IsSaveExist())
+            if (await _saveService.IsSaveExist())
             {
                 await _scoreGameController.InitializeLoadDataAsync();
                 _scoreGameController.GetDataToShowScore(_scoreGameController.ScoreGameData);

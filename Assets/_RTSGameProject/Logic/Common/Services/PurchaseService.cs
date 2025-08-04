@@ -3,11 +3,12 @@ using _RTSGameProject.Logic.Shop.Model;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
+using UnityEngine.Purchasing.Security;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
-    public class PurchaseService: IStoreListener, IInitializable
+    public class PurchaseService: IPurchase, IDetailedStoreListener, IInitializable
     {
         private IStoreController _storeController;
         private NonConsumableItem _nonConsumableItem;

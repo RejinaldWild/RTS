@@ -15,7 +15,7 @@ namespace _RTSGameProject.Logic.Installers
         private void BindMainMenuSceneChanger()
         {
             Container
-                .BindInterfacesAndSelfTo<WindowSceneChanger>()
+                .BindInterfacesAndSelfTo<SceneChanger>()
                 .AsSingle();
         }
 

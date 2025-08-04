@@ -1,0 +1,99 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using _RTSGameProject.Logic.Common.Score.Model;
+using _RTSGameProject.Logic.Common.Services;
+using Cysharp.Threading.Tasks;
+using Unity.Services.Core;
+using Unity.Services.Authentication;
+using Unity.Services.CloudSave;
+using Unity.Services.CloudSave.Models;
+using UnityEngine;
+using Zenject;
+using DeleteOptions = Unity.Services.CloudSave.Models.Data.Player.DeleteOptions;
+
+namespace _RTSGameProject.Logic.Common.SaveLoad
+{
+    public class CloudSaveLoadService : IInitializable
+    {
+        private const string SCORE_GAME_DATA = "ScoreGameData";
+        
+        private readonly ISerializer _serializer;
+        private ScoreGameData _scoreGameData;
+
+        public CloudSaveLoadService(ISerializer serializer)
+        {
+            _serializer = serializer;
+        }
+        
+        public async void Initialize()
+        {
+            await SetupAndSign();
+        }
+
+        private async Task SetupAndSign()
+        {
+            try
+            {
+                await UnityServices.InitializeAsync();
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            }
+            catch (AuthenticationException ex)
+            {
+                Debug.Log(ex);
+            }
+            catch (Exception ex)
+            {
+                Debug.Log(ex);
+            }
+        }
+        
+        public async UniTask<bool> IsSaveExist()
+        {
+            var allKeys = await CloudSaveService.Instance.Data.Player.ListAllKeysAsync();
+                foreach (var itemKey in allKeys)
+                {
+                    if (itemKey.Key.Equals(SCORE_GAME_DATA))
+                    {
+                        return true;
+                    }
+                }
+            return false;
+        }
+
+        public async UniTask SaveAsync(ScoreGameData data)
+        {
+            string serializedData = await _serializer.ToJsonAsync(data);
+            Dictionary<string, object> dictData = new Dictionary<string, object>{{SCORE_GAME_DATA, serializedData}};
+            await CloudSaveService.Instance.Data.Player.SaveAsync(dictData);
+        }
+
+        public async UniTask<ScoreGameData> LoadAsync()
+        {
+            HashSet<string> keysToLoad = new HashSet<string> { SCORE_GAME_DATA };
+            if (keysToLoad.Contains(SCORE_GAME_DATA))
+            {
+                Dictionary<string, Item> loadedData = await CloudSaveService.Instance.Data.Player.LoadAsync(keysToLoad);
+
+                if (loadedData.TryGetValue(SCORE_GAME_DATA, out Item item))
+                {
+                    string serializedData = item.Value.GetAsString();
+                    _scoreGameData = await _serializer.FromJsonAsync(serializedData);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No data found!");
+            }
+
+            return _scoreGameData;
+        }
+
+        public async UniTask DeleteAsync()
+        {
+            DeleteOptions deleteOptions = new();
+            await CloudSaveService.Instance.Data.Player.DeleteAsync(SCORE_GAME_DATA, deleteOptions);
+        }
+
+    }
+}

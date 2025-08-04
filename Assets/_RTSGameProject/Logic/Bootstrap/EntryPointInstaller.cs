@@ -11,10 +11,18 @@ namespace _RTSGameProject.Logic.Bootstrap
     {
         public override void InstallBindings()
         {
+            BindInternetConnectionChecker();
             BindSaveService();
             BindFirebase();
             BindAds();
             BindInAppPurchase();
+        }
+
+        private void BindInternetConnectionChecker()
+        {
+            Container
+                .Bind<InternetConnectionChecker>()
+                .AsSingle();
         }
 
         private void BindInAppPurchase()
@@ -47,6 +55,27 @@ namespace _RTSGameProject.Logic.Bootstrap
                 .AsSingle();
             Container
                 .BindInterfacesAndSelfTo<JsonConverter>()
+                .AsSingle();
+            // Container
+            //     .Bind<ISaveService>()
+            //     .WithId("LocalSaveLoad")
+            //     .To<LocalSaveLoadService>()
+            //     .AsSingle();
+            // Container
+            //     .Bind<ISaveService>()
+            //     .WithId("CloudSaveLoad")
+            //     .To<CloudSaveLoadService>()
+            //     .AsSingle();
+            // Container
+            //     .Bind<IInitializable>()
+            //     .WithId("CloudSaveLoad")
+            //     .To<CloudSaveLoadService>()
+            //     .FromResolve();
+            Container
+                .Bind<LocalSaveLoadService>()
+                .AsSingle();
+            Container
+                .BindInterfacesAndSelfTo<CloudSaveLoadService>()
                 .AsSingle();
             Container
                 .BindInterfacesAndSelfTo<SaveService>()

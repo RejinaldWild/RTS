@@ -1,43 +1,80 @@
-using _RTSGameProject.Logic.Common.Score.Model;
+﻿using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Services;
 using Cysharp.Threading.Tasks;
+using Zenject;
 
 namespace _RTSGameProject.Logic.Common.SaveLoad
 {
     public class SaveService : ISaveService
     {
-        private const string SCORE_GAME_DATA = "ScoreGameData";
+        private InternetConnectionChecker _internetConnectionChecker;
         
-        private readonly ISerializer _serializer;
-        private readonly IDataStorage _dataStorage;
+        private readonly LocalSaveLoadService _localSaveLoadService;
+        private readonly CloudSaveLoadService _cloudSaveLoadService;
         
-        public SaveService(ISerializer serializer, IDataStorage dataStorage)
+        public SaveService(InternetConnectionChecker internetConnectionChecker, LocalSaveLoadService localSaveLoadService, CloudSaveLoadService cloudSaveLoadService)
         {
-            _serializer = serializer;
-            _dataStorage = dataStorage;
+            _internetConnectionChecker = internetConnectionChecker;
+            _localSaveLoadService = localSaveLoadService;
+            _cloudSaveLoadService = cloudSaveLoadService;
+        }
+        
+        public async UniTask<bool> IsSaveExist()
+        {
+            var isConnected = await _internetConnectionChecker.CheckInternetConnection();
+            if (isConnected)
+            {
+                return await _cloudSaveLoadService.IsSaveExist();
+            }
+            else
+            {
+                return _localSaveLoadService.IsSaveExist();
+            }
         }
 
-        public bool IsSaveExist()
-        {
-            string scoreGameData = SCORE_GAME_DATA;
-            return _dataStorage.Exist(scoreGameData);
-        }
-        
         public async UniTask SaveAsync(ScoreGameData data)
         {
-            string serializedData = await _serializer.ToJsonAsync(data);
-            await _dataStorage.WriteAsync(SCORE_GAME_DATA, serializedData);
+            bool isConnected = await _internetConnectionChecker.CheckInternetConnection();
+            if (isConnected)
+            {
+                await _cloudSaveLoadService.SaveAsync(data);
+                await _localSaveLoadService.SaveAsync(data);
+            }
+            else
+            {
+                await _localSaveLoadService.SaveAsync(data);
+            }
         }
 
         public async UniTask<ScoreGameData> LoadAsync()
         {
-            string serializedData = await _dataStorage.ReadAsync(SCORE_GAME_DATA);
-            return await _serializer.FromJsonAsync(serializedData);
+            bool isConnected = await _internetConnectionChecker.CheckInternetConnection();
+            if (isConnected)
+            {
+                ScoreGameData scoreGameDataCloud = await _cloudSaveLoadService.LoadAsync();
+                ScoreGameData scoreGameDataLocal = await _localSaveLoadService.LoadAsync();
+                if (scoreGameDataCloud.DateTime >= scoreGameDataLocal.DateTime)
+                {
+                    return scoreGameDataCloud;
+                }
+                
+                return scoreGameDataLocal;
+            }
+            
+            return await _localSaveLoadService.LoadAsync();
         }
 
         public async UniTask DeleteAsync()
         {
-            await _dataStorage.DeleteAsync(SCORE_GAME_DATA);
+            bool isConnected = await _internetConnectionChecker.CheckInternetConnection();
+            if (isConnected)
+            {
+                await _cloudSaveLoadService.DeleteAsync();
+            }
+            else
+            {
+                await _localSaveLoadService.DeleteAsync();
+            }
         }
     }
 }

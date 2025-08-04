@@ -14,8 +14,8 @@ namespace _RTSGameProject.Logic.Common.Services
     {
         private readonly WinLoseGame _winLoseGame;
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
-        private readonly ISaveService _saveService;
         private readonly IAnalyticService _analyticService;
+        private readonly ISaveService _saveService;
         
         private ScoreGameUI _scoreGameUI;
         private string _key;
@@ -24,13 +24,13 @@ namespace _RTSGameProject.Logic.Common.Services
         
         public ScoreGameController(WinLoseGame winLoseGame,
                                     ScoreGameUIProvider scoreGameUIProvider,
-                                    ISaveService saveService,
-                                    IAnalyticService analyticService)
+                                    IAnalyticService analyticService,
+                                    ISaveService saveService)
         {
             _winLoseGame = winLoseGame;
             _scoreGameUIProvider = scoreGameUIProvider;
-            _saveService = saveService;
             _analyticService = analyticService;
+            _saveService = saveService;
         }
 
         public async UniTask InitializeLoadDataAsync()

@@ -1,6 +1,7 @@
 ﻿using System;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.Model;
+using Unity.Services.Authentication;
 using UnityEngine;
 using UnityEngine.Advertisements;
 using Zenject;
@@ -11,18 +12,19 @@ namespace _RTSGameProject.Logic.Ads.UnityAds
     {
         private const string ANDROID_ADS_ID = "5880775";
         private const string IOS_ADS_ID = "5880774";
+        
+        private readonly ISaveService _saveService;
+        
         private string _gameId;
         private bool _isTesting = true;
         private UnityAdsInterstitial _interstitial;
         private UnityAdsRewarded _rewarded;
-        private ISaveService _saveService;
         private ScoreGameData _scoreGameData;
-
+        
         public bool RewardedFullyWatched { get; set; }
         public bool IsPaidForRemovingAds { get; set; }
 
-        public UnityAdsService(UnityAdsInterstitial unityAdsInterstitial, UnityAdsRewarded unityAdsRewarded,
-            ISaveService saveService)
+        public UnityAdsService(UnityAdsInterstitial unityAdsInterstitial, UnityAdsRewarded unityAdsRewarded, ISaveService saveService)
         {
             _interstitial = unityAdsInterstitial;
             _rewarded = unityAdsRewarded;

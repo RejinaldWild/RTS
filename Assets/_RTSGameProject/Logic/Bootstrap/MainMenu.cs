@@ -1,6 +1,4 @@
-using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.View;
-using _RTSGameProject.Logic.Common.Services;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -15,35 +13,19 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private Button _quitButton;
         [SerializeField] private Button _noAdsButton;
         [SerializeField] private ScoreMenuUI _scoreMenuUI;
-        
-        private MainMenuSceneChanger _mainMenuSceneChanger;
-        private ScoreMenuController _scoreMenuController;
-        private PurchaseService _purchaseService;
-        private ISaveService _saveService;
+
+        private MainMenuService _mainMenuService;
 
         [Inject]
-        public void Construct(ISaveService saveService,PurchaseService purchaseService, ScoreMenuController scoreMenuController, MainMenuSceneChanger mainMenuSceneChanger)
+        public void Construct(MainMenuService mainMenuService)
         {
-            _mainMenuSceneChanger = mainMenuSceneChanger;
-            _scoreMenuController = scoreMenuController;
-            _saveService = saveService;
-            _purchaseService = purchaseService;
+            _mainMenuService = mainMenuService;
         }
         
-        private async void Awake()
+        private async void Start()
         {
+            await _mainMenuService.Initialize();
             Subscribe();
-            if (_saveService.IsSaveExist())
-            {
-                await _scoreMenuController.LoadDataAsync();
-                _scoreMenuController.GetDataToShowScore(_scoreMenuController.ScoreGameData);
-            }
-            else
-            {
-                _scoreMenuController.InitializeScoreGameData();
-                _scoreMenuController.GetDataToShowScore(_scoreMenuController.ScoreGameData);
-            }
-            
         }
 
         private void OnDestroy()
@@ -53,45 +35,20 @@ namespace _RTSGameProject.Logic.Bootstrap
 
         private void Subscribe()
         {
-            _startButton.onClick.AddListener(OnStartButtonClick);
-            _loadButton.onClick.AddListener(OnLoadButtonClick);
-            _deleteSavesButton.onClick.AddListener(OnDeleteButtonClick);
-            _quitButton.onClick.AddListener(OnQuitButtonClick);
-            _noAdsButton.onClick.AddListener(OnNoAdsButtonClick);
-        }
-        
-        private void OnStartButtonClick()
-        {
-            _mainMenuSceneChanger.ToStartGame();
-        }
-
-        private void OnLoadButtonClick()
-        {
-            _mainMenuSceneChanger.ToLoadGame();
-        }
-        
-        private async void OnDeleteButtonClick()
-        {
-            await _scoreMenuController.DeleteSaves();
-        }
-
-        private void OnQuitButtonClick()
-        {
-            _mainMenuSceneChanger.ToQuitGame();
-        }
-        
-        private void OnNoAdsButtonClick()
-        {
-            _purchaseService.Payment();
+            _startButton.onClick.AddListener(_mainMenuService.OnStartButtonClick);
+            _loadButton.onClick.AddListener(_mainMenuService.OnLoadButtonClick);
+            _deleteSavesButton.onClick.AddListener(_mainMenuService.OnDeleteButtonClick);
+            _quitButton.onClick.AddListener(_mainMenuService.OnQuitButtonClick);
+            _noAdsButton.onClick.AddListener(_mainMenuService.OnNoAdsButtonClick);
         }
 
         private void Unsubscribe()
         {
-            _startButton.onClick.RemoveListener(OnStartButtonClick);
-            _loadButton.onClick.RemoveListener(OnLoadButtonClick);
-            _deleteSavesButton.onClick.RemoveListener(OnDeleteButtonClick);
-            _quitButton.onClick.RemoveListener(OnQuitButtonClick);
-            _noAdsButton.onClick.RemoveListener(OnNoAdsButtonClick);
+            _startButton.onClick.RemoveListener(_mainMenuService.OnStartButtonClick);
+            _loadButton.onClick.RemoveListener(_mainMenuService.OnLoadButtonClick);
+            _deleteSavesButton.onClick.RemoveListener(_mainMenuService.OnDeleteButtonClick);
+            _quitButton.onClick.RemoveListener(_mainMenuService.OnQuitButtonClick);
+            _noAdsButton.onClick.RemoveListener(_mainMenuService.OnNoAdsButtonClick);
         }
 
     }

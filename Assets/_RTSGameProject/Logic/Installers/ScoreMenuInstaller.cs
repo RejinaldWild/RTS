@@ -1,3 +1,4 @@
+using _RTSGameProject.Logic.Bootstrap;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.LoadingAssets.Local;
@@ -12,9 +13,17 @@ namespace _RTSGameProject.Logic.Installers
         
         public override void InstallBindings()
         {
+            BindMainMenuService();
             BindScoreMenu();
             BindMainMenuSceneChanger();
             BindEnvironmentProvider();
+        }
+
+        private void BindMainMenuService()
+        {
+            Container
+                .BindInterfacesAndSelfTo<MainMenuService>()
+                .AsSingle();
         }
 
         private void BindScoreMenu()
@@ -30,7 +39,7 @@ namespace _RTSGameProject.Logic.Installers
         private void BindMainMenuSceneChanger()
         {
             Container
-                .BindInterfacesAndSelfTo<MainMenuSceneChanger>()
+                .BindInterfacesAndSelfTo<SceneChanger>()
                 .AsSingle();
         }
 

@@ -9,15 +9,13 @@ namespace _RTSGameProject.Logic.Common.Score.View
         [SerializeField] private TextMeshProUGUI _scoreText;
 
         private ScoreGameData _scoreGameData;
-        
-        private void Start()
-        {
-            _scoreText.text = $"Last score - Win: {_scoreGameData.WinScore} - Lose: {_scoreGameData.LoseScore}";
-        }
 
         public void Show()
         {
-            _scoreText.text = $"Last score - Win: {_scoreGameData.WinScore} - Lose: {_scoreGameData.LoseScore}";
+            if (_scoreGameData != null)
+            {
+                _scoreText.text = $"Last score - Win: {_scoreGameData.WinScore} - Lose: {_scoreGameData.LoseScore}";
+            }
         }
 
         public void GiveScoreGameData(ScoreGameData scoreGameData)
