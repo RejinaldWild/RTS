@@ -1,3 +1,4 @@
+using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.View;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,15 +16,18 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private ScoreMenuUI _scoreMenuUI;
 
         private MainMenuService _mainMenuService;
+        private ISaveService _saveService;
 
         [Inject]
-        public void Construct(MainMenuService mainMenuService)
+        public void Construct(MainMenuService mainMenuService, ISaveService saveService)
         {
             _mainMenuService = mainMenuService;
+            _saveService = saveService;
         }
         
         private async void Start()
         {
+            await _saveService.Initialize();
             await _mainMenuService.Initialize();
             Subscribe();
         }

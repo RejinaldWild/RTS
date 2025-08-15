@@ -1,7 +1,7 @@
 using _RTSGameProject.Logic.Bootstrap;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
-using _RTSGameProject.Logic.LoadingAssets.Local;
+using _RTSGameProject.Logic.LoadingAssets.Remote;
 using UnityEngine;
 using Zenject;
 
@@ -16,7 +16,7 @@ namespace _RTSGameProject.Logic.Installers
             BindMainMenuService();
             BindScoreMenu();
             BindMainMenuSceneChanger();
-            BindEnvironmentProvider();
+            //BindEnvironmentProvider();
         }
 
         private void BindMainMenuService()

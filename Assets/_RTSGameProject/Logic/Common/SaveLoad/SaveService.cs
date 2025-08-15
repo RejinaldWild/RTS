@@ -7,28 +7,44 @@ namespace _RTSGameProject.Logic.Common.SaveLoad
 {
     public class SaveService : ISaveService
     {
+        [Inject(Id = "LocalSaveLoad")]
+        private ISaveService _localSaveLoadService;
+        [Inject(Id = "CloudSaveLoad")]
+        private ISaveService _cloudSaveLoadService;
+        
         private InternetConnectionChecker _internetConnectionChecker;
         
-        private readonly LocalSaveLoadService _localSaveLoadService;
-        private readonly CloudSaveLoadService _cloudSaveLoadService;
-        
-        public SaveService(InternetConnectionChecker internetConnectionChecker, LocalSaveLoadService localSaveLoadService, CloudSaveLoadService cloudSaveLoadService)
+        public SaveService(InternetConnectionChecker internetConnectionChecker)
         {
             _internetConnectionChecker = internetConnectionChecker;
-            _localSaveLoadService = localSaveLoadService;
-            _cloudSaveLoadService = cloudSaveLoadService;
         }
-        
+
+
+        public async UniTask Initialize()
+        {
+            var isConnected = await _internetConnectionChecker.CheckInternetConnection();
+            if (isConnected)
+            {
+                await _cloudSaveLoadService.Initialize();
+            }
+            else
+            {
+                await _localSaveLoadService.Initialize();
+            }
+        }
+
         public async UniTask<bool> IsSaveExist()
         {
             var isConnected = await _internetConnectionChecker.CheckInternetConnection();
             if (isConnected)
             {
-                return await _cloudSaveLoadService.IsSaveExist();
+                bool localResult = await _localSaveLoadService.IsSaveExist();
+                bool cloudResult = await _cloudSaveLoadService.IsSaveExist();
+                return cloudResult && localResult;
             }
             else
             {
-                return _localSaveLoadService.IsSaveExist();
+                return await _localSaveLoadService.IsSaveExist();
             }
         }
 
@@ -53,7 +69,7 @@ namespace _RTSGameProject.Logic.Common.SaveLoad
             {
                 ScoreGameData scoreGameDataCloud = await _cloudSaveLoadService.LoadAsync();
                 ScoreGameData scoreGameDataLocal = await _localSaveLoadService.LoadAsync();
-                if (scoreGameDataCloud.DateTime >= scoreGameDataLocal.DateTime)
+                if (scoreGameDataLocal!=null && scoreGameDataCloud!=null && scoreGameDataCloud.DateTime >= scoreGameDataLocal.DateTime)
                 {
                     return scoreGameDataCloud;
                 }
@@ -70,6 +86,7 @@ namespace _RTSGameProject.Logic.Common.SaveLoad
             if (isConnected)
             {
                 await _cloudSaveLoadService.DeleteAsync();
+                await _localSaveLoadService.DeleteAsync();
             }
             else
             {

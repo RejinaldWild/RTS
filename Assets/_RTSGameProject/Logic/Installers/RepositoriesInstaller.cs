@@ -10,7 +10,6 @@ namespace _RTSGameProject.Logic.Installers
     public class RepositoriesInstaller : MonoInstaller
     {
         [SerializeField] private GroundMarker _groundMarker;
-        [SerializeField] private WinLoseWindow _winLoseWindow;
         [SerializeField] private HouseBuilding[] _buildings;
         
         public override void InstallBindings()

@@ -10,30 +10,40 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: Core-Remote
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Core-Remote
   m_Data:
     m_SerializedData: []
-  m_GUID: bcd6d70a88a81fc4ea02cadb79b50f0b
+  m_GUID: 161fef97ecbc333498db0543775e04e3
   m_SerializeEntries:
-  - m_GUID: e1e7583f9808aa64e956e25e627f66d0
-    m_Address: ScoreGameUI
+  - m_GUID: 903ae1b3382946443a81e5605d62522e
+    m_Address: TerrainGroundLevel1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7ebdc193d506316458f75b80d4fa41e9
-    m_Address: WinLoseWindow
+  - m_GUID: ec8ece3f8e1632643979c5db5d3e0009
+    m_Address: TerrainGroundLevel2
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b2c4196a726330b429cf60a07c7adcee
-    m_Address: HealthBarSlider
+  - m_GUID: e992a3c6fdbfa314c81d808e7bc620f7
+    m_Address: Building
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3ec85de0e5834964ba6fc6ef8b92773c
-    m_Address: ProductionPanel
+  - m_GUID: 912f0a747b19f8d49b256156888406c7
+    m_Address: Unit
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c1009a5563e13ad44beeaa0255174580
+    m_Address: UnitExp
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a42549c64a14c874d8021344c002bb9f
+    m_Address: BuildingEnemy
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -41,5 +51,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: df325ba2abc28fc49b122909ce90219e, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 3e84881582293214d92cd74acc119517, type: 2}
-    - {fileID: 11400000, guid: 6edde82f26bff2441a58116ba952a237, type: 2}
+    - {fileID: 11400000, guid: 27bd4b99450bcb84e95326cad653327d, type: 2}
+    - {fileID: 11400000, guid: dc2445e369834af44b052867d0a4fcf0, type: 2}

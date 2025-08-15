@@ -33,9 +33,17 @@ namespace _RTSGameProject.Logic.Ads.UnityAds
 
         public async void Initialize()
         {
+            await _saveService.Initialize();
+            if (await _saveService.IsSaveExist())
+            {
+                _scoreGameData = await _saveService.LoadAsync();
+            }
+            
             IsPaidForRemovingAds = false; // for tests!
-            _scoreGameData = await _saveService.LoadAsync();
-            _scoreGameData.IsRemovedAds = IsPaidForRemovingAds; // for tests!
+            if (_scoreGameData != null)
+            {
+                _scoreGameData.IsRemovedAds = IsPaidForRemovingAds; // for tests!
+            }
             //IsPaidForRemovingAds = _scoreGameData.IsRemovedAds;
             _gameId = ANDROID_ADS_ID;
 

@@ -56,29 +56,18 @@ namespace _RTSGameProject.Logic.Bootstrap
             Container
                 .BindInterfacesAndSelfTo<JsonConverter>()
                 .AsSingle();
-            // Container
-            //     .Bind<ISaveService>()
-            //     .WithId("LocalSaveLoad")
-            //     .To<LocalSaveLoadService>()
-            //     .AsSingle();
-            // Container
-            //     .Bind<ISaveService>()
-            //     .WithId("CloudSaveLoad")
-            //     .To<CloudSaveLoadService>()
-            //     .AsSingle();
-            // Container
-            //     .Bind<IInitializable>()
-            //     .WithId("CloudSaveLoad")
-            //     .To<CloudSaveLoadService>()
-            //     .FromResolve();
             Container
-                .Bind<LocalSaveLoadService>()
+                .Bind<ISaveService>()
+                .WithId("LocalSaveLoad")
+                .To<LocalSaveLoadService>()
                 .AsSingle();
             Container
-                .BindInterfacesAndSelfTo<CloudSaveLoadService>()
+                .Bind<ISaveService>()
+                .WithId("CloudSaveLoad")
+                .To<CloudSaveLoadService>()
                 .AsSingle();
             Container
-                .BindInterfacesAndSelfTo<SaveService>()
+                .Bind<ISaveService>().To<SaveService>()
                 .AsSingle();
         }
 

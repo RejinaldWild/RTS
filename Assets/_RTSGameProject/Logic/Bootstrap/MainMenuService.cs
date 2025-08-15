@@ -22,8 +22,9 @@ namespace _RTSGameProject.Logic.Bootstrap
             _purchaseService = purchaseService;
         }
 
-        public async Task Initialize()
+        public async UniTask Initialize()
         {
+            //await _saveService.Initialize();
             if (await _saveService.IsSaveExist())
             {
                 await _scoreMenuController.LoadDataAsync();

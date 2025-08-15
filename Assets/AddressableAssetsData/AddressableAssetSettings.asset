@@ -15,9 +15,9 @@ MonoBehaviour:
   m_DefaultGroup: bcd6d70a88a81fc4ea02cadb79b50f0b
   m_currentHash:
     serializedVersion: 2
-    Hash: e62e031cda0ffce2c0f4f7dc2478b7e8
+    Hash: 4b776a65594fd50f77523434d54de9bc
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
     m_Id: 
   m_RemoteCatalogLoadPath:
     m_Id: 
-  m_ContentStateBuildPathProfileVariableName: 
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
   m_BuildAddressablesWithPlayerBuild: 0
@@ -47,6 +47,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2669e06f5d9a52a4d9118f0929dafbaf, type: 2}
   - {fileID: 11400000, guid: fda397492e14c924eb6480c8ac4ee601, type: 2}
   - {fileID: 11400000, guid: d6677850e1bf71f4b96600802f42c0c5, type: 2}
+  - {fileID: 11400000, guid: 41af4b9263a34e244b1e9eaddfc702ff, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -68,6 +69,20 @@ MonoBehaviour:
         m_Value: ServerData/[BuildTarget]
       - m_Id: f1f836beb0e296a47bcb31d12f7d2146
         m_Value: http://[PrivateIpAddress]:[HostingServicePort]
+    - m_InheritedParent: 
+      m_Id: c40b75e0870d3e845a885a5fa8aee60a
+      m_ProfileName: RemoteRTSProfile
+      m_Values:
+      - m_Id: fca9b70c072775d4cb88fe2e31968e34
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: 0dc1c377839121f4db0b40fd3b3a0d0c
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: b17f0dfd36c8deb4ab2e957c5000ca9e
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 1cd196aacd3bd8c4eb192669691a9416
+        m_Value: ServerData/[BuildTarget]
+      - m_Id: f1f836beb0e296a47bcb31d12f7d2146
+        m_Value: https://storage.yandexcloud.net/rts-bucket/[BuildTarget]
     m_ProfileEntryNames:
     - m_Id: fca9b70c072775d4cb88fe2e31968e34
       m_Name: BuildTarget
@@ -101,7 +116,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8075daf2d65daad4dbfb58b250c589e3, type: 2}
   - {fileID: 11400000, guid: 381cb46e7ed311847a7a4fb112398b68, type: 2}
   - {fileID: 11400000, guid: 39795d1ac2b0e454ea9fafaa3b330065, type: 2}
-  m_ActiveProfileId: f926c83e221abc34e889a4098785dc2a
+  m_ActiveProfileId: c40b75e0870d3e845a885a5fa8aee60a
   m_HostingServicesManager:
     m_HostingServiceInfos: []
     m_Settings: {fileID: 11400000}

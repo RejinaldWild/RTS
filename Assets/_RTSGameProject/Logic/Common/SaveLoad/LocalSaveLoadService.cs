@@ -1,10 +1,11 @@
 using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Services;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.SaveLoad
 {
-    public class LocalSaveLoadService
+    public class LocalSaveLoadService: ISaveService
     {
         private const string SCORE_GAME_DATA = "ScoreGameData";
         
@@ -17,10 +18,17 @@ namespace _RTSGameProject.Logic.Common.SaveLoad
             _dataStorage = dataStorage;
         }
 
-        public bool IsSaveExist()
+        public async UniTask Initialize()
+        {
+            Debug.Log("LocalSaveLoadService initialized");
+            await UniTask.CompletedTask;
+        }
+        
+        public UniTask<bool> IsSaveExist()
         {
             string scoreGameData = SCORE_GAME_DATA;
-            return _dataStorage.Exist(scoreGameData);
+            bool exist = _dataStorage.Exist(scoreGameData);
+            return new UniTask<bool>(exist);
         }
         
         public async UniTask SaveAsync(ScoreGameData data)

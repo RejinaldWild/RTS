@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using _RTSGameProject.Logic.Common.Score.Model;
 using _RTSGameProject.Logic.Common.Services;
 using Cysharp.Threading.Tasks;
@@ -9,12 +8,11 @@ using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
 using Unity.Services.CloudSave.Models;
 using UnityEngine;
-using Zenject;
 using DeleteOptions = Unity.Services.CloudSave.Models.Data.Player.DeleteOptions;
 
 namespace _RTSGameProject.Logic.Common.SaveLoad
 {
-    public class CloudSaveLoadService : IInitializable
+    public class CloudSaveLoadService : ISaveService
     {
         private const string SCORE_GAME_DATA = "ScoreGameData";
         
@@ -26,30 +24,38 @@ namespace _RTSGameProject.Logic.Common.SaveLoad
             _serializer = serializer;
         }
         
-        public async void Initialize()
+        public async UniTask Initialize()
         {
             await SetupAndSign();
         }
 
-        private async Task SetupAndSign()
+        private async UniTask SetupAndSign()
         {
             try
             {
                 await UnityServices.InitializeAsync();
-                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                if (AuthenticationService.Instance.IsSignedIn == false &&
+                    AuthenticationService.Instance.IsAuthorized == false)
+                {
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                }
             }
             catch (AuthenticationException ex)
             {
-                Debug.Log(ex);
+                Debug.LogWarning(ex);
             }
             catch (Exception ex)
             {
-                Debug.Log(ex);
+                Debug.LogError(ex);
             }
         }
-        
+
         public async UniTask<bool> IsSaveExist()
         {
+            if (!AuthenticationService.Instance.IsSignedIn)
+            {
+                return false;
+            }
             var allKeys = await CloudSaveService.Instance.Data.Player.ListAllKeysAsync();
                 foreach (var itemKey in allKeys)
                 {

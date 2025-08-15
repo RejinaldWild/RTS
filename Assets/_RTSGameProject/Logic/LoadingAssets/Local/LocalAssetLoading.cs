@@ -9,10 +9,10 @@ namespace _RTSGameProject.Logic.LoadingAssets.Local
     {
         private GameObject _cachedObject;
 
-        public async UniTask<T> LoadLocalAsset<T>(string assetId, Canvas canvas)
+        protected async UniTask<T> LoadLocalAsset<T>(string assetId, Canvas canvas)
         {
             var handle = Addressables.InstantiateAsync(assetId, canvas.transform);
-            _cachedObject = await handle.Task;
+            _cachedObject = await handle.ToUniTask();
             
             if (_cachedObject.TryGetComponent(out T assetObject)==false)
             {
@@ -22,11 +22,12 @@ namespace _RTSGameProject.Logic.LoadingAssets.Local
             return assetObject;
         }
         
-        public void UnloadLocalAsset()
+        protected void UnloadLocalAsset()
         {
-            if(_cachedObject!=null) 
+            if(_cachedObject==null) 
                 return;
             
+            Addressables.ReleaseInstance(_cachedObject);
             _cachedObject = null;
         }
     }

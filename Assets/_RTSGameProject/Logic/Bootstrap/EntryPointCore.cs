@@ -6,44 +6,78 @@ using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.LoadingAssets.Local;
+using _RTSGameProject.Logic.LoadingAssets.Remote;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Bootstrap
 {
     public class EntryPointCore : IInitializable, ITickable, IDisposable
     {
-        private readonly HouseBuilding[] _buildings;
         private readonly ActorsRepository _actorsRepository;
         private readonly EnvironmentProvider _environmentProvider;
         private readonly ScoreGameUIProvider _scoreGameUIProvider;
         private readonly ProductionPanelProvider _productionPanelProvider;
+        private readonly BuildingProvider _buildingProvider;
+        private readonly BuildingEnemyProvider _buildingEnemyProvider; 
+        private readonly UnitExpProvider _unitExpProvider;
         private readonly ScoreGameController _scoreGameController;
         private readonly ISaveService _saveService;
+        private readonly UnitsFactory _unitsFactory;
+        private readonly BuildingsRepository _buildingsRepository;
         
+        private HouseBuilding[] _buildings;
+        private HouseBuilding[] _buildingsEnemy;
         private ScoreGameUI _scoreGameUI;
 
         public EntryPointCore(ActorsRepository actorsRepository,
-                            HouseBuilding[] buildings,
                             ScoreGameUIProvider scoreGameUIProvider,
                             ScoreGameController scoreGameController,
                             ProductionPanelProvider productionPanelProvider,
                             EnvironmentProvider environmentProvider,
+                            BuildingProvider buildingProvider,
+                            BuildingEnemyProvider buildingEnemyProvider,
+                            BuildingsRepository buildingsRepository,
+                            UnitExpProvider unitExpProvider,
+                            UnitsFactory unitsFactory,
                             ISaveService saveService)
         {
             _actorsRepository = actorsRepository;
-            _buildings = buildings;
             _scoreGameUIProvider = scoreGameUIProvider;
             _scoreGameController = scoreGameController;
             _productionPanelProvider = productionPanelProvider;
             _environmentProvider = environmentProvider;
+            _buildingProvider = buildingProvider;
+            _buildingEnemyProvider = buildingEnemyProvider;
+            _buildingsRepository = buildingsRepository;
+            _unitExpProvider = unitExpProvider;
             _saveService = saveService;
+            _unitsFactory = unitsFactory;
         }
 
         public async void Initialize()
         {
+            await _saveService.Initialize();
             await _environmentProvider.Load();
             await _productionPanelProvider.Load();
-            InitializeAndSubscribeBuildings();
+            await _unitsFactory.Initialize();
+            
+            _buildings = await _buildingProvider.Load();
+            _buildingsEnemy = await _buildingEnemyProvider.Load();
+
+            foreach (HouseBuilding building in _buildings)
+            {
+                building.Initialize();
+                _buildingsRepository.Register(building);
+                building.Subscribe();
+            }
+
+            foreach (HouseBuilding building in _buildingsEnemy)
+            {
+                building.Initialize();
+                _buildingsRepository.Register(building);
+                building.Subscribe();
+            }
+            
             if (await _saveService.IsSaveExist())
             {
                 await _scoreGameController.InitializeLoadDataAsync();
@@ -69,22 +103,23 @@ namespace _RTSGameProject.Logic.Bootstrap
             _productionPanelProvider.Unload();
             _scoreGameUIProvider.Unload();
             _environmentProvider.Unload();
+            _buildingProvider.Unload();
+            _buildingEnemyProvider.Unload();
+            _unitExpProvider.Unload();
             UnsubscribeBuildings();
-        }
-        
-        private void InitializeAndSubscribeBuildings()
-        {
-            foreach (HouseBuilding building in _buildings)
-            {
-                building.Initialize();
-                building.Subscribe();
-            }
         }
         
         private void UnsubscribeBuildings()
         {
             foreach (HouseBuilding building in _buildings)
             {
+                _buildingsRepository.Unregister(building);
+                building.Unsubscribe();
+            }
+
+            foreach (HouseBuilding building in _buildingsEnemy)
+            {
+                _buildingsRepository.Unregister(building);
                 building.Unsubscribe();
             }
         }
