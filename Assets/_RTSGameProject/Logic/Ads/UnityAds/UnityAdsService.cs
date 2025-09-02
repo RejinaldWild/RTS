@@ -8,7 +8,7 @@ using Zenject;
 
 namespace _RTSGameProject.Logic.Ads.UnityAds
 {
-    public class UnityAdsService : IAdsService, IUnityAdsInitializationListener, IInitializable
+    public class UnityAdsService : IAdsService, IUnityAdsInitializationListener, IInitializable, IDisposable
     {
         private const string ANDROID_ADS_ID = "5880775";
         private const string IOS_ADS_ID = "5880774";
@@ -101,6 +101,11 @@ namespace _RTSGameProject.Logic.Ads.UnityAds
         private void OnFullyWatched()
         {
             RewardedFullyWatched = true;
+        }
+
+        public void Dispose()
+        {
+            _rewarded.OnFullyWatch -= OnFullyWatched;
         }
     }
 }

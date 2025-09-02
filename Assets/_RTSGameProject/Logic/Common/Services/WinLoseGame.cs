@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using _RTSGameProject.Logic.Ads;
 using _RTSGameProject.Logic.Analytic;
 using _RTSGameProject.Logic.Common.Config;
+using _RTSGameProject.Logic.Common.Services.SoundFX;
 using _RTSGameProject.Logic.Common.View;
 using _RTSGameProject.Logic.LoadingAssets.Local;
 using UnityEngine.SceneManagement;
 using Zenject;
+using DG.Tweening;
 
 namespace _RTSGameProject.Logic.Common.Services
 {
@@ -28,6 +30,7 @@ namespace _RTSGameProject.Logic.Common.Services
         private readonly IAnalyticService _analyticService;
         private readonly IAdsService _adsService;
         private readonly IRemoteConfigProvider _remoteConfigProvider;
+        private readonly IAudio _audioService;
         
         public WinLoseWindow WinLoseWindowProp { get; private set; }
     
@@ -37,7 +40,8 @@ namespace _RTSGameProject.Logic.Common.Services
                             ISceneChanger sceneChanger,
                             IRemoteConfigProvider remoteConfigProvider,
                             IAnalyticService analyticService,
-                            IAdsService adsService)
+                            IAdsService adsService,
+                            IAudio audioService)
         {
             _unitsRepository = unitsRepository;
             _sceneChanger = sceneChanger;
@@ -46,12 +50,13 @@ namespace _RTSGameProject.Logic.Common.Services
             _remoteConfigProvider = remoteConfigProvider;
             _pauseGame = pauseGame;
             _winLoseWindowProvider = winLoseWindowProvider;
+            _audioService = audioService;
         }
 
         public async void Initialize()
         {
             WinLoseWindowProp = await _winLoseWindowProvider.Load();
-            var winLoseActions = new WinLoseActions(this);
+            var winLoseActions = new WinLoseActions(this, _audioService);
             WinLoseWindowProp.Construct(winLoseActions);
             
             foreach (KeyValuePair<string,LevelConfig> level in _remoteConfigProvider.WinLoseConfig.Levels)
@@ -89,6 +94,7 @@ namespace _RTSGameProject.Logic.Common.Services
                 WinLoseWindowProp.gameObject.SetActive(true);
                 WinLoseWindowProp.WinPanel.SetActive(true);
                 WinLoseWindowProp.LosePanel.SetActive(false);
+                WinLoseWindowProp.transform.DOLocalMoveY(0f, 1f);
                 GameOver();
             }
         }
@@ -102,6 +108,7 @@ namespace _RTSGameProject.Logic.Common.Services
                 WinLoseWindowProp.gameObject.SetActive(true);
                 WinLoseWindowProp.LosePanel.SetActive(true);
                 WinLoseWindowProp.WinPanel.SetActive(false);
+                WinLoseWindowProp.transform.DOLocalMoveY(0f, 1f);
                 WinLoseWindowProp.ContinueButton.gameObject.SetActive(false);
                 OnLose?.Invoke();
                 _pauseGame.Pause();
@@ -132,6 +139,7 @@ namespace _RTSGameProject.Logic.Common.Services
             OnRemoveLose?.Invoke();
             WinLoseWindowProp.gameObject.SetActive(false);
             WinLoseWindowProp.LosePanel.SetActive(false);
+            //WinLoseWindowProp.LosePanel.material.SetColor("color", Color.clear);
             _pauseGame.UnPause();
             _quantityOfUnitsCasualties = 0;
             _loseCondition = 0;

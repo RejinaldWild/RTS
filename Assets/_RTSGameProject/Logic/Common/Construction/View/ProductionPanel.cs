@@ -23,14 +23,14 @@ namespace _RTSGameProject.Logic.Common.Construction.View
         private void Start()
         {
             ToggleUI(false);
-            _buttonExpUnit.onClick.AddListener(SpawnUnitClick);
-            _buttonUnit.onClick.AddListener(HandleOnClick);
+            _buttonExpUnit.onClick.AddListener(SpawnUnitExpClick);
+            _buttonUnit.onClick.AddListener(SpawnUnitClick);
         }
 
         private void OnDestroy()
         {
-            _buttonExpUnit.onClick.RemoveListener(SpawnUnitClick);
-            _buttonUnit.onClick.RemoveListener(HandleOnClick);
+            _buttonExpUnit.onClick.RemoveListener(SpawnUnitExpClick);
+            _buttonUnit.onClick.RemoveListener(SpawnUnitClick);
         }
         
         public void ToggleUI(bool isShow)
@@ -40,14 +40,16 @@ namespace _RTSGameProject.Logic.Common.Construction.View
             _canvasGroup.blocksRaycasts = isShow;
         }
         
-        private void HandleOnClick()
-        {
-            OnClickUnit?.Invoke();
-        }
-        
         private void SpawnUnitClick()
         {
+            OnClickUnit?.Invoke();
+            //PlayClickSound?.Invoke();
+        }
+        
+        private void SpawnUnitExpClick()
+        {
             OnClickExpUnit?.Invoke();
+            //PlayClickSound?.Invoke();
         }
     }
 }

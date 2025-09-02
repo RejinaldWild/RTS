@@ -74,6 +74,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a18ad8db1c046ee47a9a9cf302617ef3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _androidAdsId: 5878501
-  _iosAdsId: 5878500
-  _isTestingAds: 1
+  _audioService: {fileID: 4186087814840167318, guid: b1efc0981e125024b98418f961984ddb,
+    type: 3}
+  _vfxService: {fileID: 7378829024329149380, guid: 38f695907980d4c49a626581f5c56b0f,
+    type: 3}

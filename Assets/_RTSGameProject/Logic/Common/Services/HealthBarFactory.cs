@@ -44,10 +44,15 @@ namespace _RTSGameProject.Logic.Common.Services
             
             void Unregister()
             {
+                if (instance != null)
+                {
+                    _healthBarRepository.Unregister(instance);
+                    Destroy(instance.gameObject);
+                    instance = null;
+                }
                 _healthBarSliderProvider.Unload();
-                Destroy(instance.gameObject);
-                _healthBarRepository.Unregister(instance);
                 disposable.Dispose();
+                disposable = null;
             }
         }
 

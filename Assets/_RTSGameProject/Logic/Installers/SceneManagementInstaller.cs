@@ -1,11 +1,15 @@
-﻿using _RTSGameProject.Logic.Common.Services;
+﻿using _RTSGameProject.Logic.Common.Config;
+using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.LoadingAssets.Remote;
+using UnityEngine;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Installers
 {
     public class SceneManagementInstaller : MonoInstaller
     {
+        [SerializeField] private EnemyBuildingsPosConfig _enemyBuildingsPos;
+        
         public override void InstallBindings()
         {
             BindMainMenuSceneChanger();
@@ -47,6 +51,10 @@ namespace _RTSGameProject.Logic.Installers
         {
             Container
                 .Bind<BuildingProvider>()
+                .AsSingle();
+            Container
+                .Bind<EnemyBuildingsPosConfig>()
+                .FromInstance(_enemyBuildingsPos)
                 .AsSingle();
             Container
                 .Bind<BuildingEnemyProvider>()

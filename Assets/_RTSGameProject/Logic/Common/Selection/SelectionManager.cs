@@ -12,6 +12,7 @@ namespace _RTSGameProject.Logic.Common.Selection
         private LayerMask _clickable;
         private LayerMask _ground;
         private GroundMarker _groundMarker;
+        private Vector3 _groundMarkerGap = new Vector3(0f, 0.1f, 0f);
         
         public List<Unit> SelectedUnits { get; private set; }
         public List<HouseBuilding> SelectedBuildings { get; private set; }
@@ -34,7 +35,7 @@ namespace _RTSGameProject.Logic.Common.Selection
         
         public void ShowGroundMarker(Vector3 point)
         {
-            _groundMarker.transform.position = point + new Vector3(0, 0.1f, 0);
+            _groundMarker.transform.position = point + _groundMarkerGap;
             _groundMarker.gameObject.SetActive(false);
             _groundMarker.gameObject.SetActive(true);
         }

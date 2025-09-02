@@ -1,5 +1,6 @@
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.View;
+using _RTSGameProject.Logic.Common.Services.SoundFX;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -16,24 +17,25 @@ namespace _RTSGameProject.Logic.Bootstrap
         [SerializeField] private ScoreMenuUI _scoreMenuUI;
 
         private MainMenuService _mainMenuService;
-        private ISaveService _saveService;
+        private IAudio _audioService;
 
         [Inject]
-        public void Construct(MainMenuService mainMenuService, ISaveService saveService)
+        public void Construct(MainMenuService mainMenuService, IAudio audioService)
         {
             _mainMenuService = mainMenuService;
-            _saveService = saveService;
+            _audioService = audioService;
         }
         
         private async void Start()
         {
-            await _saveService.Initialize();
             await _mainMenuService.Initialize();
+            _audioService.StartMusicPlaylist();
             Subscribe();
         }
 
         private void OnDestroy()
         {
+            _audioService.StopMusicFX();
             Unsubscribe();
         }
 

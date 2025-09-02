@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.Construction.Model;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -11,20 +12,16 @@ namespace _RTSGameProject.Logic.LoadingAssets.Remote
     {
         private int _sceneIndex;
         private DiContainer _container;
+        private Vector3[] _buildingScenePositions;
         
-        private readonly Vector3[] BuildingPositionScene1 = 
-        {
-            new (35.55f,0.5f,21.51f)
-        };
-        
-        private readonly Vector3[] BuildingPositionScene2 = 
-        {
-            new (35.55f,0.5f,21.51f)
-        };
-
         public BuildingEnemyProvider(DiContainer container)
         {
             _container = container;
+        }
+
+        public void Initialize(EnemyBuildingsPosConfig enemyBuildingsPosConfig)
+        {
+            _buildingScenePositions = enemyBuildingsPosConfig.BuildingPositionScene;
         }
         
         public async UniTask<HouseBuilding[]> Load()
@@ -33,9 +30,9 @@ namespace _RTSGameProject.Logic.LoadingAssets.Remote
             _sceneIndex = SceneManager.GetActiveScene().buildIndex;
             if (_sceneIndex == 1)
             {
-                for(int i = 0; i < BuildingPositionScene1.Length; i++)
+                for(int i = 0; i < _buildingScenePositions.Length; i++)
                 {
-                    HouseBuilding building = await InstantiateLoadedAssetAsync<HouseBuilding>("BuildingEnemy" , BuildingPositionScene1[i]);
+                    HouseBuilding building = await InstantiateLoadedAssetAsync<HouseBuilding>("BuildingEnemy" , _buildingScenePositions[i]);
                     if (building.name == "BuildingEnemy(Clone)")
                     {
                         _container.InjectGameObject(building.gameObject);
@@ -46,9 +43,9 @@ namespace _RTSGameProject.Logic.LoadingAssets.Remote
 
             if (_sceneIndex == 2)
             {
-                for(int i = 0; i < BuildingPositionScene2.Length; i++)
+                for(int i = 0; i < _buildingScenePositions.Length; i++)
                 {
-                    HouseBuilding building = await InstantiateLoadedAssetAsync<HouseBuilding>("BuildingEnemy" , BuildingPositionScene2[i]);
+                    HouseBuilding building = await InstantiateLoadedAssetAsync<HouseBuilding>("BuildingEnemy" , _buildingScenePositions[i]);
                     if (building.name == "BuildingEnemy(Clone)")
                     {
                         _container.InjectGameObject(building.gameObject);

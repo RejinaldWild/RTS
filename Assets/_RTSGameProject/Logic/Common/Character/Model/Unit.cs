@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.Common.Services.SoundFX;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
@@ -36,13 +37,20 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         private UnitsRepository _unitsRepository;
         private CancellationTokenSource _cancellationTokenSource;
         private ParamConfig _paramConfig;
+        private IAudio _audioService;
+        private IVFX _vfxService;
         
-        public void Construct(int teamId, UnitsRepository unitsRepository, ParamConfig paramConfig)
+        public void Construct(int teamId,
+                            UnitsRepository unitsRepository, 
+                            ParamConfig paramConfig, 
+                            IAudio audioService,
+                            IVFX vfxService)
         {
             Team = teamId;
             Health = GetComponent<Health>();
             _unitsRepository = unitsRepository;
             _paramConfig = paramConfig;
+            _audioService = audioService;
             Id = Guid.NewGuid().ToString();
             Position = transform.position;
             Health = GetComponent<Health>();
@@ -54,6 +62,7 @@ namespace _RTSGameProject.Logic.Common.Character.Model
             _unitFindEnemy = new UnitFindEnemy(_paramConfig);
             _patrollMovement = new PatrollMovement();
             _cancellationTokenSource = new CancellationTokenSource();
+            _vfxService = vfxService;
         }
     
         public void OnPaused()
@@ -95,12 +104,19 @@ namespace _RTSGameProject.Logic.Common.Character.Model
         {
             AttackCommandAsync().Forget();
             Debug.Log("Unit is attacking!");
+            _audioService.PlayRandomSoundFX(SoundType.HIT);
+            _vfxService.ShowEffect(VFXType.HIT, _enemy.transform.position);
             EndCommandAsync().Forget();
         }
 
         public void TakeDamage(float damage)
         {
             Health.TakeDamage(damage);
+            if (!IsAlive.Value)
+            {
+                _audioService.PlayRandomSoundFX(SoundType.DEATH);
+                _vfxService.ShowEffect(VFXType.DEATH, transform.position);
+            }
         }
         
         public void AssignEnemy(Unit enemy)

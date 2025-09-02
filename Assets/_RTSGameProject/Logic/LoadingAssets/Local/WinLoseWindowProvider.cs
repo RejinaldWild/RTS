@@ -17,7 +17,7 @@ namespace _RTSGameProject.Logic.LoadingAssets.Local
         
         public async UniTask<WinLoseWindow> Load()
         {
-            return await LoadLocalAsset<WinLoseWindow>("WinLoseWindow", _canvas);;
+            return await LoadLocalAsset<WinLoseWindow>("WinLoseWindow", _canvas);
         }
 
         public void Unload()

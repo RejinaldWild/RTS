@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
 using _RTSGameProject.Logic.Common.AI;
+using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.Construction.Model;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Score.View;
 using _RTSGameProject.Logic.Common.Services;
+using _RTSGameProject.Logic.Common.Services.SoundFX;
 using _RTSGameProject.Logic.LoadingAssets.Local;
 using _RTSGameProject.Logic.LoadingAssets.Remote;
 using Zenject;
@@ -24,7 +26,10 @@ namespace _RTSGameProject.Logic.Bootstrap
         private readonly ISaveService _saveService;
         private readonly UnitsFactory _unitsFactory;
         private readonly BuildingsRepository _buildingsRepository;
+        private readonly IAudio _audioService;
+        private readonly IVFX _vfxService;
         
+        private EnemyBuildingsPosConfig _enemyBuildingsPosConfig;
         private HouseBuilding[] _buildings;
         private HouseBuilding[] _buildingsEnemy;
         private ScoreGameUI _scoreGameUI;
@@ -39,7 +44,10 @@ namespace _RTSGameProject.Logic.Bootstrap
                             BuildingsRepository buildingsRepository,
                             UnitExpProvider unitExpProvider,
                             UnitsFactory unitsFactory,
-                            ISaveService saveService)
+                            EnemyBuildingsPosConfig enemyBuildingsPosConfig,
+                            ISaveService saveService,
+                            IAudio audioService,
+                            IVFX vfxService)
         {
             _actorsRepository = actorsRepository;
             _scoreGameUIProvider = scoreGameUIProvider;
@@ -52,6 +60,9 @@ namespace _RTSGameProject.Logic.Bootstrap
             _unitExpProvider = unitExpProvider;
             _saveService = saveService;
             _unitsFactory = unitsFactory;
+            _audioService = audioService;
+            _vfxService = vfxService;
+            _enemyBuildingsPosConfig = enemyBuildingsPosConfig;
         }
 
         public async void Initialize()
@@ -62,16 +73,18 @@ namespace _RTSGameProject.Logic.Bootstrap
             await _unitsFactory.Initialize();
             
             _buildings = await _buildingProvider.Load();
+            
+            _buildingEnemyProvider.Initialize(_enemyBuildingsPosConfig);
             _buildingsEnemy = await _buildingEnemyProvider.Load();
 
-            foreach (HouseBuilding building in _buildings)
+            foreach (HouseBuilding building in _buildingsEnemy)
             {
                 building.Initialize();
                 _buildingsRepository.Register(building);
                 building.Subscribe();
             }
 
-            foreach (HouseBuilding building in _buildingsEnemy)
+            foreach (HouseBuilding building in _buildings)
             {
                 building.Initialize();
                 _buildingsRepository.Register(building);
@@ -88,6 +101,8 @@ namespace _RTSGameProject.Logic.Bootstrap
                 _scoreGameController.InitializeScoreGameData();
                 _scoreGameController.GetDataToShowScore(_scoreGameController.ScoreGameData);
             }
+
+            _audioService.StartMusicPlaylist();
         }
 
         public void Tick()
@@ -107,6 +122,7 @@ namespace _RTSGameProject.Logic.Bootstrap
             _buildingEnemyProvider.Unload();
             _unitExpProvider.Unload();
             UnsubscribeBuildings();
+            _audioService.StopMusicFX();
         }
         
         private void UnsubscribeBuildings()

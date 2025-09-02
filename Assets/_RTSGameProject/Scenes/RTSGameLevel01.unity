@@ -608,6 +608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c19232e602b346b8b77155d0fb990300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyBuildingsPos: {fileID: 11400000, guid: cc4d003d4a137d44db013f8d575fab62, type: 2}
 --- !u!1 &499712779
 GameObject:
   m_ObjectHideFlags: 0
@@ -1355,8 +1356,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _groundMarker: {fileID: 499712780}
-  _winLoseWindow: {fileID: 1190298795086261544, guid: 7ebdc193d506316458f75b80d4fa41e9,
-    type: 3}
   _buildings:
   - {fileID: -8750833695692511682, guid: e992a3c6fdbfa314c81d808e7bc620f7, type: 3}
   - {fileID: -8750833695692511682, guid: e992a3c6fdbfa314c81d808e7bc620f7, type: 3}
@@ -1732,6 +1731,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8000358aeef74e48a93e1dd1480d2e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _vfxService: {fileID: 7378829024329149380, guid: 38f695907980d4c49a626581f5c56b0f,
+    type: 3}
 --- !u!1 &2025841982
 GameObject:
   m_ObjectHideFlags: 0

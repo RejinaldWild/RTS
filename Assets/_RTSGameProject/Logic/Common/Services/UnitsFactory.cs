@@ -2,6 +2,7 @@
 using static UnityEngine.Object;
 using _RTSGameProject.Logic.Common.Character.Model;
 using _RTSGameProject.Logic.Common.Config;
+using _RTSGameProject.Logic.Common.Services.SoundFX;
 using _RTSGameProject.Logic.LoadingAssets.Remote;
 using Cysharp.Threading.Tasks;
 using UniRx;
@@ -25,13 +26,17 @@ namespace _RTSGameProject.Logic.Common.Services
 
         private Unit _unit;
         private Unit _unitExp;
+        private IAudio _audioService;
+        private IVFX _vfxService;
         
         public UnitsFactory(UnitsRepository unitsRepository, 
             HealthBarFactory healthBarFactory, 
             PauseGame pauseGame, 
             UnitProvider unitProvider,
             UnitExpProvider unitExpProvider,
-            IRemoteConfigProvider remoteConfigProvider)
+            IRemoteConfigProvider remoteConfigProvider,
+            IAudio audioService,
+            IVFX vfxService)
         {
             _unitsRepository = unitsRepository;
             _healthBarFactory = healthBarFactory;
@@ -39,12 +44,19 @@ namespace _RTSGameProject.Logic.Common.Services
             _remoteConfigProvider = remoteConfigProvider;
             _unitProvider = unitProvider;
             _unitExpProvider = unitExpProvider;
+            _audioService = audioService;
+            _vfxService = vfxService;
         }
 
         public async UniTask Initialize()
         {
-            _unit = await _unitProvider.LoadRemoteAsset<Unit>(UNIT);
-            _unitExp = await _unitExpProvider.LoadRemoteAsset<Unit>(UNIT_EXP);
+            var unitTask = _unitProvider.LoadRemoteAsset<Unit>(UNIT);
+            var unitExpTask = _unitExpProvider.LoadRemoteAsset<Unit>(UNIT_EXP);
+
+            var results = await UniTask.WhenAll(unitTask, unitExpTask);
+
+            _unit = results.Item1;
+            _unitExp = results.Item2;
         }
         
         internal async UniTask<Unit> Create(int teamId, Vector3 position)
@@ -53,7 +65,7 @@ namespace _RTSGameProject.Logic.Common.Services
             if (_remoteConfigProvider.UnitConfig.ParamConfigs.ContainsKey(UNIT))
             {
                 ParamConfig config =_remoteConfigProvider.UnitConfig.ParamConfigs[UNIT];
-                instance.Construct(teamId, _unitsRepository, config);
+                instance.Construct(teamId, _unitsRepository, config, _audioService, _vfxService);
                 await _healthBarFactory.Create(instance, instance.GetComponent<Health>());
                 _pauseGame.OnPause += instance.OnPaused;
                 _pauseGame.OnUnPause += instance.OnUnPaused;
@@ -86,10 +98,10 @@ namespace _RTSGameProject.Logic.Common.Services
         internal async UniTask<Unit> CreateExpUnit(int teamId, Vector3 position)
         {
             Unit instance = Instantiate<Unit>(_unitExp, position, Quaternion.identity);
-            if (_remoteConfigProvider.UnitConfig.ParamConfigs.ContainsKey(UNIT_EXP)) //UNIT ?
+            if (_remoteConfigProvider.UnitConfig.ParamConfigs.ContainsKey(UNIT_EXP))
             {
                 ParamConfig config =_remoteConfigProvider.UnitConfig.ParamConfigs[UNIT_EXP];
-                instance.Construct(teamId, _unitsRepository,config);
+                instance.Construct(teamId, _unitsRepository,config, _audioService, _vfxService);
                 await _healthBarFactory.Create(instance, instance.GetComponent<Health>());
                 _pauseGame.OnPause += instance.OnPaused;
                 _pauseGame.OnUnPause += instance.OnUnPaused;
