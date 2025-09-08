@@ -36,16 +36,6 @@ namespace _RTSGameProject.Logic.Common.CameraLogic
         private bool _isCursorSet = false;
         private CursorArrow _currentCursor = CursorArrow.DEFAULT;
     
-        private enum CursorArrow
-        {
-            UP,
-            DOWN,
-            LEFT,
-            RIGHT,
-            ATTACK,
-            DEFAULT
-        }
-
         public void Construct(LayerMask clickable)
         {
             _clickable = clickable;

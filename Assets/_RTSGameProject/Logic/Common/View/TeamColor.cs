@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.View
 {
+    
     public class TeamColor : MonoBehaviour
     {
         [SerializeField] private Unit _unit;

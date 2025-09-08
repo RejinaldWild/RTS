@@ -3,7 +3,7 @@ using _RTSGameProject.Logic.Analytic.Firebase;
 using _RTSGameProject.Logic.Common.SaveLoad;
 using _RTSGameProject.Logic.Common.Services;
 using _RTSGameProject.Logic.Common.Services.SoundFX;
-using _RTSGameProject.Logic.Common.Services.VFX;
+using _RTSGameProject.Logic.Installers;
 using _RTSGameProject.Logic.Shop.Model;
 using UnityEngine;
 using Zenject;
@@ -12,12 +12,6 @@ namespace _RTSGameProject.Logic.Bootstrap
 {
     public class EntryPointInstaller : MonoInstaller
     {
-        enum SaveLoad
-        {
-            LocalSaveLoad,
-            CloudSaveLoad
-        }
-        
         [SerializeField] private AudioService _audioService;
         
         public override void InstallBindings()

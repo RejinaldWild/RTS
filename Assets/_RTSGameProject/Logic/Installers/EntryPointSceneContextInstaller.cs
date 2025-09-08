@@ -1,12 +1,11 @@
 ﻿using _RTSGameProject.Logic.Bootstrap;
-using _RTSGameProject.Logic.Common.Config;
 using _RTSGameProject.Logic.Common.Services.VFX;
 using UnityEngine;
 using Zenject;
 
 namespace _RTSGameProject.Logic.Installers
 {
-    public class EntryPointSceneInstaller : MonoInstaller
+    public class EntryPointSceneContextInstaller : MonoInstaller
     {
         [SerializeField] private VFXService _vfxService;
         

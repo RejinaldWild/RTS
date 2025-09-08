@@ -9,6 +9,7 @@ namespace _RTSGameProject.Logic.Installers
     public class SceneManagementInstaller : MonoInstaller
     {
         [SerializeField] private EnemyBuildingsPosConfig _enemyBuildingsPos;
+        [SerializeField] private BuildingsPosConfig _buildingsPos;
         
         public override void InstallBindings()
         {
@@ -50,11 +51,15 @@ namespace _RTSGameProject.Logic.Installers
         private void BindBuildingProvider()
         {
             Container
-                .Bind<BuildingProvider>()
+                .Bind<BuildingsPosConfig>()
+                .FromInstance(_buildingsPos)
                 .AsSingle();
             Container
                 .Bind<EnemyBuildingsPosConfig>()
                 .FromInstance(_enemyBuildingsPos)
+                .AsSingle();
+            Container
+                .Bind<BuildingProvider>()
                 .AsSingle();
             Container
                 .Bind<BuildingEnemyProvider>()

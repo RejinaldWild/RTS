@@ -29,6 +29,7 @@ namespace _RTSGameProject.Logic.Bootstrap
         private readonly IAudio _audioService;
         private readonly IVFX _vfxService;
         
+        private BuildingsPosConfig _buildingsPosConfig;
         private EnemyBuildingsPosConfig _enemyBuildingsPosConfig;
         private HouseBuilding[] _buildings;
         private HouseBuilding[] _buildingsEnemy;
@@ -44,6 +45,7 @@ namespace _RTSGameProject.Logic.Bootstrap
                             BuildingsRepository buildingsRepository,
                             UnitExpProvider unitExpProvider,
                             UnitsFactory unitsFactory,
+                            BuildingsPosConfig buildingsPosConfig,
                             EnemyBuildingsPosConfig enemyBuildingsPosConfig,
                             ISaveService saveService,
                             IAudio audioService,
@@ -62,6 +64,7 @@ namespace _RTSGameProject.Logic.Bootstrap
             _unitsFactory = unitsFactory;
             _audioService = audioService;
             _vfxService = vfxService;
+            _buildingsPosConfig = buildingsPosConfig;
             _enemyBuildingsPosConfig = enemyBuildingsPosConfig;
         }
 
@@ -72,6 +75,7 @@ namespace _RTSGameProject.Logic.Bootstrap
             await _productionPanelProvider.Load();
             await _unitsFactory.Initialize();
             
+            _buildingProvider.Initialize(_buildingsPosConfig);
             _buildings = await _buildingProvider.Load();
             
             _buildingEnemyProvider.Initialize(_enemyBuildingsPosConfig);

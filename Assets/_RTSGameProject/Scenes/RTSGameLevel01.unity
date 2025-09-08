@@ -252,7 +252,7 @@ MonoBehaviour:
   - {fileID: 2056791884}
   - {fileID: 1323770093}
   - {fileID: 467904969}
-  - {fileID: 1996856034}
+  - {fileID: 1934438004}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -608,7 +608,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c19232e602b346b8b77155d0fb990300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyBuildingsPos: {fileID: 11400000, guid: cc4d003d4a137d44db013f8d575fab62, type: 2}
+  _enemyBuildingsPos: {fileID: 11400000, guid: aa831be42e3cb0946b5bfeeed3c6d58a, type: 2}
+  _buildingsPos: {fileID: 11400000, guid: 3ccb8db84f6cc8f47a0cebceaeddb1f2, type: 2}
 --- !u!1 &499712779
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,7 +1200,7 @@ Transform:
   - {fileID: 2056791883}
   - {fileID: 1323770092}
   - {fileID: 467904968}
-  - {fileID: 1996856033}
+  - {fileID: 1934438003}
   m_Father: {fileID: 618796329}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1037857671
@@ -1687,7 +1688,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1996856032
+--- !u!1 &1934438002
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1695,22 +1696,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1996856033}
-  - component: {fileID: 1996856034}
+  - component: {fileID: 1934438003}
+  - component: {fileID: 1934438004}
   m_Layer: 0
-  m_Name: EntryPointScene
+  m_Name: EntryPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1996856033
+--- !u!4 &1934438003
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1996856032}
+  m_GameObject: {fileID: 1934438002}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -1719,13 +1720,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 881028849}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1996856034
+--- !u!114 &1934438004
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1996856032}
+  m_GameObject: {fileID: 1934438002}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8000358aeef74e48a93e1dd1480d2e19, type: 3}
@@ -2043,9 +2044,9 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 618796329}
   - {fileID: 547183712}
   - {fileID: 1091999362}
-  - {fileID: 618796329}
   - {fileID: 499712784}
   - {fileID: 1697724273}
   - {fileID: 680486765}

@@ -3,15 +3,6 @@ using UnityEngine;
 
 namespace _RTSGameProject.Logic.Common.Config
 {
-    public enum SoundType
-    {
-        HIT,
-        CREATE,
-        DEATH,
-        CLICK,
-        BACKGROUND
-    }
-    
     [Serializable]
     public struct AudioLibrary
     {
