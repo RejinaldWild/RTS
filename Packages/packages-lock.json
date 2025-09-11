@@ -14,15 +14,15 @@
       "dependencies": {}
     },
     "com.google.firebase.analytics": {
-      "version": "file:Firebase/com.google.firebase.analytics-12.10.1.tgz",
+      "version": "file:Firebase/com.google.firebase.analytics-13.2.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
-        "com.google.firebase.app": "12.10.1"
+        "com.google.firebase.app": "13.2.0"
       }
     },
     "com.google.firebase.app": {
-      "version": "file:Firebase/com.google.firebase.app-12.10.1.tgz",
+      "version": "file:Firebase/com.google.firebase.app-13.2.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
@@ -30,11 +30,11 @@
       }
     },
     "com.google.firebase.remote-config": {
-      "version": "file:Firebase/com.google.firebase.remote-config-12.10.1.tgz",
+      "version": "file:Firebase/com.google.firebase.remote-config-13.2.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
-        "com.google.firebase.app": "12.10.1"
+        "com.google.firebase.app": "13.2.0"
       }
     },
     "com.unity.addressables": {
@@ -61,7 +61,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ai.navigation": {
-      "version": "1.1.5",
+      "version": "1.1.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -243,7 +243,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
-      "version": "3.0.6",
+      "version": "3.0.9",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -252,7 +252,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.7.6",
+      "version": "1.7.7",
       "depth": 0,
       "source": "registry",
       "dependencies": {
